@@ -1,0 +1,160 @@
+/* Header bar */
+.nv-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eee;
+}
+.dark .nv-header {
+  background: rgba(20, 20, 20, 0.6);
+  border-color: #2a2a2a;
+}
+
+/* 3-column grid */
+.nv-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 64px;
+  padding-inline: 16px;
+}
+
+.nv-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nv-logo {
+  cursor: pointer;
+  display: block;
+}
+
+.nv-brand {
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #111;
+}
+.dark .nv-brand {
+  color: #fff;
+}
+
+.nv-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Icon button (burger/close) */
+.nv-iconbtn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: transparent;
+  color: inherit;
+}
+.dark .nv-iconbtn {
+  border-color: #454545;
+  color: #fff;
+}
+
+.nv-close {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+/* Burger icon */
+.nv-burger {
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+  display: inline-block;
+}
+.nv-burger-line {
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+}
+.nv-burger-top { top: -6px; }
+.nv-burger-bottom { top: 6px; }
+
+/* Overlay */
+.nv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));
+  padding-left: 5cm;
+  padding-right: 5cm;
+  display: grid;
+  place-items: center;
+  color: #111;
+}
+.dark .nv-overlay {
+  background: rgba(10, 10, 10, 0.92);
+  color: #fff;
+}
+
+/* Center column with links */
+.nv-menu-col {
+  display: grid;
+  gap: 24px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.nv-menu-link {
+  font-size: 36px;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 160ms ease;
+}
+.nv-menu-link:hover {
+  opacity: 0.7;
+}
+
+/* Side squares row (keeps 5cm padding space) */
+.nv-side-squares {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 10cm);
+  left: 5cm;
+  right: 5cm;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* clicks pass through unless on buttons */
+}
+
+/* Square buttons (theme + cart) */
+.nv-square {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+.dark .nv-square {
+  border-color: #454545;
+  background: rgba(30, 30, 30, 0.6);
+}
+
+.nv-square-emoji {
+  font-size: 22px;
+}

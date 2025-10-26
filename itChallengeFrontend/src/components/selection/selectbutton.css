@@ -1,0 +1,63 @@
+/* Obdĺžniková lišta */
+.sb-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;                 /* vnútorná medzera od krajov */
+  border-radius: 16px;          /* zaoblené rohy */
+  background: #f5f6f7;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  width: 100%;
+  max-width: 720px;             /* môžeš upraviť */
+  margin: 12px auto;            /* vycentrovanie */
+}
+
+/* Tlačidlá (zaberú rovnakú šírku, rozmiestnené ku krajom) */
+.sb-btn {
+  flex: 1 1 0;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: #eceeef;
+  color: #374151;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+/* medzera medzi tlačidlami vytvorí “rozdelene od krajov” efekt */
+.sb-divider {
+  width: 12px;                  /* špára medzi tlačidlami */
+}
+
+/* Aktívne (farebné) – DOMOV je default */
+.sb-btn.active {
+  background: linear-gradient(135deg, #6ee7ff, #7c3aed);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(124,58,237,0.25);
+}
+
+/* Hover/Focus stavy */
+.sb-btn:not(.active):hover {
+  background: #e7e9eb;
+}
+.sb-btn:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+}
+
+/* Dark mode (ak používaš .dark na <html>) */
+.dark .sb-wrap {
+  background: #111315;
+  border-color: #23262b;
+}
+.dark .sb-btn {
+  background: #1b1f24;
+  color: #d1d5db;
+}
+.dark .sb-btn:not(.active):hover {
+  background: #22262c;
+}
