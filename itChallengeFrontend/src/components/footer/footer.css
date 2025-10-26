@@ -1,0 +1,143 @@
+/* --- Base wrapper --- */
+.ft {
+  position: relative;
+  padding: 56px 24px 24px;
+  background: #0a0a0a;
+  color: #f5f5f5;
+  overflow: hidden;
+}
+
+/* dotted grid background (subtle) */
+.ft::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(#2a2a2a 1px, transparent 1px),
+    radial-gradient(#2a2a2a 1px, transparent 1px);
+  background-position: 0 0, 20px 20px;
+  background-size: 40px 40px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* content grid */
+.ft-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 28px;
+}
+
+/* left stack of cards */
+.ft-cards {
+  display: grid;
+  gap: 12px;
+}
+
+.ft-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #111;
+  color: #eaeaea;
+  text-decoration: none;
+  border: 1px solid #1f1f1f;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+.ft-card:hover {
+  transform: translateY(-1px);
+  background: #151515;
+  border-color: #2a2a2a;
+}
+.ft-card-label {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.ft-card-icon {
+  opacity: 0.9;
+}
+
+/* right: brand box */
+.ft-brand {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #0f0f10;
+  border: 1px solid #1f1f1f;
+  min-height: 172px;
+}
+
+.ft-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ft-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.ft-title {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+}
+
+.ft-slogan {
+  margin: 4px 0 8px;
+  color: #cfcfcf;
+}
+
+/* socials row */
+.ft-socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.ft-social {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid #2a2a2a;
+  display: grid;
+  place-items: center;
+  background: #121212;
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+.ft-social:hover {
+  transform: translateY(-2px);
+  background: #161616;
+  border-color: #3a3a3a;
+}
+.ft-social-emoji { font-size: 18px; }
+
+/* bottom row */
+.ft-bottom {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 18px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid #1c1c1c;
+  text-align: center;
+  color: #b7b7b7;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .ft-inner {
+    grid-template-columns: 1fr;
+  }
+}
