@@ -5,19 +5,25 @@ import "./navbar.css";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState(
-    typeof window !== "undefined" ? localStorage.getItem("theme") || "light" : "light"
+    typeof window !== "undefined"
+      ? localStorage.getItem("theme") || "light"
+      : "light"
   );
   const navigate = useNavigate();
 
   useEffect(() => {
     const root = document.documentElement;
-    theme === "dark" ? root.classList.add("dark") : root.classList.remove("dark");
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (
     <>
-      {/* Top bar */}
+      {/* ===== Top bar ===== */}
       <header className="nv-header">
         <div className="nv-grid">
           {/* Left: logo */}
@@ -32,10 +38,10 @@ export default function Navbar() {
             />
           </div>
 
-          {/* Center: HoloHome */}
+          {/* Center: HoloHome text */}
           <div className="nv-brand">HOLOHOME</div>
 
-          {/* Right: burger */}
+          {/* Right: burger menu */}
           <div className="nv-right">
             <button
               aria-label="Open menu"
@@ -48,7 +54,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Fullscreen overlay menu */}
+      {/* ===== Fullscreen overlay menu ===== */}
       {open && (
         <div
           role="dialog"
@@ -56,7 +62,7 @@ export default function Navbar() {
           className="nv-overlay"
           onClick={() => setOpen(false)}
         >
-          {/* Close (top-left) */}
+          {/* Close button */}
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
@@ -66,14 +72,17 @@ export default function Navbar() {
           </button>
 
           {/* Centered menu list */}
-          <nav onClick={(e) => e.stopPropagation()} className="nv-menu-col">
+          <nav
+            onClick={(e) => e.stopPropagation()}
+            className="nv-menu-col"
+          >
             <MenuLink to="/" label="DOMOV" onPick={() => setOpen(false)} />
             <MenuLink to="/shop" label="OBCHOD" onPick={() => setOpen(false)} />
             <MenuLink to="/merch" label="MERCH" onPick={() => setOpen(false)} />
             <MenuLink to="/account" label="ÚČET" onPick={() => setOpen(false)} />
           </nav>
 
-          {/* Side squares within 5 cm paddings */}
+          {/* Side squares (left/right) */}
           <div aria-hidden className="nv-side-squares">
             {/* Left square: theme toggle */}
             <button
@@ -83,10 +92,12 @@ export default function Navbar() {
                 setTheme((t) => (t === "light" ? "dark" : "light"));
               }}
             >
-              <span className="nv-square-emoji">{theme === "light" ? "🌙" : "☀️"}</span>
+              <span className="nv-square-emoji">
+                {theme === "light" ? "🌙" : "☀️"}
+              </span>
             </button>
 
-            {/* Right square: cart */}
+            {/* Right square: shopping cart */}
             <button
               className="nv-square"
               onClick={(e) => {
@@ -103,8 +114,7 @@ export default function Navbar() {
   );
 }
 
-/* ---------- small helpers ---------- */
-
+/* ---------- Small helpers ---------- */
 function MenuLink({ to, label, onPick }) {
   return (
     <Link to={to} onClick={onPick} className="nv-menu-link">
