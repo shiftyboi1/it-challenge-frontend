@@ -1,7 +1,7 @@
 import React from "react";
 import "./home.css";
-import Navbar from "../components/navbar/Navbar.jsx";      // if you export default
-import Footer from "../components/footer/Footer.jsx";      // adjust paths to yours
+import Navbar from "../components/navbar/navbar.jsx";      // if you export default
+import Footer from "../components/footer/footer.jsx";      // adjust paths to yours
 // If your files are in different dirs, update imports accordingly.
 
 export default function Home() {
