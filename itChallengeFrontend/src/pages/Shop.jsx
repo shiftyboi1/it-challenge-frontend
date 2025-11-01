@@ -4,10 +4,10 @@ import "./Shop.css";
 // components (adjust paths if your tree differs)
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
-import SelectButton from "../components/select_button/Selectbuton";
+import SelectButton from "../components/selection/Selectbuton";
 import Product from "../components/product/Product";
-import ProductIaB from "../components/product_iab/ProductIaB";
-import ProductNaD from "../components/product_nad/ProductNaD";
+import ProductIaB from "../components/product/ProductIaB";
+import ProductNaD from "../components/product/ProductNaD";
 
 // --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [
