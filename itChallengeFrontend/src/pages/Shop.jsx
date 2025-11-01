@@ -2,10 +2,10 @@ import React, { useMemo, useState } from "react";
 import "./Shop.css";
 
 // components (adjust paths if your tree differs)
-import Navbar from "../components/navbar/navbar";
-import Footer from "../components/footer/footer";
-import SelectButton from "../components/selection/selectbutton";
-import Product from "../components/product/product";
+import Navbar from "../components/navbar/Navbar";
+import Footer from "../components/footer/Footer";
+import SelectButton from "../components/selection/Selectbutton";
+import Product from "../components/product/Product";
 
 // --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [

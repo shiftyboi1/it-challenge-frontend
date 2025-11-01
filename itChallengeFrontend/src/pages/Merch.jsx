@@ -1,9 +1,9 @@
 import React from "react";
 import "./Merch.css";
 
-import Navbar from "../components/navbar/navbar";           // adjust path if needed
-import Footer from "../components/footer/footer";           // "
-import ProductM from "../components/product_merch/product_m"; // the merch card (product_m.jsx)
+import Navbar from "../components/navbar/Navbar";           // adjust path if needed
+import Footer from "../components/footer/Footer";           // "
+import ProductM from "../components/product_merch/ProductM"; // the merch card (product_m.jsx)
 
 // Demo data (swap images with real files in /assets/images/merch/)
 const MERCH = [
