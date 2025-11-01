@@ -6,6 +6,8 @@ import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import SelectButton from "../components/select_button/Selectbuton";
 import Product from "../components/product/Product";
+import ProductIaB from "../components/product_iab/ProductIaB";
+import ProductNaD from "../components/product_nad/ProductNaD";
 
 // --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [
