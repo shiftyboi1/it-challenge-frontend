@@ -13,48 +13,67 @@ export default function Navbar() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+    theme === "dark" ? root.classList.add("dark") : root.classList.remove("dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (
     <>
-      {/* ===== Top bar ===== */}
+      {/* ===== Top bar with side squares + center pill ===== */}
       <header className="nv-header">
         <div className="nv-grid">
-          {/* Left: logo */}
-          <div className="nv-left">
-            <img
-              src="/logo.ico"
-              alt="HoloHome logo"
-              width={28}
-              height={28}
-              className="nv-logo"
-              onClick={() => navigate("/")}
-            />
-          </div>
+          {/* Left square: Theme toggle */}
+          <button
+            className="nv-square"
+            aria-label="Toggle theme"
+            onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
+          >
+            <span className="nv-square-emoji">
+              {theme === "light" ? "☀️" : "🌙"}
+            </span>
+          </button>
 
-          {/* Center: HoloHome text */}
-          <div className="nv-brand">HOLOHOME</div>
-
-          {/* Right: burger menu */}
-          <div className="nv-right">
+          {/* Center pill: home | HOLOHOME | burger */}
+          <div className="nv-pill">
             <button
-              aria-label="Open menu"
-              onClick={() => setOpen(true)}
-              className="nv-iconbtn"
+              className="nv-pill-btn"
+              aria-label="Home"
+              title="Domov"
+              onClick={() => navigate("/")}
             >
-              <BurgerIcon />
+              🏠
+            </button>
+
+            <div className="nv-brand" onClick={() => navigate("/")}>
+              HOLOHOME
+            </div>
+
+            <button
+              className="nv-pill-btn"
+              aria-label="Open menu"
+              title="Menu"
+              onClick={() => setOpen(true)}
+            >
+              <span className="nv-burger">
+                <span className="nv-burger-line nv-burger-top" />
+                <span className="nv-burger-line nv-burger-bottom" />
+              </span>
             </button>
           </div>
+
+          {/* Right square: Cart */}
+          <button
+            className="nv-square"
+            aria-label="Cart"
+            onClick={() => navigate("/cart")}
+            title="Košík"
+          >
+            <span className="nv-square-emoji">🛒</span>
+          </button>
         </div>
       </header>
 
-      {/* ===== Fullscreen overlay menu ===== */}
+      {/* ===== Fullscreen overlay menu (links only) ===== */}
       {open && (
         <div
           role="dialog"
@@ -62,52 +81,36 @@ export default function Navbar() {
           className="nv-overlay"
           onClick={() => setOpen(false)}
         >
-          {/* Close button */}
+          {/* Close button (keeps same visual weight as burger) */}
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
             className="nv-iconbtn nv-close"
           >
-            ×
+            <span className="nv-x-line nv-x-a" />
+            <span className="nv-x-line nv-x-b" />
           </button>
 
-          {/* Centered menu list */}
-          <nav
-            onClick={(e) => e.stopPropagation()}
-            className="nv-menu-col"
+          {/* Top: logo + brand */}
+          <div
+            className="nv-overlay-top"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+              navigate("/");
+            }}
           >
+            <img src="/logo.ico" alt="HoloHome" className="nv-overlay-logo" />
+            <span className="nv-overlay-brand">HoloHome</span>
+          </div>
+
+          {/* Centered links */}
+          <nav onClick={(e) => e.stopPropagation()} className="nv-menu-col">
             <MenuLink to="/" label="DOMOV" onPick={() => setOpen(false)} />
             <MenuLink to="/shop" label="OBCHOD" onPick={() => setOpen(false)} />
             <MenuLink to="/merch" label="MERCH" onPick={() => setOpen(false)} />
             <MenuLink to="/account" label="ÚČET" onPick={() => setOpen(false)} />
           </nav>
-
-          {/* Side squares (left/right) */}
-          <div aria-hidden className="nv-side-squares">
-            {/* Left square: theme toggle */}
-            <button
-              className="nv-square"
-              onClick={(e) => {
-                e.stopPropagation();
-                setTheme((t) => (t === "light" ? "dark" : "light"));
-              }}
-            >
-              <span className="nv-square-emoji">
-                {theme === "light" ? "🌙" : "☀️"}
-              </span>
-            </button>
-
-            {/* Right square: shopping cart */}
-            <button
-              className="nv-square"
-              onClick={(e) => {
-                e.stopPropagation();
-                alert("Open cart (hook this to your /cart route)");
-              }}
-            >
-              <span className="nv-square-emoji">🛒</span>
-            </button>
-          </div>
         </div>
       )}
     </>
@@ -120,14 +123,5 @@ function MenuLink({ to, label, onPick }) {
     <Link to={to} onClick={onPick} className="nv-menu-link">
       {label}
     </Link>
-  );
-}
-
-function BurgerIcon() {
-  return (
-    <span className="nv-burger">
-      <span className="nv-burger-line nv-burger-top" />
-      <span className="nv-burger-line nv-burger-bottom" />
-    </span>
   );
 }
