@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./product.css";
-import "./productiab.css";
-import "./productnad.css";
-import ProductIAB from "./productiab";
-import ProductNAD from "./productnad";
+import "./product_iab.css";
+import "./product_nad.css";
+import ProductIAB from "./ProductIaB";
+import ProductNAD from "./ProductNaD";
 
 export default function Product({
   id,
