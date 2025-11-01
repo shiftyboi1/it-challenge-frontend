@@ -7,8 +7,8 @@ import Merch from "./pages/Merch";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
 
-import Navbar from "./components/navbar/navbar";
-import Footer from "./components/footer/footer";
+import Navbar from "./components/navbar/Navbar";
+import Footer from "./components/footer/Footer";
 
 import "./App.css";
 
