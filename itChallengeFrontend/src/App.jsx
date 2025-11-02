@@ -11,25 +11,6 @@ import Login from "./pages/Login.jsx";
 export default function App() {
   return (
     <BrowserRouter>
-      {/* Temporary simple navigation for testing */}
-      <nav
-        style={{
-          padding: "16px",
-          display: "flex",
-          justifyContent: "center",
-          gap: "24px",
-          borderBottom: "1px solid #eee",
-          background: "rgba(255,255,255,0.7)",
-          backdropFilter: "blur(10px)",
-        }}
-      >
-        <Link to="/">Home</Link>
-        <Link to="/shop">Shop</Link>
-        <Link to="/merch">Merch</Link>
-        <Link to="/account">Account</Link>
-        <Link to="/login">Login</Link>
-      </nav>
-
       {/* Page routes */}
       <Routes>
         <Route path="/" element={<Home />} />

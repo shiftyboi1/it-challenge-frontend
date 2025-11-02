@@ -2,8 +2,12 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
-  padding: 24px 22px;
-  overflow: hidden;
+  /* place a black box background for the NAD column and ensure the
+     text is padded below the navbar so it won't be covered */
+  padding: 96px 28px 28px 28px; /* top padding equals navbar space */
+  background: transparent;
+  color: inherit;
+  overflow: auto;
 }
 .nad-title {
   margin: 0 0 10px 0;
@@ -17,5 +21,37 @@
   line-height: 1.55;
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-top: 12px;
+}
+
+/* Light theme: make the NAD panel white with dark text so the detail view
+   reads like a normal content column. In dark theme the defaults remain.
+   The selector targets when <html> does NOT have the .dark class. */
+/* Keep NAD transparent so the image (or panel) shows through. Ensure text
+   remains readable in light theme by using the theme foreground color. */
+.pd-panel .nad { /* default no tint; theme-specific rules will supply solid color */
+  background: transparent;
+}
+
+/* Light theme: solid white background with dark text */
+html:not(.dark) .pd-panel .nad {
+  /* translucent white rectangle (~80% opacity) */
+  background: rgba(255,255,255,0.8);
+  color: #000000;
+}
+html:not(.dark) .pd-panel .nad .nad-body {
+  color: #000000;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+html:not(.dark) .pd-panel .nad .nad-title { color: #000000; }
+
+/* Dark theme: solid black background with light text */
+html.dark .pd-panel .nad {
+  /* translucent black rectangle (~80% opacity) */
+  background: rgba(0,0,0,0.8);
+  color: #ffffff;
+}
+html.dark .pd-panel .nad .nad-body {
+  color: #d9d9d9;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 .nad-body p { margin: 0 0 12px 0; }

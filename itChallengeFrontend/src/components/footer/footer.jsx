@@ -1,56 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./footer.css";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const actions = [
-    { label: "Support", href: "/support", icon: "?" },
-    { label: "Contact", href: "/contact", icon: "✉️" },
-    { label: "Community", href: "/community", icon: "👥" },
-    { label: "Privacy", href: "/privacy", icon: "▾" },
-  ];
-
-  const socials = [
-    { label: "Instagram", href: "#", emoji: "📸" },
-    { label: "YouTube", href: "#", emoji: "▶️" },
-    { label: "X", href: "#", emoji: "✖️" },
-    { label: "TikTok", href: "#", emoji: "🎵" },
-  ];
+  // footer-local theme toggle (same storage/key as navbar)
+  const [theme, setTheme] = useState(
+    typeof window !== "undefined" ? localStorage.getItem("theme") || "light" : "light"
+  );
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
-    <footer className="ft">
-      <div className="ft-inner">
-        {/* Left: stacked action cards */}
-        <div className="ft-cards">
-          {actions.map((a) => (
-            <a key={a.label} className="ft-card" href={a.href}>
-              <span className="ft-card-label">{a.label}</span>
-              <span className="ft-card-icon">{a.icon}</span>
-            </a>
-          ))}
+    <footer className="hf fw">
+      <div className="hf-topglow" aria-hidden="true" />
+
+      <div className="hf-grid">
+        {/* LEFT – 4 content tiles */}
+        <div className="hf-left">
+          <Link to="/help" className="hf-tile">
+            <div className="hf-tile-title">Centrum pomoci</div>
+            <div className="hf-tile-sub">FAQ, návody, dokumentácia</div>
+          </Link>
+
+          <Link to="/contact" className="hf-tile">
+            <div className="hf-tile-title">Kontakt</div>
+            <div className="hf-tile-sub">support@holohome.io · Live chat (beta)</div>
+          </Link>
+
+          <Link to="/community" className="hf-tile">
+            <div className="hf-tile-title">Komunita</div>
+            <div className="hf-tile-sub">Discord · Fórum · Blog novinky</div>
+          </Link>
+
+          <Link to="/privacy" className="hf-tile">
+            <div className="hf-tile-title">Ochrana súkromia</div>
+            <div className="hf-tile-sub">GDPR · Podmienky · Cookies nastavenia</div>
+          </Link>
         </div>
 
-        {/* Right: brand + slogan + socials */}
-        <div className="ft-brand">
-          <div className="ft-brand-row">
-            <img className="ft-logo" src="/logo.ico" alt="HoloHome" />
-            <h3 className="ft-title">HoloHome</h3>
-          </div>
+        {/* RIGHT – big promo/image area */}
+        <aside className="hf-hero" aria-label="Promo panel">
+          {/* replace with your real image */}
+          <img
+            src="https://picsum.photos/1600/700?blur=1"
+            alt="HoloHome ukážka"
+            loading="lazy"
+          />
+        </aside>
 
-          <p className="ft-slogan">“Smart living. Simple choice.”</p>
-
-          <div className="ft-socials">
-            {socials.map((s) => (
-              <a key={s.label} className="ft-social" href={s.href} aria-label={s.label} title={s.label}>
-                <span className="ft-social-emoji">{s.emoji}</span>
-              </a>
-            ))}
-          </div>
+        {/* SOCIAL row */}
+        <div className="hf-socialrow">
+          <a className="hf-sbox" href="#" aria-label="YouTube">YT</a>
+          <a className="hf-sbox" href="#" aria-label="Facebook">FB</a>
+          <a className="hf-sbox" href="#" aria-label="Instagram">IG</a>
+          <a className="hf-sbox" href="#" aria-label="X / Twitter">X</a>
+          <a className="hf-sbox" href="#" aria-label="LinkedIn">in</a>
         </div>
       </div>
 
-      {/* Bottom tiny line (optional) */}
-      <div className="ft-bottom">
-        <small>© {new Date().getFullYear()} HoloHome · All rights reserved.</small>
+      {/* full-width bottom bar */}
+      <div className="hf-legalbar">
+        <div>© {new Date().getFullYear()} HoloHome · All rights reserved.</div>
+        <nav className="hf-legal-links">
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/cookies">Cookies</Link>
+        </nav>
       </div>
     </footer>
   );

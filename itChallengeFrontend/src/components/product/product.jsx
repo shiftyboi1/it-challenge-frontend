@@ -14,18 +14,33 @@ export default function Product({
   image,
 }) {
   const [open, setOpen] = useState(false);
+  // keep navbar visible while the product panel is open
+  usePanelOpenEffect(open);
+  // Always use a picsum random/seedy image for the hero background so every
+  // product appears as a full-bleed hero. Use a seed from the product id or
+  // name so the image is stable per-product; remove fallback to provided
+  // `image` prop so the page looks consistent with the hero layout.
+  const seed = id || name || Math.floor(Math.random() * 999999);
+  const bg = `https://picsum.photos/seed/${encodeURIComponent(seed)}/1600/900?blur=1`;
 
   return (
     <>
-      <div className="product-card" style={{ backgroundImage: `url(${image})` }}>
+      <div className="product-card" style={{ backgroundImage: `url(${bg})` }}>
         <div className="product-overlay">
           <h2 className="product-name">{name}</h2>
           <p className="product-short">{shortDesc}</p>
           <div className="product-bottom">
-            <span className="product-price">{price}</span>
-            <button className="product-btn" onClick={() => setOpen(true)}>
-              More
-            </button>
+            <div className="left-actions">
+              <button className="buy-btn more-btn" onClick={() => alert(`Buying ${name}`)}>
+                {`Buy for ${price}`}
+              </button>
+            </div>
+
+            <div className="right-actions">
+              <button className="more-btn" onClick={() => setOpen(true)}>
+                More
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -40,8 +55,8 @@ export default function Product({
             </button>
 
             <div className="pd-grid">
-              {/* LEFT: image + price/buy box */}
-              <ProductIAB image={image} price={price} onBuy={() => alert(`Buying ${name}`)} />
+              {/* LEFT: image + price/buy box - pass the same random bg so drawer matches hero */}
+              <ProductIAB image={bg} price={price} onBuy={() => alert(`Buying ${name}`)} />
 
               {/* RIGHT: name + long description */}
               <ProductNAD name={name} longDesc={longDesc} />
@@ -51,4 +66,15 @@ export default function Product({
       )}
     </>
   );
+}
+
+// keep a small side-effect so pages that open the product drawer can tell the
+// navbar to remain visible while the panel is open. We add/remove a global
+// class on <html> which the Navbar scroll handler checks.
+export function usePanelOpenEffect(open) {
+  React.useEffect(() => {
+    if (open) document.documentElement.classList.add("panel-open");
+    else document.documentElement.classList.remove("panel-open");
+    return () => document.documentElement.classList.remove("panel-open");
+  }, [open]);
 }

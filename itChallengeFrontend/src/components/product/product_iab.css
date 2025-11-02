@@ -11,13 +11,16 @@
   background-size: cover;
   background-position: center;
   filter: saturate(105%);
+  /* make the image a bit translucent so overlays read clearly */
+  opacity: 0.92;
 }
 .iab-frost {
   position: relative;
   margin: 16px;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(30,30,30,0.55);
+  /* keep frosted bar slightly translucent */
+  background: rgba(30,30,30,0.75);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.08);
   display: flex; justify-content: space-between; align-items: center;

@@ -1,125 +1,267 @@
-/* ------- Theme variables ------- */
-html {
-  --nv-fg: #111;              /* text / icons */
-  --nv-border: #e9e9e9;       /* borders */
-  --nv-pill-bg: rgba(255,255,255,.58);
-  --nv-square-bg: rgba(255,255,255,.55);
-  --nv-overlay: rgba(255,255,255,.92);
+/* ================= HoloHome THEME ================= */
+:root{
+  --fg:#0f1313;
+  --panel:#ffffff;
+  --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
+  --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
+
+  --brand-dark:#274c51;   /* teal */
+  --brand-green:#74bc74;  /* light green */
+  --brand-grad: linear-gradient(90deg, #274c51 0%, #74bc74 50%, #274c51 100%);
+  --brand-glow: 0 0 14px rgba(39,76,81,.18), 0 0 22px rgba(116,188,116,.16);
 }
-html.dark {
-  --nv-fg: #fff;
-  --nv-border: rgba(255,255,255,.12);
-  --nv-pill-bg: rgba(22,22,22,.6);
-  --nv-square-bg: rgba(30,30,30,.6);
-  --nv-overlay: rgba(10,10,10,.9);
+html.dark{
+  --fg:#f5fbfb;
+  --panel:#0b1111;
+  --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
+  --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
+  --brand-glow: 0 0 18px rgba(116,188,116,.22), 0 0 28px rgba(39,76,81,.28);
 }
 
-/* Header */
-.nv-header {
-  position: sticky; top: 0; z-index: 40;
-  background: rgba(255,255,255,.6);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--nv-border);
-}
-html.dark .nv-header { background: rgba(20,20,20,.6); }
+/* ================= Layout anchors ================= */
+.nh{ position:fixed; inset:0; pointer-events:none; z-index:1000; }
+.nh-box, .nh-bar, .nh-submenu{ pointer-events:auto; }
 
-/* 5cm | pill | 5cm; no side padding so the 5cm is exact */
-.nv-grid {
-  display: grid;
-  grid-template-columns: 5cm 1fr 5cm;
-  align-items: center;
-  height: 64px;
-  gap: 0;
-  color: var(--nv-fg);
+/* ================= Side boxes (☀️ / 🛒) – orámované stále, bez zvýraznenia ================= */
+.nh-box{
+  position:fixed; top:16px; width:56px; height:56px;
+  background:var(--panel-90);
+  color:var(--fg);
+  border: none;
+  border-radius:14px;
+  display:inline-flex; align-items:center; justify-content:center;
+  box-shadow:none; /* remove glowy shadow around squares */
+  cursor:pointer;
+  transition:none; /* žiadne zvýraznenie */
+  z-index: 1100; /* make floating boxes sit above pinned selectors */
+}
+.nh-left{ left:16px; }
+.nh-right{ right:16px; }
+.nh-box:hover,
+.nh-box:active,
+.nh-box:focus,
+.nh-box:focus-visible{
+  background:var(--panel-90);
+  border:1px solid var(--stroke);
+  box-shadow:none;
+  outline:none;
+}
+.nh-emoji{ display:inline-flex; align-items:center; justify-content:center; line-height:1; font-size:1.15rem; }
+.nh-home{ font-size:1.3rem; }
+
+/* ================= Center bar ================= */
+.nh-bar{
+  position:fixed; top:16px; left:50%; transform:translateX(-50%);
+  height:60px; min-width:min(92vw,980px);
+  background:var(--panel-90); color:var(--fg);
+  border: none;
+  border-radius:18px;                   /* zatvorené = úplne oblé */
+  display:flex; align-items:center; gap:12px; padding:0 20px;
+  backdrop-filter:blur(10px);
+  box-shadow:none;                      /* ✅ žiadny vnútorný tieň */
 }
 
-/* Side squares — perfectly symmetric */
-.nv-square {
-  width: 44px; height: 44px; border-radius: 12px;
-  border: 1px solid var(--nv-border);
-  background: var(--nv-square-bg);
-  backdrop-filter: blur(8px);
-  display: grid; place-items: center;
-  cursor: pointer; transition: transform .15s ease;
+/* hide/show animation for scroll behaviour */
+.nh-hidden .nh-bar{
+  transform: translate(-50%, -120%); /* move the bar up */
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .28s ease, opacity .18s ease;
 }
-.nv-square:first-child { justify-self: start; }  /* left */
-.nv-square:last-child  { justify-self: end; }    /* right */
-.nv-square:hover { transform: translateY(-1px); }
-.nv-square-emoji { font-size: 18px; }
+.nh .nh-bar{ transition: transform .28s ease, opacity .18s ease; }
 
-/* Center pill */
-.nv-pill {
-  height: 56px;
-  display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
-  border: 1px solid var(--nv-border);
-  border-radius: 16px;
-  background: var(--nv-pill-bg);
+/* floating boxes hide animation when they get nh-hidden */
+.nh-box.nh-hidden{
+  transform: translateY(-140%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .28s ease, opacity .18s ease;
+}
+.nh-box{ transition: transform .28s ease, opacity .18s ease; }
+
+/* When a product panel is open, keep the navbar visible regardless of
+   scroll/hide state. This overrides the .nh-hidden rules so the navbar and
+   floating boxes remain on-screen while the product IAB/NAD are active. */
+html.panel-open .nh .nh-bar {
+  transform: translate(-50%, 0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+html.panel-open .nh .nh-box {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+/* The floating theme / cart boxes are siblings of the .nh header, not
+   children. Ensure they are also kept visible when a panel is open. */
+html.panel-open .nh-box {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+/* „chvostíky“ pod barom – ponechané; ak nechceš, zmaž celý ::after blok */
+.nh-bar::after{
+  content:""; position:absolute; left:0; right:0; bottom:-8px; height:28px; pointer-events:none;
+  background:
+    radial-gradient(110px 20px at 28px 100%, rgba(39,76,81,.18), transparent 70%) left bottom no-repeat,
+    radial-gradient(110px 20px at calc(100% - 28px) 100%, rgba(116,188,116,.18), transparent 70%) right bottom no-repeat,
+    linear-gradient(to bottom, rgba(39,76,81,.12), transparent 60%);
+  filter: blur(2px);
+  display: none; /* hide glow tails (we hide glow completely) */
+}
+html.nav-open .nh-bar{ border-radius:18px 18px 0 0; }
+html.nav-open .nh-bar::after{ display: none; }
+
+/* logo (emoji) a burger – nikdy žiadny box/outline */
+.nh-logo,
+.nh-bar-btn{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  outline:none !important;
+  -webkit-tap-highlight-color:transparent;
+  appearance:none; -webkit-appearance:none;
+}
+.nh-logo{ font-size:1.5rem; display:inline-flex; align-items:center; justify-content:center; }
+.nh-bar-btn{ width:48px; height:48px; padding:0; display:inline-grid; place-items:center; cursor:pointer; }
+.nh-bar-btn:hover{ opacity:.8; transform:translateY(-1px); transition:transform .14s ease, opacity .14s ease; }
+
+/* Brand title */
+.nh-title{
+  font-family:"Lexend",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  text-decoration:none; font-weight:800; letter-spacing:.14em;
+  font-size:clamp(20px,2.4vw,26px); text-transform:uppercase; user-select:none;
+  margin:0 auto; color:var(--fg);
+}
+
+/* Navbar-specific hover colors and transitions */
+.nh .nh-box,
+.nh .nh-title,
+.nh .nh-link,
+.nh .nh-bar-btn{
+  transition: color .16s ease, background .12s ease;
+}
+
+/* Light theme: black text (from --fg) and hover -> dark green (navbar only) */
+.nh .nh-box:hover,
+.nh .nh-link:hover,
+.nh .nh-title:hover,
+.nh .nh-bar-btn:hover{
+  color: var(--brand-dark);
+}
+
+/* Dark theme: white text (from --fg) and hover -> light green (applies to navbar) */
+html.dark .nh .nh-box:hover,
+html.dark .nh .nh-link:hover,
+html.dark .nh .nh-title:hover,
+html.dark .nh .nh-bar-btn:hover{
+  color: var(--brand-green);
+}
+.nh-title-holo{
+  background:var(--brand-grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 8px rgba(116,188,116,.14));
+}
+
+/* Submenu-specific hover: keep Holohome (title) hover as dark green in light mode,
+   but make the submenu items (Domov, Obchod, Merch, Účet) hover light green.
+   This is scoped to the open submenu so it won't affect the main title. */
+.nh-submenu .nh-link:hover,
+.nh-submenu .nh-link:focus,
+.nh-submenu .nh-link:active{
+  color: var(--brand-green);
+}
+
+/* ================= 2-line burger → X (dlhé, centrované) ================= */
+.nh-burger-2{
+  position:relative; width:40px; height:24px; color:var(--fg); display:block;
+}
+.nh-burger-2::before,
+.nh-burger-2::after{
+  content:""; position:absolute; left:0; right:0; top:50%;
+  height:3px; background:currentColor; border-radius:2px;
+  transform-origin:50% 50%;
+  transition:transform .24s cubic-bezier(.2,.8,.2,1);
+}
+.nh-burger-2::before{ transform:translateY(-7px); }
+.nh-burger-2::after { transform:translateY( 7px); }
+.nh-burger-2.is-open::before{ transform:rotate(45deg); }
+.nh-burger-2.is-open::after { transform:rotate(-45deg); }
+
+/* ================= Attached slide-down submenu =================
+   — default: komplet skryté (odstraňuje „tajomný tieň“, lebo nič nekreslí),
+   — open: zobrazí sa, pripojí a má oblé spodné rohy.
+==================================================================*/
+.nh-submenu{
+  position:absolute; left:50%; transform:translateX(-50%);
+  top:calc(16px + 60px);
+  width:min(92vw,980px);
+
+  display:none;             /* ✅ úplne skryté, žiadny tieň keď zatvorené */
+  max-height:0; opacity:0; translate:0 -6px; overflow:hidden;
+
+  /* match navbar background so submenu appears visually continuous */
+  background: var(--panel-90);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0,0,0,.06);
-  color: var(--nv-fg);
+
+  border-radius:0 0 22px 22px;
+  clip-path: inset(0 round 0 0 22px 22px);
+  
 }
-.nv-pill-btn {
-  width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer;
-  display: grid; place-items: center; color: var(--nv-fg);
+.nh-submenu.open{
+  display:block;           /* zobraz až teraz */
+  border: none;
+  border-top:none;
+  max-height:340px; opacity:1; translate:0 0;
+  
+}
+/* glow len keď je otvorené → žiadny tieň v zatvorenom stave */
+.nh-submenu.open::before{
+  /* cover the navbar glow so nothing shows through the translucent submenu
+     (make this pseudo-element opaque and sit above the ::after glow). */
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  pointer-events:none;
+  background: var(--panel-90); /* use same masked solid as navbar */
+  z-index: 0; /* sit above the navbar ::after but below submenu content */
+  box-shadow: none; /* explicitly no shadow */
 }
 
-/* Brand in pill */
-.nv-brand {
-  text-align: center; letter-spacing: .08em; font-weight: 800;
-  font-size: 14px; user-select: none; cursor: pointer; color: var(--nv-fg);
+.nh-submenu.open{
+  backdrop-filter: none; /* disable blur so the mask is clean */
 }
 
-/* Burger — uses theme color via currentColor */
-.nv-burger { position: relative; width: 16px; height: 1.8px; color: var(--nv-fg); }
-.nv-burger-line { position: absolute; left: 0; width: 16px; height: 1.8px; background: currentColor; }
-.nv-burger-top { top: -4px; }
-.nv-burger-bottom { top: 4px; }
-
-/* Overlay */
-.nv-overlay {
-  position: fixed; inset: 0; z-index: 50;
-  backdrop-filter: blur(10px); background: var(--nv-overlay);
-  display: grid; place-items: center; color: var(--nv-fg);
+/* submenu content */
+.nh-submenu-inner{
+  position:relative; z-index:2; background:transparent !important;
+  display:grid; place-items:center; padding:18px 14px 22px; gap:16px;
 }
 
-/* Close button (same stroke as burger) */
-.nv-iconbtn { all: unset; }
-.nv-close {
-  position: absolute; left: 12px; top: 12px;
-  width: 40px; height: 40px; border-radius: 10px;
-  border: 1px solid var(--nv-border);
-  display: grid; place-items: center; cursor: pointer; color: var(--nv-fg);
-  background: transparent;
+/* Links */
+.nh-link{
+  font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  text-decoration:none; font-weight:800; letter-spacing:.14em;
+  font-size:clamp(18px,2.6vw,26px); color:var(--fg);
 }
-.nv-x-line { position: absolute; width: 16px; height: 1.8px; background: currentColor; }
-.nv-x-a { transform: rotate(45deg); }
-.nv-x-b { transform: rotate(-45deg); }
+.nh-link-holo{ position:relative; }
+.nh-link-holo::after{
+  content:""; position:absolute; left:-8px; right:-8px; bottom:-6px; height:2px;
+  background:var(--brand-grad); opacity:0; transform:translateY(4px);
+  transition:opacity .18s ease, transform .18s ease; border-radius:2px;
+}
+.nh-link-holo:hover::after{ opacity:1; transform:translateY(0); }
 
-/* Overlay brand */
-.nv-overlay-top {
-  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 10px; align-items: center; user-select: none; cursor: pointer; color: var(--nv-fg);
+/* ================= Responsive ================= */
+@media (max-width:720px){
+  .nh-box{ width:52px; height:52px; top:14px; }
+  .nh-bar{ height:56px; min-width:min(94vw,900px); top:14px; }
+  .nh-burger-2{ width:34px; height:22px; }
+  .nh-title{ font-size:18px; letter-spacing:.1em; }
+  .nh-submenu{ top:calc(14px + 56px); border-radius:0 0 20px 20px; clip-path: inset(0 round 0 0 20px 20px); }
 }
-.nv-overlay-logo { width: 22px; height: 22px; }
-.nv-overlay-brand { font-weight: 800; letter-spacing: .08em; font-size: 14px; }
-
-/* Menu */
-.nv-menu-col {
-  display: grid; gap: 18px; text-align: center;
-  font-weight: 800; letter-spacing: .08em;
+@media (max-width:400px){
+  .nh-box{ width:48px; height:48px; }
+  .nh-bar{ height:52px; min-width:min(96vw,360px); }
+  .nh-burger-2{ width:28px; height:18px; }
+  .nh-title{ font-size:16px; }
+  .nh-submenu{ border-radius:0 0 18px 18px; clip-path: inset(0 round 0 0 18px 18px); }
 }
-.nv-menu-link {
-  font-size: clamp(18px, 2.6vw, 28px);
-  text-decoration: none; color: var(--nv-fg);
-  transition: opacity .18s ease, transform .14s ease;
-}
-.nv-menu-link:hover { opacity: .75; transform: translateY(-1px); }
-
-/* Responsive: shrink side gaps */
-@media (max-width: 900px) {
-  .nv-grid { grid-template-columns: 24px 1fr 24px; padding-inline: 12px; }
-  .nv-pill { height: 50px; grid-template-columns: 40px 1fr 40px; }
-  .nv-pill-btn { width: 40px; height: 40px; }
-  .nv-brand { font-size: 13px; }
-  .nv-square { width: 38px; height: 38px; }
-}
+/* ================= END OF FILE ================= */

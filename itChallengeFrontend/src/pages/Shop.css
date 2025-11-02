@@ -52,8 +52,10 @@
 /* ===== PRODUCTS GRID ===== */
 .shop-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 18px;
+  /* single-column layout: one product per row */
+  grid-template-columns: 1fr;
+  gap: 20px;
+  justify-items: center; /* center rows inside the container */
 }
 
 /* ===== HELPING SECTION ===== */

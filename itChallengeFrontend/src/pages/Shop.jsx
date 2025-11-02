@@ -10,16 +10,6 @@ import Product from "../components/product/Product";
 // --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [
   {
-    id: "phone-6a",
-    name: "Phone (6a) Pro",
-    shortDesc: "Predictably unexpected",
-    longDesc:
-      "A flagship-grade camera, clean Android, and playful glyphs. Built for everyday creativity with a battery that actually lasts.",
-    price: "€599",
-    image: "/assets/images/phone6a_hero.jpg",
-    segment: "domov", // domov | bytovka
-  },
-  {
     id: "watch-x",
     name: "Watch X",
     shortDesc: "Future on your wrist",
@@ -82,15 +72,16 @@ export default function Shop() {
         {/* ===== PRODUCTS GRID ===== */}
         <section className="shop-grid container">
           {items.map((p) => (
-            <Product
-              key={p.id}
-              id={p.id}
-              name={p.name}
-              shortDesc={p.shortDesc}
-              longDesc={p.longDesc}
-              price={p.price}
-              image={p.image}
-            />
+            <div key={p.id} className="product-row">
+              <Product
+                id={p.id}
+                name={p.name}
+                shortDesc={p.shortDesc}
+                longDesc={p.longDesc}
+                price={p.price}
+                image={p.image}
+              />
+            </div>
           ))}
         </section>
 
