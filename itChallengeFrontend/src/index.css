@@ -59,6 +59,15 @@ html, body {
   overflow-x: hidden;
   box-sizing: border-box;
 }
+
+/* Make the app root a column flex container so footer sits at the bottom when
+   page content is short. Pages use <main> which will expand (flex:1) below. */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 *, *::before, *::after { box-sizing: inherit; }
 
 /* Utility: full-bleed element that spans the viewport width but is centered

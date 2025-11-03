@@ -1,0 +1,46 @@
+/* Cart page theme-aware styles */
+
+.pc-container { padding: 24px; min-height: 60vh; }
+.pc-title { margin: 0 0 12px 0; font-weight: 800; color: var(--fg); }
+
+.pc-empty {
+  padding: 48px;
+  color: color-mix(in oklab, var(--fg) 60%, transparent);
+}
+
+.pc-list { display: grid; gap: 12px; }
+
+.pc-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid color-mix(in oklab, var(--fg) 10%, transparent);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
+}
+
+.pc-meta { display: flex; flex-direction: column; gap: 6px; }
+.pc-item .pc-title-text { font-weight: 700; color: var(--fg); }
+.pc-item .pc-price { font-weight: 700; font-size: 14px; color: color-mix(in oklab, var(--fg) 40%, var(--brand-dark) 60%); }
+html.dark .pc-item .pc-price { color: color-mix(in oklab, var(--panel) 68%, var(--brand-green) 32%); }
+
+.pc-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+/* reuse drawer-style vertical controls */
+.pc-right .cart-item-controls { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+/* Unify remove action styling */
+.pc-remove { background: transparent; border: none; color: var(--fg); cursor: pointer; opacity: .85; }
+.pc-remove:hover { opacity: 1; transform: translateY(-1px); }
+.pc-remove:focus { outline: none; box-shadow: none; }
+
+.pc-total { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.pc-total > div { font-weight: 800; color: var(--fg); }
+
+.pc-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+@media (max-width: 640px) {
+  .pc-item { align-items: flex-start; }
+  .pc-right { gap: 10px; }
+}
+

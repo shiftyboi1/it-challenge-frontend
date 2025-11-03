@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./login.css";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
+import Slider from "../components/slider/Slider";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -44,6 +45,17 @@ export default function Login() {
     <>
       <Navbar />
       <main className="login">
+        <Slider
+          slides={[
+            {
+              id: "login-1",
+              image: "/assets/images/login-hero.jpg",
+              title: "Welcome back",
+              subtitle: "Sign in to access your HoloHome dashboard.",
+              actions: [{ label: "Home", href: "/", variant: "btn-ghost" }],
+            },
+          ]}
+        />
         <section className="login-wrap">
           <div className="login-card glass">
             <h1 className="login-title">Prihlásenie</h1>

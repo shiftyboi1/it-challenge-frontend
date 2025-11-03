@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   // footer-local theme toggle (same storage/key as navbar)
-  const [theme, setTheme] = useState(
+  const [theme, _setTheme] = useState(
     typeof window !== "undefined" ? localStorage.getItem("theme") || "light" : "light"
   );
   useEffect(() => {

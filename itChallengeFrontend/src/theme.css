@@ -33,6 +33,13 @@ body {
   transition: var(--transition);
 }
 
+/* Page section spacing and layout helpers */
+:root { --section-gap: 48px; }
+/* Ensure main expands to fill available space so footer sits at the bottom */
+main { flex: 1 0 auto; display: block; }
+/* Give consistent spacing between top-level children inside main (sections, strips, etc.) */
+main > * + * { margin-top: var(--section-gap); }
+
 /* Glass card utility */
 .glass {
   background: var(--card-bg);

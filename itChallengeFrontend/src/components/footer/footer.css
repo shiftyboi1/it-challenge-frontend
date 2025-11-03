@@ -27,6 +27,12 @@
   transform: translateX(-50%);
 }
 
+/* allow the footer to visually "bleed" past the page bottom to cover small gaps
+   that appear on some pages (e.g. scrollbars / body background seams). We add
+   padding-bottom so content isn't clipped and a negative margin to extend the
+   footer lower than normal flow. Tweak --footer-bleed as needed. */
+.hf.fw { --footer-bleed: 16px; padding-bottom: var(--footer-bleed); margin-bottom: calc(var(--footer-bleed) * -1); }
+
 /* top subtle holo glow */
 /* remove the decorative glow - footer now uses simple lines */
 .hf-topglow{ display:none !important; }
@@ -142,7 +148,7 @@ html.dark .hf-hero{ box-shadow: none; }
 .hf.fw::after{
   content: "";
   position: absolute;
-  left: 0; right: 0; top: 2px; height: 1px;
+  left: 0; right: 0; top: 4px; height: 2px;
   background: #fff;
   z-index: 2;
 }

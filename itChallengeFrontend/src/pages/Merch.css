@@ -47,9 +47,13 @@
 /* ===== GRID ===== */
 .merch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(2, 1fr); /* two items per row */
+  gap: 24px; /* uniform gap between columns and rows */
   padding-top: 8px;
+}
+
+@media (max-width:720px){
+  .merch-grid{ grid-template-columns: 1fr; }
 }
 
 /* dark mode harmony */

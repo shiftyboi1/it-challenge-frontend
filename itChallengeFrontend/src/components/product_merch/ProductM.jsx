@@ -1,13 +1,20 @@
 import React, { useMemo, useState } from "react";
 import "./product_m.css";
+// reuse product button styles so the buy CTA matches the main Product component
+import "../product/product.css";
+import { useCart } from "../../context/CartContext";
+
+// small helpers
+function idOr(name) {
+  if (!name) return Math.floor(Math.random() * 999999);
+  return String(name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
 
 export default function ProductHero({
   name = "Product name",
   price = 0,
   currency = "€",
   image,
-  thumb,
-  features = [],
   colors = [],
   defaultColor,
   onAdd,
@@ -27,39 +34,33 @@ export default function ProductHero({
     setColor(c);
     onColorChange?.(c);
   };
+  // ensure a stable picsum background when image is not provided
+  const seed = idOr(name);
+  // use portrait 2:3 picsum placeholders (width x height)
+  const bg = image || `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200?blur=1`;
+  const cart = useCart();
 
   return (
     <section className="ph">
       {/* big hero image */}
       <div
         className="ph-hero"
-        style={{ backgroundImage: `url(${image})` }}
         role="img"
         aria-label={name}
-      />
+      >
+        {/* use an actual <img> like in the footer for clearer loading behavior */}
+        <img src={bg} alt={name} loading="lazy" className="ph-hero-img" />
+      </div>
 
-      {/* frosted product card */}
-      <div className="ph-card">
+      {/* overlay: mimic product.css black translucent box with name, color select and price */}
+      <div className="ph-card ph-overlay">
         <div className="ph-card-top">
           <h3 className="ph-title">{name}</h3>
-          {thumb && <img src={thumb} alt="" className="ph-thumb" />}
         </div>
 
-        {!!features.length && (
-          <ul className="ph-features">
-            {features.map((f, i) => (
-              <li key={i} className="ph-feature">
-                <span className="ph-ico" aria-hidden>✣</span>
-                <span className="ph-txt">{f}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
+        {/* color picker stays here */}
         {!!colors.length && (
           <div className="ph-picker">
-            {/* if plain names (WHITE), show <select>;
-                if HEX values, show clickable dots */}
             {isHex(colors[0]) ? (
               <div className="ph-dots">
                 {colors.map((c) => (
@@ -88,12 +89,25 @@ export default function ProductHero({
           </div>
         )}
 
-        <button
-          className="ph-cta"
-          onClick={() => onAdd?.({ name, color, price })}
-        >
-          {priceText} · ADD TO BAG
-        </button>
+        <div className="ph-bottom">
+          <div className="ph-left-actions">
+            <div className="ph-price">{priceText}</div>
+          </div>
+          <div className="ph-right-actions">
+            <button
+              className="buy-btn more-btn"
+              onClick={() => {
+                  const payload = { id: seed, name, color, price, image: bg };
+                  // Always add to cart for consistent feedback (also opens the preview)
+                  cart.addItem(payload);
+                  // If a parent provided an onAdd handler, call it too (non-blocking)
+                  try { onAdd && onAdd(payload); } catch { /* swallow handler errors */ }
+                }}
+            >
+              {`Buy`}
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

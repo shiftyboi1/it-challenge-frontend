@@ -2,6 +2,7 @@ import React from "react";
 import "./home.css";
 import Navbar from "../components/navbar/Navbar.jsx";      // if you export default
 import Footer from "../components/footer/Footer.jsx";      // adjust paths to yours
+import Slider from "../components/slider/Slider";
 // If your files are in different dirs, update imports accordingly.
 
 export default function Home() {
@@ -10,31 +11,25 @@ export default function Home() {
       <Navbar />
 
       <main className="home">
-        {/* ===== HERO / SLIDER (video) ===== */}
-        <section className="home-hero">
-          <video
-            className="home-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            // replace with your video in /assets/videos
-            src="/assets/videos/hero.mp4"
-          />
-          <div className="home-hero-glass">
-            <h1 className="home-hero-title">Predictably unexpected</h1>
-            <p className="home-hero-sub">
-              A short punchy line that hints at your product value.
-            </p>
-            <div className="home-hero-actions">
-              <button className="btn-ghost">Zistiť viac</button>
-              <button className="btn-solid">Shop</button>
-            </div>
-          </div>
-        </section>
+        {/* ===== HERO / SLIDER (reusable) ===== */}
+        <Slider
+          slides={[
+            {
+              id: "home-1",
+              video: "/assets/videos/hero.mp4",
+              image: "/assets/images/hero.jpg",
+              title: "Predictably unexpected",
+              subtitle: "A short punchy line that hints at your product value.",
+              actions: [
+                  // keep original visual style for the CTA but navigate to /shop
+                  { label: "Zistiť viac", href: "/shop", variant: "btn-ghost" },
+              ],
+            },
+          ]}
+        />
 
         {/* ===== ABOUT US (text + side image) ===== */}
-        <section className="home-about container">
+  <section id="about" className="home-about container">
           <div className="home-about-text">
             <h2>About HoloHome</h2>
             <p>

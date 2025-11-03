@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./navbar.css";
+import { useCart } from "../../context/CartContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -13,6 +14,9 @@ export default function Navbar() {
   const leftBoxRef = useRef(null);
   const rightBoxRef = useRef(null);
   const openRef = useRef(false);
+  const badgeRef = useRef(null);
+  const announceRef = useRef(null);
+  const cart = useCart();
 
   // Persist theme
   useEffect(() => {
@@ -122,6 +126,49 @@ export default function Navbar() {
     };
   }, []);
 
+  // close cart preview when clicking outside
+  useEffect(() => {
+    function onDocClick(e) {
+      const list = document.querySelector('.cart-list');
+      if (!list) return;
+      const target = e.target;
+      if (rightBoxRef.current && rightBoxRef.current.contains(target)) return;
+      if (list && list.contains(target)) return;
+      // clicked outside
+      cart.close();
+    }
+    document.addEventListener('pointerdown', onDocClick);
+    return () => document.removeEventListener('pointerdown', onDocClick);
+  }, [cart]);
+
+  // toggle a visual class on the header so we can hide the small cart button
+  useEffect(() => {
+    const hdr = headerRef.current;
+    if (!hdr) return;
+    hdr.classList.toggle('cart-open', cart.open);
+  }, [cart.open]);
+
+  // pulse badge whenever count changes
+  useEffect(() => {
+    if (!badgeRef.current) return;
+    // add pulse class briefly
+    badgeRef.current.classList.add('pulse');
+    const t = setTimeout(() => badgeRef.current && badgeRef.current.classList.remove('pulse'), 200);
+    return () => clearTimeout(t);
+  }, [cart.count]);
+
+  // focus first interactive element when opening the cart preview
+  useEffect(() => {
+    if (!cart.open) return;
+    // small delay for DOM
+    setTimeout(() => {
+      const list = document.querySelector('.cart-list');
+      if (!list) return;
+      const firstBtn = list.querySelector('.qty-btn') || list.querySelector('.more-btn');
+      if (firstBtn) firstBtn.focus();
+    }, 80);
+  }, [cart.open]);
+
   const closeMenu = () => setOpen(false);
 
   return (
@@ -187,11 +234,57 @@ export default function Navbar() {
         title="Košík"
         onClick={() => {
           setOpen(false);
-          navigate("/cart");
+          cart.toggleOpen();
         }}
       >
+        {/* keep the emoji always visible inside the circle */}
         <span className="nh-emoji">🛒</span>
+
+        {/* when there are items, show a small icon+count indicator */}
+        {cart.count > 0 && (
+          <span className="cart-indicator" aria-hidden="true">
+            <span ref={badgeRef} className="cart-indicator-num">{cart.count}</span>
+          </span>
+        )}
+
+        {/* screen-reader announcement removed per request (visual silence when empty) */}
       </button>
+
+      {/* Cart drawer (always present, slides in when open) */}
+      <div className={`cart-backdrop ${cart.open ? 'open' : ''}`} onClick={() => cart.close()} />
+      <div className={`cart-list ${cart.open ? 'open' : ''}`} role="dialog" aria-label="Cart preview drawer" aria-modal={cart.open ? 'true' : 'false'}>
+        <div className="cart-list-items">
+          {cart.items.length === 0 ? (
+            /* intentionally show nothing when the cart is empty */
+            null
+          ) : (
+            cart.items.map((it) => (
+              <div key={it.id} className="cart-item">
+                <div className="cart-item-left">
+                  <img src={it.image || `https://picsum.photos/seed/${encodeURIComponent(it.id)}/200/300?blur=1`} alt={it.name} className="cart-thumb" loading="lazy" />
+                  <div className="cart-meta">
+                    <div className="cart-item-title">{it.name}</div>
+                    <div className="cart-item-price">{it.price}</div>
+                  </div>
+                </div>
+                <div className="cart-item-right">
+                  <div className="cart-item-controls">
+                    <button aria-label={`Increase quantity for ${it.name}`} className="qty-btn qty-plus" onClick={() => cart.addItem({ id: it.id, name: it.name, price: it.price, image: it.image }, 1)}>+</button>
+                    <span className="qty-value">{it.qty}</span>
+                    <button aria-label={`Decrease quantity for ${it.name}`} className="qty-btn qty-minus" onClick={() => cart.changeQty(it.id, -1)}>-</button>
+                  </div>
+                  <button aria-label={`Remove ${it.name}`} className="cart-remove" onClick={() => cart.removeItem(it.id)}>×</button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="cart-list-footer">
+          <button className="btn btn-ghost" onClick={() => { cart.close(); navigate('/cart'); }}>
+            Go to cart
+          </button>
+        </div>
+      </div>
     </>
   );
 }

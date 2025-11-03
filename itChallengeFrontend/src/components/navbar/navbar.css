@@ -9,6 +9,7 @@
   --brand-green:#74bc74;  /* light green */
   --brand-grad: linear-gradient(90deg, #274c51 0%, #74bc74 50%, #274c51 100%);
   --brand-glow: 0 0 14px rgba(39,76,81,.18), 0 0 22px rgba(116,188,116,.16);
+  --panel-shadow: -12px 0 48px rgba(16,24,40,0.12);
 }
 html.dark{
   --fg:#f5fbfb;
@@ -16,6 +17,7 @@ html.dark{
   --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
   --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
   --brand-glow: 0 0 18px rgba(116,188,116,.22), 0 0 28px rgba(39,76,81,.28);
+  --panel-shadow: -12px 0 48px rgba(0,0,0,0.6);
 }
 
 /* ================= Layout anchors ================= */
@@ -27,12 +29,13 @@ html.dark{
   position:fixed; top:16px; width:56px; height:56px;
   background:var(--panel-90);
   color:var(--fg);
-  border: none;
+  border: 1px solid var(--stroke);
   border-radius:14px;
   display:inline-flex; align-items:center; justify-content:center;
-  box-shadow:none; /* remove glowy shadow around squares */
+  /* restore a subtle brand glow to match the original design */
+  box-shadow: var(--brand-glow);
   cursor:pointer;
-  transition:none; /* žiadne zvýraznenie */
+  transition: transform .14s ease, box-shadow .18s ease, background .12s ease;
   z-index: 1100; /* make floating boxes sit above pinned selectors */
 }
 .nh-left{ left:16px; }
@@ -41,10 +44,11 @@ html.dark{
 .nh-box:active,
 .nh-box:focus,
 .nh-box:focus-visible{
-  background:var(--panel-90);
+  background:var(--panel);
   border:1px solid var(--stroke);
-  box-shadow:none;
+  box-shadow: 0 6px 22px rgba(39,76,81,0.12), 0 8px 28px rgba(116,188,116,0.08);
   outline:none;
+  transform: translateY(-2px);
 }
 .nh-emoji{ display:inline-flex; align-items:center; justify-content:center; line-height:1; font-size:1.15rem; }
 .nh-home{ font-size:1.3rem; }
@@ -265,3 +269,250 @@ html.dark .nh .nh-bar-btn:hover{
   .nh-submenu{ border-radius:0 0 18px 18px; clip-path: inset(0 round 0 0 18px 18px); }
 }
 /* ================= END OF FILE ================= */
+
+/* Cart badge */
+.cart-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--brand-dark, #e11d48);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+/* badge animation when count changes */
+.cart-badge {
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+  transform-origin: 50% 50%;
+}
+.cart-badge.pulse {
+  transform: scale(1.18);
+}
+
+/* New small indicator inside the floating box: icon + count */
+.cart-indicator {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+.cart-indicator-icon{
+  width: 18px; height: 18px; color: var(--fg); opacity: 0.98;
+}
+.cart-indicator-num{
+  background: var(--brand-dark);
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 999px;
+  min-width: 20px;
+  text-align: center;
+  font-weight: 800;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .18s ease, background .12s ease, color .12s ease;
+}
+.cart-indicator-num.pulse{ transform: scale(1.18); }
+
+/* Dark theme: make the numeric pill light green for contrast */
+html.dark .cart-indicator-num{
+  background: var(--brand-green);
+  color: var(--panel);
+  box-shadow: 0 4px 18px rgba(116,188,116,0.12);
+}
+
+/* Cart list preview (popover) */
+.cart-list {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: min(420px, 92vw);
+  max-width: 95vw;
+  background: var(--panel, #fff);
+  color: var(--fg, #111);
+  border-left: 1px solid var(--stroke);
+  box-shadow: var(--panel-shadow);
+  border-radius: 0;
+  z-index: 1400;
+  transform: translateX(100%);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1);
+  overflow: hidden;
+}
+.cart-list .cart-list-items {
+  max-height: calc(100vh - 88px);
+  overflow: auto;
+  padding: 18px;
+  /* leave room at the bottom so content never hides behind the footer */
+  padding-bottom: 110px;
+}
+.cart-empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: color-mix(in oklab, var(--fg) 60%, transparent);
+}
+/* Cart item layout: left = thumb + meta, right = qty controls + actions */
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 12px;
+  /* subtle divider using theme-aware stroke */
+  border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent);
+  position: relative;
+}
+.cart-thumb{
+  width:72px;
+  height:108px;
+  object-fit:cover;
+  border-radius:8px;
+  margin:0;
+  flex-shrink:0;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 6%, transparent), transparent);
+}
+.cart-item-left{ display:flex; align-items:flex-start; gap:12px; min-width:0; }
+
+/* meta column (title / price) sits next to thumbnail */
+.cart-item-left > div{
+  display:flex; flex-direction:column; gap:6px; min-width:0; overflow:hidden;
+}
+.cart-item-left > div > div:first-child{ /* title */
+  font-weight:700; font-size:14px; color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+/* explicit classes to avoid inline styles in JSX */
+.cart-item-title{ font-weight:700; font-size:14px; color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cart-item-price{ font-weight:700; font-size:13px; color: color-mix(in oklab, var(--fg) 40%, var(--brand-dark) 60%); }
+html.dark .cart-item-price{ color: color-mix(in oklab, var(--panel) 68%, var(--brand-green) 32%); }
+
+/* Right column with vertical controls: + on top, qty middle, - bottom */
+.cart-item-right{
+  margin-left: auto;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:center;
+  gap:8px;
+  min-width:84px;
+  position: relative;
+}
+.cart-item-controls{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; padding-top: 6px; }
+/* reset any previous right-alignment on price; price sits under name on the left */
+.cart-item-price{ text-align:left; min-width:auto; }
+
+.cart-item-right{
+  margin-left: auto;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:flex-end; /* keep qty controls toward the bottom */
+  gap:8px;
+  min-width:84px;
+  height:100%;
+}
+.qty-controls{ display:flex; align-items:center; gap:8px; }
+.qty-btn{ width:34px; height:34px; border-radius:8px; border:none; background:transparent; cursor:pointer; color:var(--fg); display:inline-grid; place-items:center; font-weight:700; }
+.qty-btn:hover{ transform: translateY(-2px); }
+.qty-btn:active{ border:none; box-shadow:none; }
+.qty-btn:focus{ outline:none; }
+.qty-value{ min-width:34px; text-align:center; display:inline-block; color:var(--fg); font-weight:700; }
+
+/* Remove button is visually unstyled but accessible and positioned in the item corner */
+/* removed old middle-positioned remove button rules to avoid conflicts */
+
+/* Dark theme tweaks */
+html.dark .cart-item { border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent); }
+html.dark .qty-btn{ border:none; }
+html.dark .cart-item-left > div > div:last-child{ color: color-mix(in oklab, var(--panel) 68%, var(--brand-green) 32%); }
+
+/* Remove button: small 'x' in the top-right corner of the cart item */
+.cart-remove{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  opacity: .8;
+}
+.cart-remove:hover{ opacity: 1; transform: translateY(-2px); }
+
+/* Theme-aware tweaks for qty controls in dark mode */
+html.dark .qty-btn{ border:none; }
+html.dark .qty-value{ color: var(--fg); }
+.cart-item-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.cart-item-qty {
+  font-size: 13px;
+  color: color-mix(in oklab, var(--fg) 60%, transparent);
+}
+
+/* Remove borders/outlines when clicking/focusing inside the cart drawer */
+.cart-list :focus,
+.cart-list :active{
+  outline: none !important;
+  box-shadow: none !important;
+}
+.cart-list button,
+.cart-list .btn,
+.cart-list a{
+  border: none !important;
+}
+.cart-list-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  border-top: 1px solid var(--stroke);
+  display: flex;
+  justify-content: center; /* center the primary CTA */
+  gap: 8px;
+  background: linear-gradient(to top, var(--panel, #fff) 0%, transparent 100%);
+}
+
+/* Mobile drawer behaviour */
+@media (max-width:720px){
+  .cart-list{ width: min(92vw, 360px); }
+  .cart-list .cart-list-items{ padding:18px; max-height:calc(100vh - 88px); }
+  .cart-list-footer{ position: absolute; bottom:0; left:0; right:0; padding:12px; background: var(--panel, #fff); }
+}
+
+/* when the drawer is open, bring it onscreen */
+.cart-list.open{ transform: translateX(0); }
+
+/* backdrop behind drawer */
+.cart-backdrop{ position: fixed; inset:0; background: rgba(2,6,23,0.24); opacity:0; pointer-events:none; transition: opacity .18s ease; z-index:1300; }
+.cart-backdrop.open{ opacity:1; pointer-events:auto; }
+
+/* hide the small floating cart button when drawer open */
+.nh.cart-open .nh-box.nh-right{ transform: translateX(140%); opacity:0; pointer-events:none; }
+
+/* make buttons inside the cart-drawer match slider button styling and theme */
+.cart-list .btn{ padding:10px 14px; border-radius:10px; cursor:pointer; text-decoration:none; transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease, border-color .12s ease; }
+.cart-list .btn-ghost{ background:transparent; border:none; color:var(--fg); }
+.art-list .btn-ghost{ background:transparent; border:none; color:var(--fg); }
+.cart-list .btn-solid{ background:var(--brand-green); color:white; border:none; }
+.cart-list .btn-ghost:hover,
+.cart-list .btn-ghost:focus{ color:var(--brand-green); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,76,81,0.08); }
+.cart-list .btn-solid:hover,
+.cart-list .btn-solid:focus{ transform: translateY(-2px); box-shadow: 0 8px 26px rgba(39,76,81,0.12); filter: brightness(.98); }
+
+/* make the footer CTA full width on narrow and comfortable on desktop */
+.cart-list-footer .btn{ width: min(360px, calc(100% - 32px)); }
+
+

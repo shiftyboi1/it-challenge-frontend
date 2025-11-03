@@ -1,11 +1,34 @@
-import React, { useMemo, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { useMemo, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./Shop.css";
 
 // components (adjust paths if your tree differs)
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
+import Slider from "../components/slider/Slider";
 import SelectButton from "../components/selection/Selectbutton";
 import Product from "../components/product/Product";
+
+// small hook: when the route contains a hash (e.g. /shop#products) attempt a
+// smooth scroll that accounts for the fixed header/slider. This uses the
+// `scrollWithSliderOffset` helper when available and gracefully degrades.
+function useHashScroll() {
+  const location = useLocation();
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = location.hash.slice(1);
+    // delay slightly so the target element is mounted
+    const t = setTimeout(() => {
+      import("../utils/scrollWithSliderOffset")
+        .then(({ scrollWithSliderOffset }) => {
+          scrollWithSliderOffset(id).catch(() => {});
+        })
+        .catch(() => {});
+    }, 60);
+    return () => clearTimeout(t);
+  }, [location]);
+}
 
 // --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [
@@ -34,6 +57,9 @@ const ALL_PRODUCTS = [
 export default function Shop() {
   const [segment, setSegment] = useState("domov"); // "domov" | "bytovka"
 
+  // handle possible hash on initial navigation (e.g. /shop#products)
+  useHashScroll();
+
   const items = useMemo(
     () => ALL_PRODUCTS.filter((p) => p.segment === segment),
     [segment]
@@ -44,32 +70,30 @@ export default function Shop() {
       <Navbar />
 
       <main className="shop">
-        {/* ===== HERO / SLIDER (same vibe as Home) ===== */}
-        <section className="shop-hero">
-          {/* Replace with your own video or image */}
-          <video
-            className="shop-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            src="/assets/videos/hero.mp4"
-          />
-          <div className="shop-hero-glass">
-            <h1 className="shop-title">Shop</h1>
-            <p className="shop-sub">Curated tech for smart living.</p>
-          </div>
-        </section>
+        {/* ===== HERO / SLIDER (reusable) ===== */}
+        <Slider
+          slides={[
+            {
+              id: "shop-1",
+              video: "/assets/videos/hero.mp4",
+              image: "/assets/images/shop-hero.jpg",
+              title: "Shop",
+              subtitle: "Curated tech for smart living.",
+              // no hero CTAs here per design update
+              actions: [],
+            },
+          ]}
+        />
 
         {/* ===== SELECTOR BAR (Domov/Bytovka) ===== */}
-        <div className="shop-select container">
+        <div id="products" className="shop-select container">
           <SelectButton
             defaultValue="domov"
             onChange={(val) => setSegment(val)}
           />
         </div>
 
-        {/* ===== PRODUCTS GRID ===== */}
+  {/* ===== PRODUCTS GRID ===== */}
         <section className="shop-grid container">
           {items.map((p) => (
             <div key={p.id} className="product-row">
@@ -114,3 +138,4 @@ export default function Shop() {
     </>
   );
 }
+

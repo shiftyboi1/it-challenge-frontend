@@ -2,58 +2,130 @@
 .ph {
   position: relative;
   width: 100%;
-  min-height: 58vh;
-  display: grid;
-  align-items: end;
-  padding: 24px;
-  overflow: hidden;
+  max-width: 360px; /* reduced card width to make merch images smaller */
+  margin: 0 auto;
+  display: block;
+  padding: 0;
+  overflow: visible;
+  border-radius: 0; /* make the overall card square */
 }
 
-/* background hero image */
+/* top image (static, not full-bleed hero) */
 .ph-hero {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3; /* portrait 2:3 */
   background-size: cover;
   background-position: center;
   filter: saturate(105%);
+  border-radius: 0; /* square corners for hero image */
+  overflow: hidden;
   z-index: 0;
 }
+.ph-hero{ max-height: 480px; }
 
-/* frosted/glassy card */
+@media (max-width: 720px){
+  .ph{ max-width: 320px; }
+  .ph-hero{ max-height: 420px; }
+}
+
+@media (max-width: 420px){
+  .ph{ max-width: 280px; }
+  .ph-hero{ max-height: 360px; }
+}
+.ph-hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+
+/* frosted/glassy card below image */
 .ph-card {
   position: relative;
   z-index: 1;
-  width: min(980px, 92vw);
-  margin: 0 auto;
-  background: rgba(245,245,245,0.84);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
+  width: 100%;
+  padding: 12px;
 }
+
+/* overlay variant that mimics product.css: black translucent box over image */
+.ph-overlay{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  /* light theme: white translucent box */
+  background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.92) 85%);
+  color: #111;
+  border-radius: 0; /* square bottom box */
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 8px 20px rgba(12,12,12,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* bottom row inside overlay: left price, right buy */
+.ph-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; }
+.ph-left-actions{ display:flex; align-items:center; }
+.ph-right-actions{ display:flex; align-items:center; }
+.ph-price{ font-weight:700; font-size:1rem; color: inherit; }
+
+/* light-theme overrides for texts inside the overlay */
+.ph-title { color: #111; }
+.ph-shortdesc { color: rgba(17,17,17,0.9); }
+.ph-feature { color: #222; }
+
+/* Button adjustments for light overlay: use a transparent button with subtle translucent hover
+   so the CTA matches the opacity-style used in dark mode (reversed colors) */
+.ph .buy-btn.more-btn {
+  background: transparent;
+  color: #111;
+  border-radius: 10px;
+  padding: 10px 16px;
+  transition: background .22s ease, transform .18s ease;
+}
+.ph .buy-btn.more-btn:hover { background: rgba(0,0,0,0.06); transform: translateY(-1px); }
+
+/* Ensure the transparent .more-btn (secondary) looks good on white */
+.ph .more-btn { color: #111; }
+
+/* Dark theme: restore previous dark overlay and white text/button */
+html.dark .ph-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.7) 85%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+html.dark .ph-title { color: #f2f2f2; }
+html.dark .ph-shortdesc { color: rgba(255,255,255,0.92); }
+html.dark .ph-feature { color: #e0e0e0; }
+html.dark .ph .buy-btn.more-btn { background: transparent; color: #fff; }
+/* Ensure price inherits correct color in dark theme as well (keeps things explicit) */
+html.dark .ph-price { color: #fff; }
 
 /* top row */
 .ph-card-top {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
 }
 .ph-title {
   margin: 0;
-  font-size: 1.25rem;
-  letter-spacing: .06em;
+  font-size: 1.05rem;
+  letter-spacing: .04em;
   font-weight: 800;
-  color: #151515;
+  color: inherit;
 }
+.ph-shortdesc{ margin: 0; opacity: 0.92; font-size: 0.95rem; }
 .ph-thumb {
-  width: 84px;
-  height: 84px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
 }
 
 /* features */
@@ -80,16 +152,16 @@
 /* select (for named colors) */
 .ph-select {
   width: 100%;
-  height: 48px;
-  border-radius: 12px;
+  height: 44px;
+  border-radius: 10px;
   border: 0;
   outline: none;
-  background: rgba(255,255,255,0.7);
-  padding: 0 16px;
+  background: rgba(255,255,255,0.9);
+  padding: 0 12px;
   font-weight: 700;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
   appearance: none;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
 }
 /* dots (for hex colors) */
 .ph-dots { display: flex; gap: 10px; }
@@ -106,17 +178,18 @@
 /* CTA */
 .ph-cta {
   width: 100%;
-  height: 54px;
-  border-radius: 12px;
+  height: 48px;
+  border-radius: 10px;
   border: 0;
-  background: #0f0f0f;
-  color: #fafafa;
+  background: transparent;
+  color: inherit;
   font-weight: 900;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   cursor: pointer;
   transition: transform 140ms ease, background 160ms ease;
 }
-.ph-cta:hover { transform: translateY(-2px); background: #1a1a1a; }
+.ph-cta.ph-buy { background: #fff; color: #111; }
+.ph-cta.ph-buy:hover { transform: translateY(-2px); background: #f2f2f2; }
 
 /* dark mode support */
 html.dark .ph-card {

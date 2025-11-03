@@ -4,6 +4,8 @@ import "./product_iab.css";
 import "./product_nad.css";
 import ProductIAB from "./ProductIaB";
 import ProductNAD from "./ProductNaD";
+import { useCart } from "../../context/CartContext";
+import { usePanelOpenEffect } from "../../utils/panelEffect";
 
 export default function Product({
   id,
@@ -11,7 +13,6 @@ export default function Product({
   shortDesc,
   longDesc = "Long description goes here. Add features, specs, story, and everything the user needs to know.",
   price,
-  image,
 }) {
   const [open, setOpen] = useState(false);
   // keep navbar visible while the product panel is open
@@ -22,6 +23,7 @@ export default function Product({
   // `image` prop so the page looks consistent with the hero layout.
   const seed = id || name || Math.floor(Math.random() * 999999);
   const bg = `https://picsum.photos/seed/${encodeURIComponent(seed)}/1600/900?blur=1`;
+  const cart = useCart();
 
   return (
     <>
@@ -31,7 +33,10 @@ export default function Product({
           <p className="product-short">{shortDesc}</p>
           <div className="product-bottom">
             <div className="left-actions">
-              <button className="buy-btn more-btn" onClick={() => alert(`Buying ${name}`)}>
+              <button
+                className="buy-btn more-btn"
+                onClick={() => cart.addItem({ id: seed, name, price, image: bg })}
+              >
                 {`Buy for ${price}`}
               </button>
             </div>
@@ -56,7 +61,7 @@ export default function Product({
 
             <div className="pd-grid">
               {/* LEFT: image + price/buy box - pass the same random bg so drawer matches hero */}
-              <ProductIAB image={bg} price={price} onBuy={() => alert(`Buying ${name}`)} />
+              <ProductIAB image={bg} price={price} onBuy={() => cart.addItem({ id: seed, name, price, image: bg })} />
 
               {/* RIGHT: name + long description */}
               <ProductNAD name={name} longDesc={longDesc} />
@@ -71,10 +76,4 @@ export default function Product({
 // keep a small side-effect so pages that open the product drawer can tell the
 // navbar to remain visible while the panel is open. We add/remove a global
 // class on <html> which the Navbar scroll handler checks.
-export function usePanelOpenEffect(open) {
-  React.useEffect(() => {
-    if (open) document.documentElement.classList.add("panel-open");
-    else document.documentElement.classList.remove("panel-open");
-    return () => document.documentElement.classList.remove("panel-open");
-  }, [open]);
-}
+// (hook is imported at top from utils/panelEffect)
