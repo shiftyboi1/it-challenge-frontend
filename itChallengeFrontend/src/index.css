@@ -24,6 +24,7 @@
 
   --brand-dark:#274c51;   /* teal */
   --brand-green:#74bc74;  /* light green */
+  --brand-light:#7EE7C7;  /* lighter mint for hover/accents */
   --brand-grad: linear-gradient(90deg, #274c51 0%, #74bc74 50%, #274c51 100%);
   --brand-glow: 0 0 14px rgba(39,76,81,.18), 0 0 22px rgba(116,188,116,.16);
 }
@@ -33,6 +34,9 @@ html.dark{
   --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
   --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
   --brand-glow: 0 0 18px rgba(116,188,116,.22), 0 0 28px rgba(39,76,81,.28);
+
+  /* keep the same light accent in dark mode for hover/focus */
+  --brand-light:#7EE7C7;
 }
 
 a {
@@ -113,5 +117,9 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+  /* Make textboxes use a dark gray font color in light mode for better readability */
+  input, textarea, select {
+    color: #333333;
   }
 }

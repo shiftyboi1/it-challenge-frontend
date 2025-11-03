@@ -7,17 +7,19 @@ export default function Account() {
   return (
     <>
       <Navbar />
-      <Slider
-        slides={[
-          {
-            id: "account-1",
-            image: "/assets/images/account-hero.jpg",
-            title: "Your account",
-            subtitle: "Manage your orders, settings and profile.",
-            actions: [{ label: "Go to orders", href: "/orders", variant: "btn-solid" }],
-          },
-        ]}
-      />
+      <section className="home-hero full-screen">
+        <Slider
+          slides={[
+            {
+              id: "account-1",
+              image: "/assets/images/account-hero.jpg",
+              title: "Your account",
+              subtitle: "Manage your orders, settings and profile.",
+              actions: [{ label: "Go to orders", href: "/orders", variant: "btn-solid" }],
+            },
+          ]}
+        />
+      </section>
 
       <main className="account container">
         <h1>Account page</h1>

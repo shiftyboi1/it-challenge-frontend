@@ -31,15 +31,15 @@ export default function Product({
             <div className="left-actions">
               <button
                 className="buy-btn more-btn"
-                onClick={() => cart.addItem({ id: seed, name, price, image: bg })}
+                onClick={() => cart.addItem({ id, name, price: Number(price) || 0, image: bg })}
               >
-                {`Buy for ${formatPrice(price)}`}
+                {`Kúpiť za ${formatPrice(price)}`}
               </button>
             </div>
 
             <div className="right-actions">
               <button className="more-btn" onClick={() => setOpen(true)}>
-                More
+                Viac
               </button>
             </div>
           </div>
@@ -55,7 +55,7 @@ export default function Product({
             </button>
 
             <div className="pd-grid">
-              <ProductIAB image={bg} price={price} onBuy={() => cart.addItem({ id: seed, name, price, image: bg })} />
+              <ProductIAB image={bg} price={price} onBuy={() => cart.addItem({ id, name, price: Number(price) || 0, image: bg })} />
               <ProductNAD name={name} longDesc={longDesc} />
             </div>
           </aside>

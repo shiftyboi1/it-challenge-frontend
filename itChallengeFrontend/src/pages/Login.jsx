@@ -4,6 +4,7 @@ import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import Slider from "../components/slider/Slider";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -11,8 +12,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const auth = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -20,18 +20,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "Login failed");
-
-      localStorage.setItem("token", data.token);
-      if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
-
+      await auth.login(email, password);
       navigate("/account");
     } catch (err) {
       setError(err.message);
@@ -44,17 +33,20 @@ export default function Login() {
     <>
       <Navbar />
       <main className="login">
-        <Slider
-          slides={[
-            {
-              id: "login-1",
-              image: "/assets/images/login-hero.jpg",
-              title: "Welcome back",
-              subtitle: "Sign in to access your HoloHome dashboard.",
-              actions: [{ label: "Home", href: "/", variant: "btn-ghost" }],
-            },
-          ]}
-        />
+        <section className="home-hero full-screen">
+          <Slider
+            slides={[
+              {
+                id: "login-1",
+                image: 'https://picsum.photos/seed/hero1/1600/900',
+                title: "Welcome back",
+                subtitle: "Sign in to access your HoloHome dashboard.",
+                actions: [{ label: "Home", href: "/", variant: "btn-dark" }],
+              },
+            ]}
+            showControls={false}
+          />
+        </section>
         <section className="login-wrap">
           <div className="login-card glass">
             <h1 className="login-title">Prihlásenie</h1>

@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import api from "../utils/api";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
+  const auth = useAuth?.() ?? { isAuthenticated: false };
   const [items, setItems] = useState(() => {
     try {
       const raw = localStorage.getItem("hh_cart_v1");
@@ -21,32 +24,132 @@ export function CartProvider({ children }) {
     }
   }, [items]);
 
-  function addItem(product, qty = 1) {
-    setItems((prev) => {
-      const idx = prev.findIndex((p) => p.id === product.id);
-      if (idx !== -1) {
-        const next = [...prev];
-        next[idx] = { ...next[idx], qty: (next[idx].qty || 0) + qty };
-        return next;
+  // When user logs in, sync with server cart
+  useEffect(() => {
+    if (!auth?.isAuthenticated) return; // stay local for guests
+    let ignore = false;
+    async function load() {
+      try {
+        const data = await api.get('/cart');
+        if (ignore) return;
+        const mapped = Array.isArray(data)
+          ? data.map((ci) => ({
+              id: ci.productId,
+              name: ci.product?.name ?? `#${ci.productId}`,
+              price: Number(ci.product?.cost ?? 0),
+              qty: ci.amount,
+              image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
+            }))
+          : [];
+        setItems(mapped);
+      } catch {
+        // ignore, keep local items
       }
-      return [...prev, { ...product, qty: qty }];
-    });
-    setOpen(true);
+    }
+    load();
+    return () => { ignore = true; };
+  }, [auth?.isAuthenticated]);
+
+  async function addItem(product, qty = 1) {
+    // Local-only when guest
+    if (!auth?.isAuthenticated) {
+      setItems((prev) => {
+        const idx = prev.findIndex((p) => p.id === product.id);
+        if (idx !== -1) {
+          const next = [...prev];
+          next[idx] = { ...next[idx], qty: (next[idx].qty || 0) + qty };
+          return next;
+        }
+        return [...prev, { ...product, qty: qty }];
+      });
+      setOpen(true);
+      return;
+    }
+
+    // Server sync when logged in
+    try {
+      const times = Math.max(1, qty);
+      for (let i = 0; i < times; i++) {
+        await api.post('/cart/add', { productId: Number(product.id) });
+      }
+      const data = await api.get('/cart');
+      const mapped = Array.isArray(data)
+        ? data.map((ci) => ({
+            id: ci.productId,
+            name: ci.product?.name ?? `#${ci.productId}`,
+            price: Number(ci.product?.cost ?? 0),
+            qty: ci.amount,
+            image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
+          }))
+        : [];
+      setItems(mapped);
+      setOpen(true);
+    } catch (e) {
+      // fallback to local if server fails
+      setItems((prev) => {
+        const idx = prev.findIndex((p) => p.id === product.id);
+        if (idx !== -1) {
+          const next = [...prev];
+          next[idx] = { ...next[idx], qty: (next[idx].qty || 0) + qty };
+          return next;
+        }
+        return [...prev, { ...product, qty: qty }];
+      });
+    }
   }
 
-  function removeItem(id) {
-    setItems((prev) => prev.filter((p) => p.id !== id));
+  async function removeItem(id) {
+    if (!auth?.isAuthenticated) {
+      setItems((prev) => prev.filter((p) => p.id !== id));
+      return;
+    }
+    try {
+      await api.post('/cart/remove-all', { productId: Number(id) });
+      const data = await api.get('/cart');
+      const mapped = Array.isArray(data)
+        ? data.map((ci) => ({ id: ci.productId, name: ci.product?.name ?? `#${ci.productId}` , price: Number(ci.product?.cost ?? 0), qty: ci.amount, image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1` }))
+        : [];
+      setItems(mapped);
+    } catch {
+      setItems((prev) => prev.filter((p) => p.id !== id));
+    }
   }
 
-  function changeQty(id, delta) {
-    setItems((prev) => {
-      const next = prev.map((p) => (p.id === id ? { ...p, qty: Math.max(0, (p.qty || 0) + delta) } : p));
-      return next.filter((p) => p.qty > 0);
-    });
+  async function changeQty(id, delta) {
+    if (!auth?.isAuthenticated) {
+      setItems((prev) => {
+        const next = prev.map((p) => (p.id === id ? { ...p, qty: Math.max(0, (p.qty || 0) + delta) } : p));
+        return next.filter((p) => p.qty > 0);
+      });
+      return;
+    }
+    try {
+      if (delta > 0) {
+        await api.post('/cart/add', { productId: Number(id) });
+      } else if (delta < 0) {
+        await api.post('/cart/remove', { productId: Number(id) });
+      }
+      const data = await api.get('/cart');
+      const mapped = Array.isArray(data)
+        ? data.map((ci) => ({ id: ci.productId, name: ci.product?.name ?? `#${ci.productId}` , price: Number(ci.product?.cost ?? 0), qty: ci.amount, image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1` }))
+        : [];
+      setItems(mapped);
+    } catch {
+      // ignore
+    }
   }
 
-  function clear() {
-    setItems([]);
+  async function clear() {
+    if (!auth?.isAuthenticated) {
+      setItems([]);
+      return;
+    }
+    try {
+      await api.del('/cart');
+      setItems([]);
+    } catch {
+      setItems([]);
+    }
   }
 
   function toggleOpen() {

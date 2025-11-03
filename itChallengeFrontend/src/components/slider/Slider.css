@@ -2,8 +2,9 @@
 .slider-media{ position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat; }
 .slider-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
-.slider-overlay{ position:relative; z-index:3; height:100%; display:flex; align-items:flex-end; padding:36px 16px; }
-.slider-copy{ max-width:980px; margin:0 auto 48px; color:var(--fg); text-align:left; }
+.slider-overlay{ position:relative; z-index:3; height:100%; display:flex; align-items:flex-end; justify-content:space-between; padding:36px 16px; }
+.slider-copy{ max-width:980px; margin:0; text-align:left; color: #ffffff; }
+.slider-overlay-left{ color: #ffffff; }
 .slider-title{ font-size:clamp(28px,4.2vw,44px); margin:0 0 8px; font-weight:800; }
 .slider-sub{ margin:0 0 16px; font-size:clamp(14px,2vw,18px); opacity:.95; }
 .slider-actions{ display:flex; gap:12px; }
@@ -11,19 +12,39 @@
 .btn-ghost{ background:transparent; border:1px solid var(--stroke); color:var(--fg); }
 .btn-solid{ background:var(--brand-green); color:white; border:none; }
 
+/* Dark overlay button for slider actions (white text on translucent dark background) */
+.btn-dark {
+  padding:10px 14px;
+  border-radius:10px;
+  background: rgba(30,30,30,0.6);
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+}
+
 .slider-actions .btn{
   transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease, border-color .12s ease;
 }
 .slider-actions .btn-ghost{
   border: none; 
 }
-.slider-actions .btn-ghost:hover,
-.slider-actions .btn-ghost:focus{
-  color: var(--brand-green);
+.slider-actions .btn-dark{
+  transform: translateY(0);
+}
+.slider-actions .btn-dark:hover,
+.slider-actions .btn-dark:focus{
+  color: var(--brand-light); /* light green from theme */
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(39,76,81,0.08);
 }
-.slider-actions .btn-ghost:focus{ outline: 3px solid color-mix(in srgb, var(--brand-green) 18%, transparent); }
+.slider-actions .btn-dark:focus{ outline: 3px solid color-mix(in srgb, var(--brand-light) 18%, transparent); }
+.slider-actions .btn-ghost:hover,
+.slider-actions .btn-ghost:focus{
+  color: var(--brand-light); /* light green from theme */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(39,76,81,0.08);
+}
+.slider-actions .btn-ghost:focus{ outline: 3px solid color-mix(in srgb, var(--brand-light) 18%, transparent); }
 .slider-actions .btn-solid:hover,
 .slider-actions .btn-solid:focus{
   transform: translateY(-2px);
@@ -36,7 +57,80 @@
 .slider-arrow{ background:var(--panel-90); border:none; width:44px; height:44px; border-radius:10px; display:inline-grid; place-items:center; cursor:pointer; color:var(--fg); }
 .slider-dots{ display:flex; gap:8px; align-items:center; }
 .dot{ width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.28); border:none; cursor:pointer; }
-.dot.active{ background:var(--brand-green); }
+.dot.active{ background:var(--brand-light); }
+
+/* Slideshow-specific arrow style: simple white opacity arrows, no borders, centered vertically */
+.home-slideshow.full-screen .slider-controls{
+  top:50%; transform: translateY(-50%); padding: 0 28px; left: 0; right: 0;
+}
+.home-slideshow .slider-dots{ display: none; }
+.home-slideshow .slider-arrow{
+  background: transparent; width: auto; height: auto; padding: 6px 12px; border-radius: 0;
+  color: rgba(255,255,255,0.92); font-size: 36px; line-height: 1; box-shadow: none;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+.home-slideshow .slider-arrow:hover{ transform: none; opacity: 0.95; }
+
+/* Hide arrows on slideshow section - only keep image and (optionally) dots */
+.home-slideshow .slider-arrow { display: none; }
+
+/* Apply the same modern arrow treatment to the hero slider */
+.home-hero.full-screen .slider-controls{
+  top:50%; transform: translateY(-50%); padding: 0 28px; left: 0; right: 0;
+}
+.home-hero .slider-dots{ display: none; }
+.home-hero .slider-arrow{
+  background: transparent; width: auto; height: auto; padding: 6px 12px; border-radius: 0;
+  color: rgba(255,255,255,0.92); font-size: 36px; line-height: 1; box-shadow: none;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+.home-hero .slider-arrow:hover{ transform: none; opacity: 0.95; }
+
+/* Generic image overlay utility: applies the same left-text / right-action layout */
+.image-frame{ position: relative; display: block; width: 100%; }
+.image-frame img{ display:block; width:100%; height:auto; border-radius:14px; }
+.image-overlay{ position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:space-between; padding:28px; z-index:6; pointer-events:none; }
+.image-overlay-left{ color: #fff; text-shadow: 0 6px 18px rgba(0,0,0,0.6); max-width:65%; pointer-events:auto; }
+.image-overlay-left h3{ margin:0 0 6px; font-size:clamp(18px,3vw,28px); }
+.image-overlay-left p{ margin:0 0 8px; opacity: .95; }
+.image-overlay-right{ pointer-events:auto; }
+.image-overlay-right .btn{ pointer-events:auto; }
+
+/* Centered slideshow layout: big centered title/subtitle like the sketch */
+.home-slideshow .slider-overlay{
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+.home-slideshow .slider-copy{
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* increased gap between title and subtitle */
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.home-slideshow .slider-title{
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 900;
+  margin: 0;
+  text-shadow: 0 8px 28px rgba(0,0,0,0.6);
+}
+.home-slideshow .slider-sub{
+  font-size: clamp(14px, 2.2vw, 20px);
+  opacity: 0.95;
+  margin: 0;
+  margin-top: 8px; /* extra spacing fallback */
+  text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* make overlay text darker in light themes when used over pale images */
+/* removed image--light rule: overlay now uses dark styling by default */
+
 
 @media (max-width:720px){
   .slider-copy{ margin-bottom:28px; }

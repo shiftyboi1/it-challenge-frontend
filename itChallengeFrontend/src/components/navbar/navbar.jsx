@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./navbar.css";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../utils/format";
 
 export default function Navbar() {
@@ -18,6 +19,7 @@ export default function Navbar() {
   const badgeRef = useRef(null);
   const announceRef = useRef(null);
   const cart = useCart();
+  const auth = useAuth?.();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -190,7 +192,16 @@ export default function Navbar() {
             <MenuLink to="/"      label="DOMOV"  onPick={closeMenu} />
             <MenuLink to="/shop"  label="OBCHOD" onPick={closeMenu} />
             <MenuLink to="/merch" label="MERCH"  onPick={closeMenu} />
-            <MenuLink to="/login" label="ÚČET"   onPick={closeMenu} />
+            {auth?.isAuthenticated ? (
+              <>
+                <MenuLink to="/account" label="ÚČET" onPick={closeMenu} />
+                <MenuLink to="/orders" label="OBJEDNÁVKY" onPick={closeMenu} />
+                {auth?.isAdmin && <MenuLink to="/admin" label="ADMIN" onPick={closeMenu} />}
+                {auth?.isManager && <MenuLink to="/manager" label="SPRÁVCA" onPick={closeMenu} />}
+              </>
+            ) : (
+              <MenuLink to="/login" label="PRIHLÁSIŤ" onPick={closeMenu} />
+            )}
           </nav>
         </div>
       </header>
@@ -244,7 +255,7 @@ export default function Navbar() {
         </div>
         <div className="cart-list-footer">
           <button className="btn btn-ghost" onClick={() => { cart.close(); navigate('/cart'); }}>
-            Go to cart
+            Do košíka
           </button>
         </div>
       </div>

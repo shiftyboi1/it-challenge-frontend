@@ -8,7 +8,7 @@ export default function ProductIAB({ image, price, onBuy }) {
       <div className="iab-img" style={{ backgroundImage: `url(${image})` }} />
       <div className="iab-frost">
         <span className="iab-price">{formatPrice(price)}</span>
-        <button className="buy-btn more-btn" onClick={onBuy}>Buy</button>
+        <button className="buy-btn more-btn" onClick={onBuy}>Kúpiť</button>
       </div>
     </section>
   );

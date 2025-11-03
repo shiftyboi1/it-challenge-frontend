@@ -6,6 +6,8 @@ import Footer from "../components/footer/Footer";
 import Slider from "../components/slider/Slider";
 import SelectButton from "../components/selection/Selectbutton";
 import Product from "../components/product/Product";
+import api from "../utils/api";
+import { scrollWithSliderOffset } from "../utils/scrollWithSliderOffset";
 
 
 function useHashScroll() {
@@ -14,71 +16,80 @@ function useHashScroll() {
     if (!location.hash) return;
     const id = location.hash.slice(1);
     const t = setTimeout(() => {
-      import("../utils/scrollWithSliderOffset")
-        .then(({ scrollWithSliderOffset }) => {
-          scrollWithSliderOffset(id).catch(() => {});
-        })
-        .catch(() => {});
+      scrollWithSliderOffset(id).catch(() => {});
     }, 60);
     return () => clearTimeout(t);
   }, [location]);
 }
 
-const ALL_PRODUCTS = [
-  {
-    id: "watch-x",
-    name: "Watch X",
-    shortDesc: "Future on your wrist",
-    longDesc:
-      "Edge-to-edge display, week-long battery, health sensors, and a minimal UI that doesn’t get in your way.",
-    price: "€199",
-    image: "/assets/images/watchx.jpg",
-    segment: "bytovka",
-  },
-  {
-    id: "sensor-kit",
-    name: "Holo Sensor Kit",
-    shortDesc: "Temperature, humidity & light",
-    longDesc:
-      "ESP32 + DHT22 + lux sensor prepojené do HoloHome. Otvorený kód, jednoduché nasadenie, komunitné rozšírenia.",
-    price: "€89",
-    image: "/assets/images/sensors.jpg",
-    segment: "domov",
-  },
-];
+// Products are fetched from backend. We'll show a simple filter toggle placeholder.
 
 export default function Shop() {
   const [segment, setSegment] = useState("domov");
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    let ignore = false;
+    async function load() {
+      setLoading(true);
+      setError("");
+      try {
+        const data = await api.get('/products');
+        const products = Array.isArray(data?.products) ? data.products : [];
+        // Adapt server shape -> frontend
+        const adapted = products.map((p) => ({
+          id: p.id,
+          name: p.name,
+          shortDesc: p.description?.slice(0, 80) || '',
+          longDesc: p.description || '',
+          price: Number(p.cost || 0),
+          image: `/assets/images/product-${p.id}.jpg`, // may not exist; cards use picsum fallback
+          segment: 'domov',
+        }));
+        if (!ignore) setAllProducts(adapted);
+      } catch (e) {
+        if (!ignore) setError(e.message || 'Nepodarilo sa načítať produkty');
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    load();
+    return () => { ignore = true; };
+  }, []);
   useHashScroll();
   const items = useMemo(
-    () => ALL_PRODUCTS.filter((p) => p.segment === segment),
-    [segment]
+    () => allProducts.filter((p) => p.segment === segment),
+    [segment, allProducts]
   );
   return (
     <>
       <Navbar />
       <main className="shop">
-        <Slider
-          slides={[
-            {
-              id: "shop-1",
-              video: "/assets/videos/hero.mp4",
-              image: "/assets/images/shop-hero.jpg",
-              title: "Shop",
-              subtitle: "Curated tech for smart living.",
-              actions: [],
-            },
-          ]}
-        />
+        <section className="home-hero full-screen">
+          <Slider
+            slides={[
+              {
+                id: "shop-1",
+                image: 'https://picsum.photos/seed/hero1/1600/900',
+                title: "Shop",
+                subtitle: "Curated tech for smart living.",
+                actions: [],
+              },
+            ]}
+          />
+        </section>
         <div id="products" className="shop-select container">
           <SelectButton
             defaultValue="domov"
             onChange={(val) => setSegment(val)}
           />
         </div>
-        
+
         <section className="shop-grid container">
-          {items.map((p) => (
+          {loading && <div style={{padding:16}}>Načítavam produkty…</div>}
+          {error && <div style={{padding:16, color:'var(--danger, #b91c1c)'}}>{error}</div>}
+          {!loading && !error && items.map((p) => (
             <div key={p.id} className="product-row">
               <Product
                 id={p.id}

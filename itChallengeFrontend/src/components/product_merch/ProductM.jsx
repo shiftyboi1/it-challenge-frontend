@@ -102,7 +102,7 @@ export default function ProductHero({
                   try { onAdd && onAdd(payload); } catch { /* swallow handler errors */ }
                 }}
             >
-              {`Buy`}
+              {`Kúpiť`}
             </button>
           </div>
         </div>

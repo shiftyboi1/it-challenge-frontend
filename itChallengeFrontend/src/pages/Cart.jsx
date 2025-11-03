@@ -1,16 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import "./cart.css";
 import { formatPrice } from "../utils/format";
+import api from "../utils/api";
 
 export default function Cart() {
   const cart = useCart();
   const navigate = useNavigate();
+  const auth = useAuth?.();
+  const [placing, setPlacing] = useState(false);
 
-  const total = cart.items.reduce((s, it) => s + (Number(String(it.price).replace(/[^0-9.-]+/g, "")) || 0) * it.qty, 0);
+  const total = cart.items.reduce((s, it) => s + (Number(it.price) || 0) * it.qty, 0);
+  async function handleCheckout() {
+    if (!auth?.isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    setPlacing(true);
+    try {
+      const data = await api.post('/orders');
+      // cart is cleared by server; update local
+      cart.clear();
+      navigate('/orders');
+    } catch (e) {
+      alert(e.message || 'Nepodarilo sa vytvoriť objednávku');
+    } finally {
+      setPlacing(false);
+    }
+  }
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -20,9 +41,9 @@ export default function Cart() {
     <>
       <Navbar />
       <main className="pc-container">
-        <h1 className="pc-title">Your cart</h1>
+        <h1 className="pc-title">Košík</h1>
         {cart.items.length === 0 ? (
-          <div className="pc-empty">Your cart is empty.</div>
+          <div className="pc-empty">Košík je prázdny</div>
         ) : (
           <>
             <div className="pc-list">
@@ -47,14 +68,14 @@ export default function Cart() {
               ))}
 
               <div className="pc-total">
-                <div className="pc-total-label">Total</div>
+                <div className="pc-total-label">Spolu</div>
                 <div className="pc-total-price">{formatPrice(total)}</div>
               </div>
             </div>
 
             <div className="pc-actions">
-              <button className="more-btn" onClick={() => navigate('/shop')}>Back to shop</button>
-              <button className="buy-btn more-btn" onClick={() => alert('Checkout is not implemented in this demo')}>Checkout</button>
+              <button className="more-btn" onClick={() => navigate('/shop')}>Späť do obchodu</button>
+              <button className="buy-btn more-btn" disabled={placing || cart.items.length===0} onClick={handleCheckout}>{placing ? 'Spracúvam…' : 'Zaplatiť'}</button>
             </div>
           </>
         )}

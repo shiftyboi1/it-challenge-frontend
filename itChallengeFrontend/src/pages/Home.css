@@ -115,23 +115,6 @@
 .stat-text strong { display: block; font-size: 1.1rem; }
 .stat-text span { opacity: .8; }
 
-@media (max-width: 900px) {
-  .home-about { grid-template-columns: 1fr; }
-  .home-stats { grid-template-columns: 1fr; }
-}
-@media (max-width: 720px) {
-  .home-about { grid-template-columns: 1fr; }
-  .home-stats { grid-template-columns: 1fr; }
-}   
-@media (max-width: 600px) {
-  .home-about { grid-template-columns: 1fr; }
-  .home-stats { grid-template-columns: 1fr; }
-}
-@media (max-width: 420px) {
-  .home-about { grid-template-columns: 1fr; }
-  .home-stats { grid-template-columns: 1fr; }
-}
-
 html.dark .home-hero-glass { background: rgba(18,18,18,0.86); color: #eaeaea; }
 html.dark .btn-ghost {
   background: rgba(30,30,30,0.6);
@@ -140,6 +123,47 @@ html.dark .btn-ghost {
 }
 html.dark .btn-solid { background: #ffffff; color: #111; }
 html.dark .stat { background: rgba(22,22,22,.7); }
+
+/* Full-screen section utility */
+.full-screen { min-height: 100vh; display: flex; align-items: center; /* make the section span the full viewport width */
+  width: 100vw; margin-left: calc(50% - 50vw); padding-left: 0; padding-right: 0; }
+
+/* Home hero & slideshow share full-bleed media behavior */
+.home-hero.full-screen, .home-slideshow.full-screen {
+  position: relative;
+  overflow: hidden;
+}
+.home-hero.full-screen .slider, .home-slideshow.full-screen .slider {
+  height: 100vh; width: 100%;
+}
+
+/* About section layout */
+.home-about.full-screen { display: flex; align-items: center; }
+.about-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; gap: 28px; align-items: center; justify-content: center; padding: 32px; }
+.about-copy { max-width: 620px; }
+.about-copy h2 { margin-top: 0; }
+.about-media { flex: 1 1 540px; display: flex; align-items: center; justify-content: center; }
+.about-media img { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 12px 28px rgba(0,0,0,0.12); object-fit: cover; }
+
+/* Stats full-screen */
+.home-stats.full-screen { display: flex; align-items: center; }
+.stats-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+.stat-card { background: color-mix(in oklab, var(--panel) 92%, transparent); border-radius: 14px; padding: 22px; display:flex; flex-direction:column; align-items:center; text-align:center; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+.stat-card .stat-ico { width: 64px; height: 64px; border-radius: 999px; display:grid; place-items:center; font-size:28px; background: var(--brand-dark); color: white; margin-bottom: 12px; }
+.stat-card .stat-name { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; }
+.stat-card .stat-desc { color: color-mix(in oklab, var(--fg) 60%, transparent); font-size: 0.95rem; }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .about-inner { flex-direction: column-reverse; gap: 18px; padding: 20px; }
+  .stats-inner { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  .about-inner { padding: 12px; }
+  .stat-card { padding: 16px; }
+  .stat-card .stat-ico { width: 56px; height: 56px; font-size: 22px; }
+}
 
 @media (max-width: 720px) {
   .container, .page-container, .pc-container, .login-wrap { padding-left: 12px; padding-right: 12px; }

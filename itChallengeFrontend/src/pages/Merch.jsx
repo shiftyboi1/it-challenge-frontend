@@ -25,18 +25,19 @@ export default function Merch() {
       <Navbar />
 
       <main className="merch">
-        <Slider
-          slides={[
-            {
-              id: "merch-1",
-              video: "/assets/videos/merch.mp4",
-              image: "/assets/images/merch/hero.jpg",
-              title: "HoloHome Merch",
-              subtitle: "Minimal gear for maximal vibes.",
-              actions: [],
-            },
-          ]}
-        />
+        <section className="home-hero full-screen">
+          <Slider
+            slides={[
+              {
+                id: "merch-1",
+                image: 'https://picsum.photos/seed/hero1/1600/900',
+                title: "HoloHome Merch",
+                subtitle: "Minimal gear for maximal vibes.",
+                actions: [],
+              },
+            ]}
+          />
+        </section>
 
   <section id="merch" className="merch-grid container">
           {MERCH.map((m) => (

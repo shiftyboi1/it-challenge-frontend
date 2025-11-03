@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Slider.css";
 import { scrollWithSliderOffset } from "../../utils/scrollWithSliderOffset";
 
-export default function Slider({ slides = [] }) {
+export default function Slider({ slides = [], showControls = true }) {
   const [index, setIndex] = useState(0);
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function Slider({ slides = [] }) {
   const backgroundUrl = s.image || generatedImage;
 
   return (
-    <section className="slider">
+  <section className={`slider is-dark`}>
       <div
         className="slider-media"
         style={{
@@ -50,10 +50,10 @@ export default function Slider({ slides = [] }) {
                 if (a.href && a.href.startsWith("#")) {
                   const id = a.href.slice(1);
                   return (
-                    <a
-                      key={i}
-                      className={`btn ${a.variant || "btn-ghost"}`}
-                      href={a.href}
+            <a
+              key={i}
+              className={`btn ${a.variant || "btn-dark"}`}
+              href={a.href}
                           onClick={(e) => {
                             e.preventDefault();
                             scrollWithSliderOffset(id).catch(() => {});
@@ -66,9 +66,9 @@ export default function Slider({ slides = [] }) {
 
                 if (a.href && a.href.startsWith("/")) {
                   return (
-                    <a
+                      <a
                       key={i}
-                      className={`btn ${a.variant || "btn-ghost"}`}
+                      className={`btn ${a.variant || "btn-dark"}`}
                       href={a.href}
                       onClick={(e) => {
                         e.preventDefault();
@@ -81,11 +81,11 @@ export default function Slider({ slides = [] }) {
                 }
 
                 return a.href ? (
-                  <a key={i} className={`btn ${a.variant || "btn-ghost"}`} href={a.href}>
+                  <a key={i} className={`btn ${a.variant || "btn-dark"}`} href={a.href}>
                     {a.label}
                   </a>
                 ) : (
-                  <button key={i} className={`btn ${a.variant || "btn-ghost"}`} onClick={a.onClick}>
+                  <button key={i} className={`btn ${a.variant || "btn-dark"}`} onClick={a.onClick}>
                     {a.label}
                   </button>
                 );
@@ -95,24 +95,26 @@ export default function Slider({ slides = [] }) {
         </div>
       </div>
 
-      <div className="slider-controls">
-        <button aria-label="Prev" className="slider-arrow" onClick={prev}>
-          ‹
-        </button>
-        <div className="slider-dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              className={`dot ${i === index ? "active" : ""}`}
-              onClick={() => setIndex(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
+      {showControls ? (
+        <div className="slider-controls">
+          <button aria-label="Prev" className="slider-arrow" onClick={prev}>
+            ‹
+          </button>
+          <div className="slider-dots">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                className={`dot ${i === index ? "active" : ""}`}
+                onClick={() => setIndex(i)}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+          <button aria-label="Next" className="slider-arrow" onClick={next}>
+            ›
+          </button>
         </div>
-        <button aria-label="Next" className="slider-arrow" onClick={next}>
-          ›
-        </button>
-      </div>
+      ) : null}
     </section>
   );
 }
