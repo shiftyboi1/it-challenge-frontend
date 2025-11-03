@@ -1,4 +1,3 @@
-/* page scaffold */
 .login {
   min-height: 100vh;
   display: flex;
@@ -17,7 +16,6 @@ html.dark .login-wrap {
   background: linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.9));
 }
 
-/* card */
 .login-card {
   width: min(420px, 92vw);
   padding: 28px 24px;
@@ -25,7 +23,6 @@ html.dark .login-wrap {
   color: var(--text);
 }
 
-/* titles */
 .login-title {
   margin: 0 0 6px;
   font-size: 1.8rem;
@@ -36,7 +33,6 @@ html.dark .login-wrap {
   opacity: .8;
 }
 
-/* form */
 .login-form {
   display: grid;
   gap: 16px;
@@ -66,7 +62,6 @@ html.dark .login-form input {
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
 }
 
-/* error */
 .login-error {
   color: #d13333;
   font-size: .9rem;
@@ -76,7 +71,6 @@ html.dark .login-form input {
   border-radius: 10px;
 }
 
-/* button */
 .login-form button {
   height: 48px;
   border: 0;
@@ -94,7 +88,6 @@ html.dark .login-form input {
 html.dark .login-form button { background: #fff; color: #111; }
 html.dark .login-form button:hover { background: #e9e9e9; }
 
-/* hint */
 .login-hint {
   margin: 8px 0 0;
   font-size: .92rem;
@@ -103,3 +96,35 @@ html.dark .login-form button:hover { background: #e9e9e9; }
   text-decoration: underline;
   cursor: pointer;
 }
+@media (max-width: 900px) {
+  .login-card {
+    padding: 28px 22px;
+  }
+}
+@media (max-width: 720px) {
+  .login-card {
+    padding: 26px 22px;
+  }
+}
+@media (max-width: 600px) {
+  .login-card {
+    padding: 26px 20px;
+  }
+}
+@media (max-width: 420px) {
+  .login-card {
+    padding: 24px 18px;
+  }
+}
+
+@media (max-width: 720px) {
+  .container, .page-container, .pc-container, .login-wrap { padding-left: 12px; padding-right: 12px; }
+  .btn-ghost, .btn-solid, .pc-actions .buy-btn { width: 100%; justify-self: stretch; }
+  img, .pc-thumb, .cart-thumb { max-width: 100%; height: auto; }
+}
+
+@media (max-width: 420px) {
+  .container, .page-container, .pc-container, .login-wrap { padding-left: 10px; padding-right: 10px; }
+  .btn-ghost, .btn-solid, .pc-actions .buy-btn { padding-left: 12px; padding-right: 12px; }
+}
+

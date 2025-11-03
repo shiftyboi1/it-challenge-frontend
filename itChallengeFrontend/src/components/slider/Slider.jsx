@@ -13,9 +13,7 @@ export default function Slider({ slides = [] }) {
   const next = () => setIndex((i) => (i + 1) % slides.length);
 
   const s = slides[index];
-  // generate a deterministic placeholder image when none provided (picsum)
   const seed = s.id || s.title || index;
-  // match footer style: use picsum with a blur and 1600x700 size for consistent hero crop
   const generatedImage = !s.image && !s.video ? `https://picsum.photos/seed/${encodeURIComponent(
     String(seed)
   )}/1600/700?blur=1` : undefined;
@@ -49,7 +47,6 @@ export default function Slider({ slides = [] }) {
           {s.actions && s.actions.length > 0 && (
             <div className="slider-actions">
               {s.actions.map((a, i) => {
-                // internal anchor (scroll within page)
                 if (a.href && a.href.startsWith("#")) {
                   const id = a.href.slice(1);
                   return (
@@ -59,7 +56,6 @@ export default function Slider({ slides = [] }) {
                       href={a.href}
                           onClick={(e) => {
                             e.preventDefault();
-                            // use helper that will retry a few times if slider dims change
                             scrollWithSliderOffset(id).catch(() => {});
                           }}
                     >
@@ -68,7 +64,6 @@ export default function Slider({ slides = [] }) {
                   );
                 }
 
-                // internal route (SPA navigation)
                 if (a.href && a.href.startsWith("/")) {
                   return (
                     <a
@@ -85,7 +80,6 @@ export default function Slider({ slides = [] }) {
                   );
                 }
 
-                // fallback: external link or button action
                 return a.href ? (
                   <a key={i} className={`btn ${a.variant || "btn-ghost"}`} href={a.href}>
                     {a.label}

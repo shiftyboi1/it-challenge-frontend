@@ -1,9 +1,8 @@
 import React from "react";
 import "./home.css";
-import Navbar from "../components/navbar/Navbar.jsx";      // if you export default
-import Footer from "../components/footer/Footer.jsx";      // adjust paths to yours
+import Navbar from "../components/navbar/Navbar.jsx";      
+import Footer from "../components/footer/Footer.jsx";      
 import Slider from "../components/slider/Slider";
-// If your files are in different dirs, update imports accordingly.
 
 export default function Home() {
   return (
@@ -11,7 +10,6 @@ export default function Home() {
       <Navbar />
 
       <main className="home">
-        {/* ===== HERO / SLIDER (reusable) ===== */}
         <Slider
           slides={[
             {
@@ -21,14 +19,12 @@ export default function Home() {
               title: "Predictably unexpected",
               subtitle: "A short punchy line that hints at your product value.",
               actions: [
-                  // keep original visual style for the CTA but navigate to /shop
                   { label: "Zistiť viac", href: "/shop", variant: "btn-ghost" },
               ],
             },
           ]}
         />
 
-        {/* ===== ABOUT US (text + side image) ===== */}
   <section id="about" className="home-about container">
           <div className="home-about-text">
             <h2>About HoloHome</h2>
@@ -47,12 +43,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ===== BIG IMAGE STRIP ===== */}
         <section className="home-strip">
           <img src="/assets/images/strip.jpg" alt="Showcase" />
         </section>
 
-        {/* ===== STATS / ICON CIRCLES ===== */}
         <section className="home-stats container">
           <div className="stat">
             <div className="stat-ico">⚡</div>

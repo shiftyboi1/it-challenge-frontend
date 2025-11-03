@@ -1,12 +1,10 @@
 import React from "react";
 import "./Merch.css";
-
-import Navbar from "../components/navbar/Navbar";           // adjust path if needed
-import Footer from "../components/footer/Footer";           // "
+import Navbar from "../components/navbar/Navbar";         
+import Footer from "../components/footer/Footer";        
 import Slider from "../components/slider/Slider";
-import ProductM from "../components/product_merch/ProductM"; // the merch card (product_m.jsx)
+import ProductM from "../components/product_merch/ProductM"; 
 
-// Show exactly 4 merch products (2 per row)
 const MERCH = [
   {
     id: "tee-classic",
@@ -27,7 +25,6 @@ export default function Merch() {
       <Navbar />
 
       <main className="merch">
-        {/* ===== HERO / SLIDER ===== */}
         <Slider
           slides={[
             {
@@ -36,13 +33,11 @@ export default function Merch() {
               image: "/assets/images/merch/hero.jpg",
               title: "HoloHome Merch",
               subtitle: "Minimal gear for maximal vibes.",
-              // removed 'Shop merch' CTA per request
               actions: [],
             },
           ]}
         />
 
-  {/* ===== GRID ===== */}
   <section id="merch" className="merch-grid container">
           {MERCH.map((m) => (
             <ProductM

@@ -29,7 +29,6 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Login failed");
 
-      // expected: { token, user? }
       localStorage.setItem("token", data.token);
       if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
 

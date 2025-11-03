@@ -1,7 +1,4 @@
-/* same variables as navbar; scope footer's theme variables to the footer element so
-   they don't overwrite global :root variables used elsewhere (e.g. navbar) */
 .hf{
-  /* footer-local theme: always dark background with light text */
   --fg: #ffffff;
   --panel: #1c1c1c;
   --panel-90: color-mix(in oklab, #1c1c1c 92%, transparent);
@@ -12,63 +9,51 @@
   --brand-glow: 0 0 0 transparent;
 }
 
-/* ── FULL-WIDTH (bleed to edges even inside a centered container) ───────── */
 .hf.fw{
-  /* footer should always be black and not change with theme */
   background: #111111 !important;
   color: #fff !important;
   border-top: none;
   position: relative;
   isolation: isolate;
-
-  /* full-bleed trick */
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
 }
 
-/* allow the footer to visually "bleed" past the page bottom to cover small gaps
-   that appear on some pages (e.g. scrollbars / body background seams). We add
-   padding-bottom so content isn't clipped and a negative margin to extend the
-   footer lower than normal flow. Tweak --footer-bleed as needed. */
 .hf.fw { --footer-bleed: 16px; padding-bottom: var(--footer-bleed); margin-bottom: calc(var(--footer-bleed) * -1); }
 
-/* top subtle holo glow */
-/* remove the decorative glow - footer now uses simple lines */
 .hf-topglow{ display:none !important; }
 
-/* theme button (footer-only) */
 .hf-theme{
   position: absolute; right: clamp(12px,3vw,24px); top: clamp(10px,2vw,18px);
   width: 44px; height: 44px; border-radius: 12px;
-  border: none; /* remove border */
+  border: none;
   background: transparent; color: var(--fg);
   display: grid; place-items: center; cursor: pointer;
 }
 .hf-theme:hover{ filter: brightness(1.02); }
 
-/* main grid */
 .hf-grid{
   display: grid;
   grid-template-columns: minmax(300px, 520px) 1fr;
   gap: clamp(12px, 3vw, 20px);
-  padding: clamp(12px, 3vw, 20px); /* shorter vertical padding */
+  padding: clamp(12px, 3vw, 20px); 
   max-width: 1400px;
   margin: 0 auto;
   z-index: 1;
 }
 
-/* left column: 4 boxes */
+
 .hf-left{ display: grid; gap: clamp(12px, 2vw, 16px); align-content: start; }
 .hf-tile{
   position: relative;
   display: grid; align-content: start; gap: 6px;
   padding: 16px 52px 16px 16px;
-  border: none; /* remove tile border */
+  border: none; 
   border-radius: 14px;
   background: transparent;
   color: var(--fg); text-decoration: none;
-  box-shadow: none; /* remove shadow */
+  box-shadow: none;
 }
 .hf-tile:hover{ filter: brightness(1.02); }
 .hf-tile-title{
@@ -85,17 +70,15 @@
   border: none; border-radius: 10px; font-size: 16px;
 }
 
-/* right big panel */
 .hf-hero{
   border: none;
   border-radius: 14px;
   background: transparent;
   overflow: hidden; min-height: 320px; display: grid;
-  box-shadow: none; /* remove shadow */
+  box-shadow: none; 
 }
 .hf-hero img{ width:100%; height:100%; object-fit: cover; display:block; }
 
-/* social row across full grid width */
 .hf-socialrow{
   grid-column: 1 / -1;
   display: grid;
@@ -111,13 +94,12 @@
   font-weight: 700; letter-spacing: .04em;
 }
 
-/* bottom full-width bar */
 .hf-legalbar{
   border-top: none;
   margin-top: clamp(12px, 2.5vw, 18px);
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px;
-  padding: 8px clamp(12px, 3vw, 20px); /* shorter bottom spacing */
+  padding: 8px clamp(12px, 3vw, 20px); 
   font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-size: 13px;
 }
@@ -125,7 +107,6 @@
 .hf-legal-links a{ color: var(--fg); text-decoration: none; opacity: .9; }
 .hf-legal-links a:hover{ opacity: 1; text-decoration: underline; }
 
-/* Footer hover color: use brand green instead of global blue in all themes */
 .hf a:hover{
   color: var(--brand-green) !important;
 }
@@ -133,11 +114,10 @@
   color: var(--brand-green) !important;
 }
 
-/* dark mode lift */
+
 html.dark .hf-tile,
 html.dark .hf-hero{ box-shadow: none; }
 
-/* Add two thin lines at the top of the footer: black then white */
 .hf.fw::before{
   content: "";
   position: absolute;
@@ -153,13 +133,10 @@ html.dark .hf-hero{ box-shadow: none; }
   z-index: 2;
 }
 
-/* center social row */
 .hf-socialrow{ justify-content: center; }
 
-/* ensure legal links also use brand green on hover */
 .hf-legal-links a:hover{ color: var(--brand-green) !important; }
 
-/* responsive */
 @media (max-width: 1100px){
   .hf-grid{ grid-template-columns: 1fr; }
   .hf-socialrow{ grid-template-columns: repeat(5, 1fr); }

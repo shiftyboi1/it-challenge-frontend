@@ -1,24 +1,22 @@
-/* wrapper */
 .ph {
   position: relative;
   width: 100%;
-  max-width: 360px; /* reduced card width to make merch images smaller */
+  max-width: 360px; 
   margin: 0 auto;
   display: block;
   padding: 0;
   overflow: visible;
-  border-radius: 0; /* make the overall card square */
+  border-radius: 0; 
 }
 
-/* top image (static, not full-bleed hero) */
 .ph-hero {
   position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3; /* portrait 2:3 */
+  aspect-ratio: 2 / 3; 
   background-size: cover;
   background-position: center;
   filter: saturate(105%);
-  border-radius: 0; /* square corners for hero image */
+  border-radius: 0;
   overflow: hidden;
   z-index: 0;
 }
@@ -35,7 +33,6 @@
 }
 .ph-hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 
-/* frosted/glassy card below image */
 .ph-card {
   position: relative;
   z-index: 1;
@@ -43,7 +40,6 @@
   padding: 12px;
 }
 
-/* overlay variant that mimics product.css: black translucent box over image */
 .ph-overlay{
   position: absolute;
   left: 0;
@@ -53,10 +49,9 @@
   width: 100%;
   box-sizing: border-box;
   padding: 12px 14px;
-  /* light theme: white translucent box */
   background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.92) 85%);
   color: #111;
-  border-radius: 0; /* square bottom box */
+  border-radius: 0; 
   border: 1px solid rgba(0,0,0,0.06);
   box-shadow: 0 8px 20px rgba(12,12,12,0.06);
   display: flex;
@@ -65,19 +60,15 @@
   align-items: stretch;
 }
 
-/* bottom row inside overlay: left price, right buy */
 .ph-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; }
 .ph-left-actions{ display:flex; align-items:center; }
 .ph-right-actions{ display:flex; align-items:center; }
 .ph-price{ font-weight:700; font-size:1rem; color: inherit; }
 
-/* light-theme overrides for texts inside the overlay */
 .ph-title { color: #111; }
 .ph-shortdesc { color: rgba(17,17,17,0.9); }
 .ph-feature { color: #222; }
 
-/* Button adjustments for light overlay: use a transparent button with subtle translucent hover
-   so the CTA matches the opacity-style used in dark mode (reversed colors) */
 .ph .buy-btn.more-btn {
   background: transparent;
   color: #111;
@@ -87,10 +78,8 @@
 }
 .ph .buy-btn.more-btn:hover { background: rgba(0,0,0,0.06); transform: translateY(-1px); }
 
-/* Ensure the transparent .more-btn (secondary) looks good on white */
 .ph .more-btn { color: #111; }
 
-/* Dark theme: restore previous dark overlay and white text/button */
 html.dark .ph-overlay {
   background: linear-gradient(180deg, rgba(0,0,0,0.56) 0%, rgba(0,0,0,0.7) 85%);
   color: #fff;
@@ -101,10 +90,8 @@ html.dark .ph-title { color: #f2f2f2; }
 html.dark .ph-shortdesc { color: rgba(255,255,255,0.92); }
 html.dark .ph-feature { color: #e0e0e0; }
 html.dark .ph .buy-btn.more-btn { background: transparent; color: #fff; }
-/* Ensure price inherits correct color in dark theme as well (keeps things explicit) */
 html.dark .ph-price { color: #fff; }
 
-/* top row */
 .ph-card-top {
   display: flex;
   align-items: center;
@@ -128,7 +115,6 @@ html.dark .ph-price { color: #fff; }
   box-shadow: 0 4px 12px rgba(0,0,0,.08);
 }
 
-/* features */
 .ph-features {
   list-style: none;
   padding: 0;
@@ -147,9 +133,7 @@ html.dark .ph-price { color: #fff; }
 .ph-ico { font-size: 14px; opacity: .8; }
 .ph-txt { text-transform: uppercase; font-size: .92rem; }
 
-/* color picker */
 .ph-picker { margin-bottom: 12px; }
-/* select (for named colors) */
 .ph-select {
   width: 100%;
   height: 44px;
@@ -163,7 +147,6 @@ html.dark .ph-price { color: #fff; }
   appearance: none;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
 }
-/* dots (for hex colors) */
 .ph-dots { display: flex; gap: 10px; }
 .ph-dot {
   width: 24px; height: 24px; border-radius: 999px;
@@ -175,7 +158,6 @@ html.dark .ph-price { color: #fff; }
 .ph-dot:hover { transform: translateY(-2px); }
 .ph-dot.active { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.18); }
 
-/* CTA */
 .ph-cta {
   width: 100%;
   height: 48px;
@@ -191,7 +173,6 @@ html.dark .ph-price { color: #fff; }
 .ph-cta.ph-buy { background: #fff; color: #111; }
 .ph-cta.ph-buy:hover { transform: translateY(-2px); background: #f2f2f2; }
 
-/* dark mode support */
 html.dark .ph-card {
   background: rgba(18,18,18,0.86);
   color: #eaeaea;

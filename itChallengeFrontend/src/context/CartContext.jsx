@@ -1,10 +1,8 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from "react";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  // hydrate from localStorage if available
   const [items, setItems] = useState(() => {
     try {
       const raw = localStorage.getItem("hh_cart_v1");
@@ -16,12 +14,10 @@ export function CartProvider({ children }) {
   });
   const [open, setOpen] = useState(false);
 
-  // persist items to localStorage
   React.useEffect(() => {
     try {
       localStorage.setItem("hh_cart_v1", JSON.stringify(items));
     } catch {
-      // ignore storage errors
     }
   }, [items]);
 
@@ -35,7 +31,6 @@ export function CartProvider({ children }) {
       }
       return [...prev, { ...product, qty: qty }];
     });
-    // open preview for feedback
     setOpen(true);
   }
 

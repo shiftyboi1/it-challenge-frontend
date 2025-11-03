@@ -1,30 +1,27 @@
-/* ================= HoloHome THEME ================= */
 :root{
   --fg:#0f1313;
   --panel:#ffffff;
-  --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
+  --panel-90: color-mix(in oklab, var(--panel) 86%, transparent); 
   --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
 
-  --brand-dark:#274c51;   /* teal */
-  --brand-green:#74bc74;  /* light green */
+  --brand-dark:#274c51;   
+  --brand-green:#74bc74;  
   --brand-grad: linear-gradient(90deg, #274c51 0%, #74bc74 50%, #274c51 100%);
-  --brand-glow: 0 0 14px rgba(39,76,81,.18), 0 0 22px rgba(116,188,116,.16);
-  --panel-shadow: -12px 0 48px rgba(16,24,40,0.12);
+  --brand-glow: 0 0 14px rgba(39,76,81,.14), 0 0 22px rgba(116,188,116,.12); 
+  --panel-shadow: -12px 0 44px rgba(16,24,40,0.10);
 }
 html.dark{
   --fg:#f5fbfb;
   --panel:#0b1111;
-  --panel-90: color-mix(in oklab, var(--panel) 92%, transparent);
+  --panel-90: color-mix(in oklab, var(--panel) 86%, transparent); 
   --stroke: color-mix(in oklab, var(--fg) 22%, transparent);
-  --brand-glow: 0 0 18px rgba(116,188,116,.22), 0 0 28px rgba(39,76,81,.28);
-  --panel-shadow: -12px 0 48px rgba(0,0,0,0.6);
+  --brand-glow: 0 0 18px rgba(116,188,116,.18), 0 0 28px rgba(39,76,81,.22);
+  --panel-shadow: -12px 0 48px rgba(0,0,0,0.55);
 }
 
-/* ================= Layout anchors ================= */
 .nh{ position:fixed; inset:0; pointer-events:none; z-index:1000; }
 .nh-box, .nh-bar, .nh-submenu{ pointer-events:auto; }
 
-/* ================= Side boxes (☀️ / 🛒) – orámované stále, bez zvýraznenia ================= */
 .nh-box{
   position:fixed; top:16px; width:56px; height:56px;
   background:var(--panel-90);
@@ -32,11 +29,10 @@ html.dark{
   border: 1px solid var(--stroke);
   border-radius:14px;
   display:inline-flex; align-items:center; justify-content:center;
-  /* restore a subtle brand glow to match the original design */
   box-shadow: var(--brand-glow);
   cursor:pointer;
   transition: transform .14s ease, box-shadow .18s ease, background .12s ease;
-  z-index: 1100; /* make floating boxes sit above pinned selectors */
+  z-index: 1100;
 }
 .nh-left{ left:16px; }
 .nh-right{ right:16px; }
@@ -46,35 +42,32 @@ html.dark{
 .nh-box:focus-visible{
   background:var(--panel);
   border:1px solid var(--stroke);
-  box-shadow: 0 6px 22px rgba(39,76,81,0.12), 0 8px 28px rgba(116,188,116,0.08);
+  box-shadow: 0 6px 22px rgba(39,76,81,0.10), 0 8px 24px rgba(116,188,116,0.08);
   outline:none;
   transform: translateY(-2px);
 }
 .nh-emoji{ display:inline-flex; align-items:center; justify-content:center; line-height:1; font-size:1.15rem; }
 .nh-home{ font-size:1.3rem; }
 
-/* ================= Center bar ================= */
 .nh-bar{
   position:fixed; top:16px; left:50%; transform:translateX(-50%);
   height:60px; min-width:min(92vw,980px);
   background:var(--panel-90); color:var(--fg);
   border: none;
-  border-radius:18px;                   /* zatvorené = úplne oblé */
+  border-radius:18px;
   display:flex; align-items:center; gap:12px; padding:0 20px;
   backdrop-filter:blur(10px);
-  box-shadow:none;                      /* ✅ žiadny vnútorný tieň */
+  box-shadow:none;
 }
 
-/* hide/show animation for scroll behaviour */
 .nh-hidden .nh-bar{
-  transform: translate(-50%, -120%); /* move the bar up */
+  transform: translate(-50%, -120%);
   opacity: 0;
   pointer-events: none;
   transition: transform .28s ease, opacity .18s ease;
 }
 .nh .nh-bar{ transition: transform .28s ease, opacity .18s ease; }
 
-/* floating boxes hide animation when they get nh-hidden */
 .nh-box.nh-hidden{
   transform: translateY(-140%);
   opacity: 0;
@@ -83,40 +76,21 @@ html.dark{
 }
 .nh-box{ transition: transform .28s ease, opacity .18s ease; }
 
-/* When a product panel is open, keep the navbar visible regardless of
-   scroll/hide state. This overrides the .nh-hidden rules so the navbar and
-   floating boxes remain on-screen while the product IAB/NAD are active. */
 html.panel-open .nh .nh-bar {
   transform: translate(-50%, 0) !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-html.panel-open .nh .nh-box {
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-/* The floating theme / cart boxes are siblings of the .nh header, not
-   children. Ensure they are also kept visible when a panel is open. */
+html.panel-open .nh .nh-box,
 html.panel-open .nh-box {
   transform: translateY(0) !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-/* „chvostíky“ pod barom – ponechané; ak nechceš, zmaž celý ::after blok */
-.nh-bar::after{
-  content:""; position:absolute; left:0; right:0; bottom:-8px; height:28px; pointer-events:none;
-  background:
-    radial-gradient(110px 20px at 28px 100%, rgba(39,76,81,.18), transparent 70%) left bottom no-repeat,
-    radial-gradient(110px 20px at calc(100% - 28px) 100%, rgba(116,188,116,.18), transparent 70%) right bottom no-repeat,
-    linear-gradient(to bottom, rgba(39,76,81,.12), transparent 60%);
-  filter: blur(2px);
-  display: none; /* hide glow tails (we hide glow completely) */
-}
-html.nav-open .nh-bar{ border-radius:18px 18px 0 0; }
-html.nav-open .nh-bar::after{ display: none; }
 
-/* logo (emoji) a burger – nikdy žiadny box/outline */
+.nh-bar::after{ content:""; display:none; }
+html.nav-open .nh-bar{ border-radius:18px 18px 0 0; }
+
 .nh-logo,
 .nh-bar-btn{
   background:transparent !important;
@@ -128,9 +102,8 @@ html.nav-open .nh-bar::after{ display: none; }
 }
 .nh-logo{ font-size:1.5rem; display:inline-flex; align-items:center; justify-content:center; }
 .nh-bar-btn{ width:48px; height:48px; padding:0; display:inline-grid; place-items:center; cursor:pointer; }
-.nh-bar-btn:hover{ opacity:.8; transform:translateY(-1px); transition:transform .14s ease, opacity .14s ease; }
+.nh-bar-btn:hover{ opacity:.86; transform:translateY(-1px); transition:transform .14s ease, opacity .14s ease; }
 
-/* Brand title */
 .nh-title{
   font-family:"Lexend",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   text-decoration:none; font-weight:800; letter-spacing:.14em;
@@ -138,44 +111,30 @@ html.nav-open .nh-bar::after{ display: none; }
   margin:0 auto; color:var(--fg);
 }
 
-/* Navbar-specific hover colors and transitions */
 .nh .nh-box,
 .nh .nh-title,
 .nh .nh-link,
 .nh .nh-bar-btn{
   transition: color .16s ease, background .12s ease;
 }
-
-/* Light theme: black text (from --fg) and hover -> dark green (navbar only) */
 .nh .nh-box:hover,
 .nh .nh-link:hover,
 .nh .nh-title:hover,
-.nh .nh-bar-btn:hover{
-  color: var(--brand-dark);
-}
-
-/* Dark theme: white text (from --fg) and hover -> light green (applies to navbar) */
+.nh .nh-bar-btn:hover{ color: var(--brand-dark); }
 html.dark .nh .nh-box:hover,
 html.dark .nh .nh-link:hover,
 html.dark .nh .nh-title:hover,
-html.dark .nh .nh-bar-btn:hover{
-  color: var(--brand-green);
-}
+html.dark .nh .nh-bar-btn:hover{ color: var(--brand-green); }
+
 .nh-title-holo{
   background:var(--brand-grad); -webkit-background-clip:text; background-clip:text; color:transparent;
-  filter:drop-shadow(0 0 8px rgba(116,188,116,.14));
+  filter:drop-shadow(0 0 8px rgba(116,188,116,.12));
 }
 
-/* Submenu-specific hover: keep Holohome (title) hover as dark green in light mode,
-   but make the submenu items (Domov, Obchod, Merch, Účet) hover light green.
-   This is scoped to the open submenu so it won't affect the main title. */
 .nh-submenu .nh-link:hover,
 .nh-submenu .nh-link:focus,
-.nh-submenu .nh-link:active{
-  color: var(--brand-green);
-}
+.nh-submenu .nh-link:active{ color: var(--brand-green); }
 
-/* ================= 2-line burger → X (dlhé, centrované) ================= */
 .nh-burger-2{
   position:relative; width:40px; height:24px; color:var(--fg); display:block;
 }
@@ -191,55 +150,36 @@ html.dark .nh .nh-bar-btn:hover{
 .nh-burger-2.is-open::before{ transform:rotate(45deg); }
 .nh-burger-2.is-open::after { transform:rotate(-45deg); }
 
-/* ================= Attached slide-down submenu =================
-   — default: komplet skryté (odstraňuje „tajomný tieň“, lebo nič nekreslí),
-   — open: zobrazí sa, pripojí a má oblé spodné rohy.
-==================================================================*/
 .nh-submenu{
   position:absolute; left:50%; transform:translateX(-50%);
   top:calc(16px + 60px);
   width:min(92vw,980px);
-
-  display:none;             /* ✅ úplne skryté, žiadny tieň keď zatvorené */
+  display:none;
   max-height:0; opacity:0; translate:0 -6px; overflow:hidden;
-
-  /* match navbar background so submenu appears visually continuous */
   background: var(--panel-90);
   backdrop-filter: blur(10px);
-
   border-radius:0 0 22px 22px;
   clip-path: inset(0 round 0 0 22px 22px);
-  
 }
 .nh-submenu.open{
-  display:block;           /* zobraz až teraz */
-  border: none;
-  border-top:none;
+  display:block;
+  border:none; border-top:none;
   max-height:340px; opacity:1; translate:0 0;
-  
 }
-/* glow len keď je otvorené → žiadny tieň v zatvorenom stave */
 .nh-submenu.open::before{
-  /* cover the navbar glow so nothing shows through the translucent submenu
-     (make this pseudo-element opaque and sit above the ::after glow). */
   content:""; position:absolute; inset:0; border-radius:inherit;
   pointer-events:none;
-  background: var(--panel-90); /* use same masked solid as navbar */
-  z-index: 0; /* sit above the navbar ::after but below submenu content */
-  box-shadow: none; /* explicitly no shadow */
+  background: var(--panel-90);
+  z-index: 0;
+  box-shadow: none;
 }
+.nh-submenu.open{ backdrop-filter: none; }
 
-.nh-submenu.open{
-  backdrop-filter: none; /* disable blur so the mask is clean */
-}
-
-/* submenu content */
 .nh-submenu-inner{
   position:relative; z-index:2; background:transparent !important;
   display:grid; place-items:center; padding:18px 14px 22px; gap:16px;
 }
 
-/* Links */
 .nh-link{
   font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   text-decoration:none; font-weight:800; letter-spacing:.14em;
@@ -253,7 +193,6 @@ html.dark .nh .nh-bar-btn:hover{
 }
 .nh-link-holo:hover::after{ opacity:1; transform:translateY(0); }
 
-/* ================= Responsive ================= */
 @media (max-width:720px){
   .nh-box{ width:52px; height:52px; top:14px; }
   .nh-bar{ height:56px; min-width:min(94vw,900px); top:14px; }
@@ -268,33 +207,27 @@ html.dark .nh .nh-bar-btn:hover{
   .nh-title{ font-size:16px; }
   .nh-submenu{ border-radius:0 0 18px 18px; clip-path: inset(0 round 0 0 18px 18px); }
 }
-/* ================= END OF FILE ================= */
 
-/* Cart badge */
 .cart-badge {
   position: absolute;
   top: 6px;
   right: 6px;
-  background: var(--brand-dark, #e11d48);
+  background: var(--brand-dark, #274c51);
   color: #fff;
   font-size: 12px;
   line-height: 1;
   padding: 4px 7px;
   border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.18);
   z-index: 2;
 }
 
-/* badge animation when count changes */
 .cart-badge {
   transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
   transform-origin: 50% 50%;
 }
-.cart-badge.pulse {
-  transform: scale(1.18);
-}
+.cart-badge.pulse { transform: scale(1.18); }
 
-/* New small indicator inside the floating box: icon + count */
 .cart-indicator {
   position: absolute;
   top: 6px;
@@ -322,14 +255,12 @@ html.dark .nh .nh-bar-btn:hover{
 }
 .cart-indicator-num.pulse{ transform: scale(1.18); }
 
-/* Dark theme: make the numeric pill light green for contrast */
 html.dark .cart-indicator-num{
   background: var(--brand-green);
   color: var(--panel);
   box-shadow: 0 4px 18px rgba(116,188,116,0.12);
 }
 
-/* Cart list preview (popover) */
 .cart-list {
   position: fixed;
   right: 0;
@@ -351,7 +282,6 @@ html.dark .cart-indicator-num{
   max-height: calc(100vh - 88px);
   overflow: auto;
   padding: 18px;
-  /* leave room at the bottom so content never hides behind the footer */
   padding-bottom: 110px;
 }
 .cart-empty {
@@ -359,80 +289,72 @@ html.dark .cart-indicator-num{
   text-align: center;
   color: color-mix(in oklab, var(--fg) 60%, transparent);
 }
-/* Cart item layout: left = thumb + meta, right = qty controls + actions */
+
 .cart-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   padding: 12px 12px;
-  /* subtle divider using theme-aware stroke */
   border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent);
   position: relative;
 }
 .cart-thumb{
-  width:72px;
-  height:108px;
+  width:84px; height:84px;
   object-fit:cover;
   border-radius:8px;
-  margin:0;
+  margin:0 12px 0 0;
   flex-shrink:0;
   background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 6%, transparent), transparent);
 }
-.cart-item-left{ display:flex; align-items:flex-start; gap:12px; min-width:0; }
-
-/* meta column (title / price) sits next to thumbnail */
-.cart-item-left > div{
-  display:flex; flex-direction:column; gap:6px; min-width:0; overflow:hidden;
-}
-.cart-item-left > div > div:first-child{ /* title */
+.cart-thumb-wrap{ position: relative; display:inline-block; }
+.cart-item-left{ display:flex; align-items:center; gap:12px; min-width:0; }
+.cart-item-left > div{ display:flex; flex-direction:column; gap:6px; min-width:0; overflow:hidden; }
+.cart-item-left > div > div:first-child{
   font-weight:700; font-size:14px; color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-/* explicit classes to avoid inline styles in JSX */
 .cart-item-title{ font-weight:700; font-size:14px; color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.cart-item-price{ font-weight:700; font-size:13px; color: color-mix(in oklab, var(--fg) 40%, var(--brand-dark) 60%); }
-html.dark .cart-item-price{ color: color-mix(in oklab, var(--panel) 68%, var(--brand-green) 32%); }
 
-/* Right column with vertical controls: + on top, qty middle, - bottom */
+.cart-item-price{
+  font-weight:700; font-size:13px;
+  color: color-mix(in oklab, var(--fg) 90%, #fff 10%); 
+}
+html.dark .cart-item-price{
+  color: color-mix(in oklab, #fff 90%, #000 10%);
+}
+
 .cart-item-right{
   margin-left: auto;
   display:flex;
   flex-direction:column;
-  align-items:flex-end;
+  align-items:center;
   justify-content:center;
   gap:8px;
-  min-width:84px;
+  min-width:110px;
   position: relative;
-}
-.cart-item-controls{ display:flex; flex-direction:column; align-items:flex-end; gap:8px; padding-top: 6px; }
-/* reset any previous right-alignment on price; price sits under name on the left */
-.cart-item-price{ text-align:left; min-width:auto; }
-
-.cart-item-right{
-  margin-left: auto;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  justify-content:flex-end; /* keep qty controls toward the bottom */
-  gap:8px;
-  min-width:84px;
   height:100%;
 }
+.cart-item-controls{ display:flex; align-items:center; gap:8px; }
+.cart-item-controls .qty-minus{ order:0; }
+.cart-item-controls .qty-value{ order:1; }
+.cart-item-controls .qty-plus{ order:2; }
+.cart-item-price{ text-align:left; min-width:auto; }
+
 .qty-controls{ display:flex; align-items:center; gap:8px; }
 .qty-btn{ width:34px; height:34px; border-radius:8px; border:none; background:transparent; cursor:pointer; color:var(--fg); display:inline-grid; place-items:center; font-weight:700; }
-.qty-btn:hover{ transform: translateY(-2px); }
+.qty-btn:hover{ transform: none; }
 .qty-btn:active{ border:none; box-shadow:none; }
 .qty-btn:focus{ outline:none; }
 .qty-value{ min-width:34px; text-align:center; display:inline-block; color:var(--fg); font-weight:700; }
 
-/* Remove button is visually unstyled but accessible and positioned in the item corner */
-/* removed old middle-positioned remove button rules to avoid conflicts */
-
-/* Dark theme tweaks */
 html.dark .cart-item { border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent); }
 html.dark .qty-btn{ border:none; }
-html.dark .cart-item-left > div > div:last-child{ color: color-mix(in oklab, var(--panel) 68%, var(--brand-green) 32%); }
+html.dark .qty-value{ color: var(--fg); }
 
-/* Remove button: small 'x' in the top-right corner of the cart item */
+.cart-item-qty {
+  font-size: 13px;
+  color: color-mix(in oklab, var(--fg) 60%, transparent);
+}
+
 .cart-remove{
   position: absolute;
   top: 8px;
@@ -445,23 +367,10 @@ html.dark .cart-item-left > div > div:last-child{ color: color-mix(in oklab, var
   padding: 0;
   cursor: pointer;
   opacity: .8;
+  z-index: 12;
 }
-.cart-remove:hover{ opacity: 1; transform: translateY(-2px); }
+.cart-remove:hover{ opacity: 1; }
 
-/* Theme-aware tweaks for qty controls in dark mode */
-html.dark .qty-btn{ border:none; }
-html.dark .qty-value{ color: var(--fg); }
-.cart-item-left {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.cart-item-qty {
-  font-size: 13px;
-  color: color-mix(in oklab, var(--fg) 60%, transparent);
-}
-
-/* Remove borders/outlines when clicking/focusing inside the cart drawer */
 .cart-list :focus,
 .cart-list :active{
   outline: none !important;
@@ -472,6 +381,7 @@ html.dark .qty-value{ color: var(--fg); }
 .cart-list a{
   border: none !important;
 }
+
 .cart-list-footer {
   position: absolute;
   bottom: 0;
@@ -480,39 +390,49 @@ html.dark .qty-value{ color: var(--fg); }
   padding: 12px;
   border-top: 1px solid var(--stroke);
   display: flex;
-  justify-content: center; /* center the primary CTA */
+  justify-content: center;
   gap: 8px;
   background: linear-gradient(to top, var(--panel, #fff) 0%, transparent 100%);
 }
 
-/* Mobile drawer behaviour */
 @media (max-width:720px){
   .cart-list{ width: min(92vw, 360px); }
   .cart-list .cart-list-items{ padding:18px; max-height:calc(100vh - 88px); }
   .cart-list-footer{ position: absolute; bottom:0; left:0; right:0; padding:12px; background: var(--panel, #fff); }
 }
 
-/* when the drawer is open, bring it onscreen */
 .cart-list.open{ transform: translateX(0); }
 
-/* backdrop behind drawer */
-.cart-backdrop{ position: fixed; inset:0; background: rgba(2,6,23,0.24); opacity:0; pointer-events:none; transition: opacity .18s ease; z-index:1300; }
+.cart-backdrop{
+  position: fixed; inset:0;
+  background: rgba(2,6,23,0.22); 
+  opacity:0; pointer-events:none;
+  transition: opacity .18s ease; z-index:1300;
+}
 .cart-backdrop.open{ opacity:1; pointer-events:auto; }
 
-/* hide the small floating cart button when drawer open */
-.nh.cart-open .nh-box.nh-right{ transform: translateX(140%); opacity:0; pointer-events:none; }
+.nh.cart-open .nh-box.nh-right{
+  transform: translateX(140%); opacity:0; pointer-events:none;
+}
 
-/* make buttons inside the cart-drawer match slider button styling and theme */
-.cart-list .btn{ padding:10px 14px; border-radius:10px; cursor:pointer; text-decoration:none; transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease, border-color .12s ease; }
-.cart-list .btn-ghost{ background:transparent; border:none; color:var(--fg); }
-.art-list .btn-ghost{ background:transparent; border:none; color:var(--fg); }
+.cart-list .btn{
+  padding:10px 14px; border-radius:10px; cursor:pointer; text-decoration:none;
+  transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease, border-color .12s ease;
+}
+.cart-list .btn-ghost{ background:transparent; color:var(--fg); }
 .cart-list .btn-solid{ background:var(--brand-green); color:white; border:none; }
+
 .cart-list .btn-ghost:hover,
-.cart-list .btn-ghost:focus{ color:var(--brand-green); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(39,76,81,0.08); }
+.cart-list .btn-ghost:focus{
+  color:var(--brand-green);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(39,76,81,0.08);
+}
 .cart-list .btn-solid:hover,
-.cart-list .btn-solid:focus{ transform: translateY(-2px); box-shadow: 0 8px 26px rgba(39,76,81,0.12); filter: brightness(.98); }
+.cart-list .btn-solid:focus{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(39,76,81,0.12);
+  filter: brightness(.98);
+}
 
-/* make the footer CTA full width on narrow and comfortable on desktop */
 .cart-list-footer .btn{ width: min(360px, calc(100% - 32px)); }
-
-

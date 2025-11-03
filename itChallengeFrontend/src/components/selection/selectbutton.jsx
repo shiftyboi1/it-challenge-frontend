@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./selectbutton.css";
 
-/**
- * SelectButton
- * - dvojtlačidlová voľba: "Domov/Byt" vs "Bytovka"
- * - defaultValue: "domov" | "bytovka"
- * - onChange: (value) => void
- */
+
 export default function SelectButton({ defaultValue = "domov", onChange }) {
   const [value, setValue] = useState(defaultValue);
 

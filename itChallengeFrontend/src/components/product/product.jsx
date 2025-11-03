@@ -5,6 +5,7 @@ import "./product_nad.css";
 import ProductIAB from "./ProductIaB";
 import ProductNAD from "./ProductNaD";
 import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../utils/format";
 import { usePanelOpenEffect } from "../../utils/panelEffect";
 
 export default function Product({
@@ -15,12 +16,7 @@ export default function Product({
   price,
 }) {
   const [open, setOpen] = useState(false);
-  // keep navbar visible while the product panel is open
   usePanelOpenEffect(open);
-  // Always use a picsum random/seedy image for the hero background so every
-  // product appears as a full-bleed hero. Use a seed from the product id or
-  // name so the image is stable per-product; remove fallback to provided
-  // `image` prop so the page looks consistent with the hero layout.
   const seed = id || name || Math.floor(Math.random() * 999999);
   const bg = `https://picsum.photos/seed/${encodeURIComponent(seed)}/1600/900?blur=1`;
   const cart = useCart();
@@ -37,7 +33,7 @@ export default function Product({
                 className="buy-btn more-btn"
                 onClick={() => cart.addItem({ id: seed, name, price, image: bg })}
               >
-                {`Buy for ${price}`}
+                {`Buy for ${formatPrice(price)}`}
               </button>
             </div>
 
@@ -50,7 +46,6 @@ export default function Product({
         </div>
       </div>
 
-      {/* Detail drawer */}
       {open && (
         <>
           <div className="pd-backdrop" onClick={() => setOpen(false)} />
@@ -60,10 +55,7 @@ export default function Product({
             </button>
 
             <div className="pd-grid">
-              {/* LEFT: image + price/buy box - pass the same random bg so drawer matches hero */}
               <ProductIAB image={bg} price={price} onBuy={() => cart.addItem({ id: seed, name, price, image: bg })} />
-
-              {/* RIGHT: name + long description */}
               <ProductNAD name={name} longDesc={longDesc} />
             </div>
           </aside>
@@ -73,7 +65,3 @@ export default function Product({
   );
 }
 
-// keep a small side-effect so pages that open the product drawer can tell the
-// navbar to remain visible while the panel is open. We add/remove a global
-// class on <html> which the Navbar scroll handler checks.
-// (hook is imported at top from utils/panelEffect)

@@ -1,24 +1,18 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { useMemo, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./Shop.css";
-
-// components (adjust paths if your tree differs)
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
 import Slider from "../components/slider/Slider";
 import SelectButton from "../components/selection/Selectbutton";
 import Product from "../components/product/Product";
 
-// small hook: when the route contains a hash (e.g. /shop#products) attempt a
-// smooth scroll that accounts for the fixed header/slider. This uses the
-// `scrollWithSliderOffset` helper when available and gracefully degrades.
+
 function useHashScroll() {
   const location = useLocation();
   useEffect(() => {
     if (!location.hash) return;
     const id = location.hash.slice(1);
-    // delay slightly so the target element is mounted
     const t = setTimeout(() => {
       import("../utils/scrollWithSliderOffset")
         .then(({ scrollWithSliderOffset }) => {
@@ -30,7 +24,6 @@ function useHashScroll() {
   }, [location]);
 }
 
-// --- mock data (swap for API later) ---
 const ALL_PRODUCTS = [
   {
     id: "watch-x",
@@ -55,22 +48,16 @@ const ALL_PRODUCTS = [
 ];
 
 export default function Shop() {
-  const [segment, setSegment] = useState("domov"); // "domov" | "bytovka"
-
-  // handle possible hash on initial navigation (e.g. /shop#products)
+  const [segment, setSegment] = useState("domov");
   useHashScroll();
-
   const items = useMemo(
     () => ALL_PRODUCTS.filter((p) => p.segment === segment),
     [segment]
   );
-
   return (
     <>
       <Navbar />
-
       <main className="shop">
-        {/* ===== HERO / SLIDER (reusable) ===== */}
         <Slider
           slides={[
             {
@@ -79,21 +66,17 @@ export default function Shop() {
               image: "/assets/images/shop-hero.jpg",
               title: "Shop",
               subtitle: "Curated tech for smart living.",
-              // no hero CTAs here per design update
               actions: [],
             },
           ]}
         />
-
-        {/* ===== SELECTOR BAR (Domov/Bytovka) ===== */}
         <div id="products" className="shop-select container">
           <SelectButton
             defaultValue="domov"
             onChange={(val) => setSegment(val)}
           />
         </div>
-
-  {/* ===== PRODUCTS GRID ===== */}
+        
         <section className="shop-grid container">
           {items.map((p) => (
             <div key={p.id} className="product-row">
@@ -109,7 +92,6 @@ export default function Shop() {
           ))}
         </section>
 
-        {/* ===== “WE’RE HELPING …” SECTION ===== */}
         <section className="shop-help container">
           <div className="shop-help-media">
             <img

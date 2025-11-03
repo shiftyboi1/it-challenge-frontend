@@ -1,6 +1,4 @@
-/* Make each product fill the viewport (full page) similar to the selection button
-   - use 100vw with margin-left calc(50% - 50vw) to cancel page container padding
-   - use 100vh for height so each product becomes a hero section */
+
 .product-card {
   position: relative;
   width: 100vw;
@@ -16,23 +14,17 @@
   cursor: pointer;
 }
 
-/* When products are rendered inside a full-bleed row, center the card
-   and constrain its max width so it appears centered on the page. */
 .product-row {
-  /* product rows now act like stacked full-viewport sections */
   display: block;
-  padding: 0; /* no extra vertical spacing between full-page products */
+  padding: 0; 
 }
 .product-row .product-card {
-  /* card is already full-viewport via .product-card rules above */
   width: 100vw;
   height: 100vh;
 }
 
-/* full-bleed row: let the card background bleed edge-to-edge while keeping
-   the overlay content centered in a constrained column */
+
 .product-row.full-bleed {
-  /* keep full-bleed rows consistent with the full-viewport approach */
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -47,14 +39,12 @@
   background-size: cover;
 }
 .product-row.full-bleed .product-overlay {
-  /* place the overlay near the lower edge of the hero (bottom-centered)
-     so the description and actions appear at the lower side of the image */
   position: absolute;
   left: 50%;
   bottom: 44px;
   transform: translateX(-50%);
   max-width: 880px;
-  width: calc(100% - 96px); /* give extra space so buttons aren't flush to page edges */
+  width: calc(100% - 96px);
   padding: 18px 28px;
   box-sizing: border-box;
   background: linear-gradient(180deg, rgba(10,10,10,0.12) 0%, rgba(10,10,10,0.6) 85%);
@@ -66,21 +56,17 @@
   align-items: stretch;
 }
 .product-card:hover {
-  /* keep hover subtle for accessibility when visible on desktop */
   transform: none;
   box-shadow: none;
 }
 
-/* Transparent overlay on card */
 .product-overlay {
-  /* Position overlay at the bottom of the product by default so the
-     description comes from the image's lower edge */
   position: absolute;
   left: 50%;
-  bottom: 64px; /* larger margin from bottom to give breathing room */
+  bottom: 64px; 
   transform: translateX(-50%);
   max-width: 880px;
-  width: calc(100% - 160px); /* larger horizontal safety margin from edges */
+  width: calc(100% - 160px);
   padding: 18px 28px;
   box-sizing: border-box;
   background: linear-gradient(180deg, rgba(10,10,10,0.12) 0%, rgba(10,10,10,0.6) 85%);
@@ -98,10 +84,7 @@
 .left-actions { display: flex; align-items: center; }
 .right-actions { display: flex; align-items: center; }
 
-/* Button styles matched to selection control (.sb-btn) for consistent font
-   and hover/transition behaviour */
 .buy-btn {
-  /* Make buy look like the More button: transparent / subtle hover */
   display: inline-flex; align-items: center; gap: 12px;
   background: transparent; color: #fff; font-weight: 700;
   padding: 10px 18px; border-radius: 12px; border: none; cursor: pointer;
@@ -112,13 +95,12 @@
 .buy-label { font-size: .95rem; opacity: .95; }
 
 .more-btn {
-  background: transparent; color: #fff; border: none; /* no outer border */
+  background: transparent; color: #fff; border: none; 
   padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: 700;
   transition: background .22s ease, color .18s ease, transform .18s ease;
 }
 .more-btn:hover { background: rgba(255,255,255,0.06); transform: translateY(-1px); }
 
-/* On dark theme, ensure more-btn stays visible similar to .sb-btn rules */
 .dark .more-btn { color: var(--fg); }
 .product-price { font-weight: 700; font-size: 1.05rem; }
 .product-btn {
@@ -128,19 +110,15 @@
 }
 .product-btn:hover { background: #eaeaea; transform: translateY(-2px); }
 
-/* ===== Drawer (detail) ===== */
 .pd-backdrop {
   position: fixed; inset: 0; z-index: 70;
-  /* keep an invisible backdrop for click-to-close but don't darken the image */
   background: transparent;
   backdrop-filter: blur(2px);
 }
 .pd-panel {
-  /* make the detail panel cover the full viewport width so its
-     internal ProductIAB / ProductNAD sections also span edge-to-edge */
   position: fixed; top: 0; left: 0; height: 100vh;
   width: 100vw; max-width: none;
-  background: rgba(0,0,0,0.15); /* slight dim so text remains readable but image stays visible (~15%) */
+  background: rgba(0,0,0,0.15); 
   color: #f5f5f5;
   z-index: 80;
   transform: translateX(100%);
@@ -149,30 +127,25 @@
 .pd-panel.open { transform: translateX(0); }
 
 .pd-close {
-  /* position the close button under the left theme toggle in the navbar */
   position: fixed;
-  left: 16px; /* match navbar left box */
-  top: calc(16px + 56px + 12px); /* navbar top + box height + gap */
+  left: 16px; 
+  top: calc(16px + 56px + 12px);
   width: 44px; height: 44px; border-radius: 12px;
   border: none; background: rgba(0,0,0,0.54); color: #fff;
   font-size: 22px; line-height: 1; cursor: pointer;
   display: inline-grid; place-items:center; z-index: 1001;
-  padding: 6px; /* inset so it doesn't touch edges */
+  padding: 6px; 
 }
 
 .pd-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* left image + right text */
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   height: 100%;
 }
 
-/* when the panel is open, push internal grid content down so it clears the
-   fixed navbar (which sits above the panel). This prevents the title/desc
-   from being hidden under the navbar. */
+
 .pd-panel.open .pd-grid {
-  /* Remove top padding so the left image can extend fully under the navbar.
-     We will add spacing inside the NAD column so its text isn't covered. */
   padding-top: 0;
   box-sizing: border-box;
 }

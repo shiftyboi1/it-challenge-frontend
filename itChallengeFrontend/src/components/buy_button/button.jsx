@@ -1,19 +1,9 @@
 import React from "react";
 import "./button.css";
+import { formatPrice } from "../../utils/format";
 
-/**
- * BuyButton
- * Props:
- *  - label: string (e.g. "ADD TO BAG")
- *  - price?: string|number (optional)
- *  - currency?: string (default "€")
- *  - onClick?: function
- */
 export default function BuyButton({ label = "ADD TO BAG", price, currency = "€", onClick }) {
-  const displayPrice =
-    price !== undefined && price !== null
-      ? `${currency}${price}`
-      : null;
+  const displayPrice = price !== undefined && price !== null ? formatPrice(price) : null;
 
   return (
     <button className="buy-btn" onClick={onClick}>

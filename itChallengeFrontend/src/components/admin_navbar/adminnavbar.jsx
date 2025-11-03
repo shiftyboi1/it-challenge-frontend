@@ -8,10 +8,8 @@ export default function AdminNavbar() {
 
   return (
     <>
-      {/* Top bar */}
       <header className="nv-header">
         <div className="nv-grid">
-          {/* Left: logo */}
           <div className="nv-left">
             <img
               src="/logo.ico"
@@ -23,10 +21,8 @@ export default function AdminNavbar() {
             />
           </div>
 
-          {/* Center: HoloHome Admin */}
           <div className="nv-brand">HOLOHOME ADMIN</div>
 
-          {/* Right: burger */}
           <div className="nv-right">
             <button
               aria-label="Open menu"
@@ -39,7 +35,6 @@ export default function AdminNavbar() {
         </div>
       </header>
 
-      {/* Fullscreen overlay menu */}
       {open && (
         <div
           role="dialog"
@@ -47,7 +42,6 @@ export default function AdminNavbar() {
           className="nv-overlay"
           onClick={() => setOpen(false)}
         >
-          {/* Close (top-left) */}
           <button
             aria-label="Close"
             onClick={() => setOpen(false)}
@@ -56,7 +50,6 @@ export default function AdminNavbar() {
             ×
           </button>
 
-          {/* Centered menu list */}
           <nav onClick={(e) => e.stopPropagation()} className="nv-menu-col">
             <MenuLink to="/admin/users" label="USERS" onPick={() => setOpen(false)} />
             <MenuLink to="/admin/orders" label="ORDERS" onPick={() => setOpen(false)} />
@@ -67,7 +60,6 @@ export default function AdminNavbar() {
   );
 }
 
-/* ---------- helpers ---------- */
 function MenuLink({ to, label, onPick }) {
   return (
     <Link to={to} onClick={onPick} className="nv-menu-link">

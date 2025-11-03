@@ -1,30 +1,25 @@
-/* Obdĺžniková lišta */
 .sb-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;                 /* vnútorná medzera od krajov */
-  border-radius: 16px;          /* zaoblené rohy */
+  padding: 8px;               
+  border-radius: 16px;          
   background: #f5f6f7;
   border: none;
-  box-shadow: none; /* remove glow */
-  /* make the control span the full viewport width while remaining centered
-     inside narrower page containers */
+  box-shadow: none;
   width: 100vw;
   max-width: 100vw;
   margin: 12px 0;
-  /* shift so 100vw element aligns with viewport edges regardless of parent */
   margin-left: calc(50% - 50vw);
-  padding-left: 16px; /* add horizontal padding for contents */
+  padding-left: 16px; 
   padding-right: 16px;
 }
 
-/* Tlačidlá (zaberú rovnakú šírku, rozmiestnené ku krajom) */
 .sb-btn {
   flex: 1 1 0;
   height: 44px;
   border-radius: 12px;
-  border: none; /* remove borders */
+  border: none; 
   background: #eceeef;
   color: #374151;
   font-weight: 600;
@@ -33,24 +28,20 @@
   transition: background .22s ease, color .18s ease, transform .18s ease;
 }
 
-/* medzera medzi tlačidlami vytvorí “rozdelene od krajov” efekt */
 .sb-divider {
-  width: 12px;                  /* špára medzi tlačidlami */
+  width: 12px;                 
 }
 
-/* Aktívne (farebné) – DOMOV je default */
 .sb-btn.active {
-  /* active style: theme-aware gradient */
   background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-green) 100%);
   color: #fff;
   box-shadow: none;
   transform: translateY(-1px);
 }
 
-/* Hover/Focus stavy */
 .sb-btn:not(.active):hover {
   background: #e7e9eb;
-  color: var(--brand-dark); /* light-theme hover: dark green */
+  color: var(--brand-dark); 
   transform: translateY(-1px);
 }
 .sb-btn:focus-visible {
@@ -58,21 +49,19 @@
   outline-offset: 2px;
 }
 
-/* Dark theme overrides */
 .dark .sb-btn {
   background: #1b1f24;
   color: var(--fg);
 }
 .dark .sb-btn.active {
   background: linear-gradient(135deg, var(--brand-green) 0%, color-mix(in oklab, var(--brand-green) 78%, black 22%) 100%);
-  color: #08110a; /* dark text on light-green bg */
+  color: #08110a; 
 }
 .dark .sb-btn:not(.active):hover {
   color: var(--brand-green);
   background: #22262c;
 }
 
-/* Dark mode (ak používaš .dark na <html>) */
 .dark .sb-wrap {
   background: #111315;
   border: none;

@@ -3,6 +3,7 @@ import "./product_m.css";
 // reuse product button styles so the buy CTA matches the main Product component
 import "../product/product.css";
 import { useCart } from "../../context/CartContext";
+import { formatPrice } from "../../utils/format";
 
 // small helpers
 function idOr(name) {
@@ -23,10 +24,7 @@ export default function ProductHero({
   const initial = defaultColor || (colors.length ? colors[0] : "");
   const [color, setColor] = useState(initial);
 
-  const priceText = useMemo(() => {
-    if (typeof price === "number") return `${currency}${price}`;
-    return price?.toString()?.startsWith(currency) ? price : `${currency}${price}`;
-  }, [price, currency]);
+  const priceText = useMemo(() => formatPrice(price), [price]);
 
   const isHex = (c) => /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(c);
 

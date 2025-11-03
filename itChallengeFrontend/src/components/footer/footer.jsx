@@ -3,7 +3,6 @@ import "./footer.css";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
-  // footer-local theme toggle (same storage/key as navbar)
   const [theme, _setTheme] = useState(
     typeof window !== "undefined" ? localStorage.getItem("theme") || "light" : "light"
   );
@@ -19,7 +18,6 @@ export default function Footer() {
       <div className="hf-topglow" aria-hidden="true" />
 
       <div className="hf-grid">
-        {/* LEFT – 4 content tiles */}
         <div className="hf-left">
           <Link to="/help" className="hf-tile">
             <div className="hf-tile-title">Centrum pomoci</div>
@@ -42,9 +40,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        {/* RIGHT – big promo/image area */}
         <aside className="hf-hero" aria-label="Promo panel">
-          {/* replace with your real image */}
           <img
             src="https://picsum.photos/1600/700?blur=1"
             alt="HoloHome ukážka"
@@ -52,7 +48,6 @@ export default function Footer() {
           />
         </aside>
 
-        {/* SOCIAL row */}
         <div className="hf-socialrow">
           <a className="hf-sbox" href="#" aria-label="YouTube">YT</a>
           <a className="hf-sbox" href="#" aria-label="Facebook">FB</a>
@@ -62,7 +57,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* full-width bottom bar */}
       <div className="hf-legalbar">
         <div>© {new Date().getFullYear()} HoloHome · All rights reserved.</div>
         <nav className="hf-legal-links">

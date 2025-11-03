@@ -1,11 +1,9 @@
-/* shared container */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 28px 16px;
 }
 
-/* ===== HERO ===== */
 .shop-hero {
   position: relative;
   min-height: 58vh;
@@ -44,21 +42,17 @@
   opacity: .85;
 }
 
-/* ===== SELECTOR BAR ===== */
 .shop-select {
   padding-top: 8px;
 }
 
-/* ===== PRODUCTS GRID ===== */
 .shop-grid {
   display: grid;
-  /* single-column layout: one product per row */
   grid-template-columns: 1fr;
   gap: 20px;
-  justify-items: center; /* center rows inside the container */
+  justify-items: center; 
 }
 
-/* ===== HELPING SECTION ===== */
 .shop-help {
   margin-top: 18px;
   display: grid;
@@ -88,16 +82,36 @@
 }
 .shop-help-copy li { margin: 4px 0; }
 
-/* responsive */
 @media (max-width: 900px) {
-  .shop-help { grid-template-columns: 1fr; }
+  .shop-help-media img { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .shop-help-media img { height: auto; }
+}
+@media (max-width: 600px) {
+  .shop-help-media img { height: auto; }
+}
+@media (max-width: 420px) {
+  .shop-help-media img { height: auto; }
 }
 
-/* dark mode harmony */
 html.dark .shop-hero-glass {
   background: rgba(18,18,18,0.86);
   color: #eaeaea;
   border-color: rgba(255,255,255,0.06);
+}
+
+@media (max-width: 720px) {
+  .container, .page-container, .pc-container, .login-wrap { padding-left: 12px; padding-right: 12px; }
+  .home-about, .home-stats, .shop-grid, .merch-grid, .stat, .shop-help, .product-grid { grid-template-columns: 1fr !important; }
+  .btn-ghost, .btn-solid, .pc-actions .buy-btn { width: 100%; justify-self: stretch; }
+  img, .pc-thumb, .cart-thumb, .home-strip img { max-width: 100%; height: auto; }
+}
+
+@media (max-width: 420px) {
+  .container, .page-container, .pc-container, .login-wrap { padding-left: 10px; padding-right: 10px; }
+  .shop-hero { min-height: 40vh; }
+  .btn-ghost, .btn-solid, .pc-actions .buy-btn { padding-left: 12px; padding-right: 12px; }
 }
 html.dark .shop-help-media img {
   background: radial-gradient(120% 120% at 50% 50%, #151618 0%, #101214 100%);

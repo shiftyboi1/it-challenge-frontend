@@ -1,4 +1,4 @@
-.slider{ position:relative; /* full-bleed edge-to-edge */ width:100vw; margin-left:calc(50% - 50vw); height:min(68vh,720px); overflow:hidden; display:block; }
+.slider{ position:relative; width:100vw; margin-left:calc(50% - 50vw); height:min(68vh,720px); overflow:hidden; display:block; }
 .slider-media{ position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat; }
 .slider-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 
@@ -11,12 +11,11 @@
 .btn-ghost{ background:transparent; border:1px solid var(--stroke); color:var(--fg); }
 .btn-solid{ background:var(--brand-green); color:white; border:none; }
 
-/* slider-specific button polish: hover/focus use brand green and subtle motion */
 .slider-actions .btn{
   transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease, border-color .12s ease;
 }
 .slider-actions .btn-ghost{
-  border: none; /* remove borders for slider CTAs */
+  border: none; 
 }
 .slider-actions .btn-ghost:hover,
 .slider-actions .btn-ghost:focus{
