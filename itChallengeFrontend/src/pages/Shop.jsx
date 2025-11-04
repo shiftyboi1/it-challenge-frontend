@@ -30,6 +30,53 @@ export default function Shop() {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  const SMARTIE_SHORT = "Inteligentný asistent bývania, ktorý spája senzory a automatizácie pre zdravý, bezpečný a úsporný domov.";
+  const SMARTIE_LONG = (
+    <>
+      <p>
+        HoloHome’s Smartie je AI asistent pre byty a domy, ktorý dohliada na komfort a bezpečie: sleduje teplotu, vlhkosť a kvalitu vzduchu, stráži dym aj únik vody a vie reagovať na pohyb či otvorenie dverí. Všetko vidíš v prehľadnej aplikácii a môžeš nastavovať automatizácie (napr. upozornenia, scénáre úspor). Smartie prináša filozofiu „where innovation meets home“ priamo do tvojho interiéru – jednoducho, spoľahlivo a udržateľne.
+      </p>
+      <h3>Vlastnosti</h3>
+      <ul>
+        <li>Monitoring prostredia: teplota, vlhkosť, kvalita vzduchu (VOC/PM*) a intenzita svetla.</li>
+        <li>Bezpečnostné senzory: pohyb, dym, únik vody, otvorenie dverí/okien.</li>
+        <li>Automatizácie a notifikácie: scénáre pre komfort, bezpečnosť a úspory.</li>
+        <li>Integrácia so Smart Home (gateway IP→Zigbee/Matter podľa návrhu riešenia).</li>
+      </ul>
+      <h3>Špecifikácie (príkladové komponenty)</h3>
+      <ul>
+        <li>Wi‑Fi domácnosti + repeater (počet ks podľa výberu)</li>
+        <li>IP↔Zigbee/Matter gateway (1 ks)</li>
+        <li>Kamera interiérová (ks podľa výberu)</li>
+        <li>Senzory: únik vody, dym, pohyb, otvorenie dverí (ks podľa potreby)</li>
+      </ul>
+    </>
+  );
+  
+  const ENTERPRISE_SHORT = "Virtuálny domovník pre bytové domy: riadené vstupy, monitoring, odpočty spotrieb a správa budovy v jednej platforme.";
+  const ENTERPRISE_LONG = (
+    <>
+      <p>
+        HoloHome’s Enterprise je komplexný AI „virtuálny domovník“ pre bytové domy. Zabezpečuje hlavný aj vedľajšie vstupy, monitoruje pohyb v interiéri/exteriéri, zberá odpočty vody a tepla a sleduje kvalitu ovzdušia v spoločných priestoroch. Správcom prináša prehľad o zariadeniach a incidentoch, obyvateľom zvyšuje bezpečnosť a komfort a vďaka digitalizácii procesov znižuje prevádzkové náklady. S jednotnou identitou HoloHome pôsobí moderne, dôveryhodne a konzistentne naprieč všetkými materiálmi.
+      </p>
+      <h3>Vlastnosti</h3>
+      <ul>
+        <li>Riadené vstupy: videovrátnik (hlavný vchod) + kontrolované dvere (vedľajšie vstupy, pivnice, technické miestnosti).</li>
+        <li>CCTV: interiérové kamery (pohyb osôb) a exteriérové kamery (vozidlá a perimetr).</li>
+        <li>Energetické odpočty: voda, teplo (kalorimeter).</li>
+        <li>Enviro monitoring: teplota, vlhkosť, kvalita ovzdušia v spoločných priestoroch.</li>
+        <li>Notifikácie a reporty pre správu bytovky.</li>
+      </ul>
+      <h3>Špecifikácie (príkladové komponenty)</h3>
+      <ul>
+        <li>Videovrátnik pre hlavný vchod (ks) + kontrolované vstupy pre vedľajšie dvere (ks)</li>
+        <li>Kamery: interiér (ks), exteriér (ks)</li>
+        <li>Diaľkové odpočty: voda (ks), teplo – kalorimeter (ks)</li>
+        <li>Senzory prostredia (teplota, vlhkosť, PM) (ks)</li>
+      </ul>
+    </>
+  );
   useEffect(() => {
     let ignore = false;
     async function load() {
@@ -40,22 +87,24 @@ export default function Shop() {
         const products = Array.isArray(data?.products) ? data.products : [];
         // Adapt server shape -> frontend
         const adapted = products.map((p) => {
-          const isSmartieOrEnterprise = p.id === 'smartie' || p.id === 'enterprise';
-          return {
+          const base = {
             id: p.id,
             name: p.name,
-            // Hide descriptions for Smartie & Enterprise as requested
-            shortDesc: isSmartieOrEnterprise ? '' : (p.description?.slice(0, 80) || ''),
-            longDesc: isSmartieOrEnterprise ? '' : (p.description || ''),
+            shortDesc: p.description?.slice(0, 80) || '',
+            longDesc: p.description || '',
             price: Number(p.cost || 0),
-            image: `/assets/images/product-${p.id}.jpg`, // may not exist; cards use picsum fallback
-            // Segment mapping:
-            //  - 'domov' => Smartie
-            //  - 'bytovka' => Enterprise
+            image: `/assets/images/product-${p.id}.jpg`,
             segment: p.id === 'smartie' ? 'domov' : p.id === 'enterprise' ? 'bytovka' : 'other',
           };
+          if (p.id === 'smartie') {
+            return { ...base, shortDesc: SMARTIE_SHORT, longDesc: SMARTIE_LONG };
+          }
+          if (p.id === 'enterprise') {
+            return { ...base, shortDesc: ENTERPRISE_SHORT, longDesc: ENTERPRISE_LONG };
+          }
+          return base;
         });
-        // Keep only Smartie & Enterprise and exclude merch completely
+  // Keep only Smartie & Enterprise and exclude merch completely
         const filtered = adapted.filter((p) => (p.id === 'smartie' || p.id === 'enterprise') && !MERCH_IDS.has(p.id));
         if (!ignore) setAllProducts(filtered);
       } catch (e) {
@@ -82,7 +131,7 @@ export default function Shop() {
             slides={[
               {
                 id: "shop-1",
-                image: '../src/assets/images/slidershop.png',
+                image: '../src/assets/images/slidershop.webp',
                 title: "Všetko pre inteligentné a pohodlné bývanie.",
                 subtitle: "Objav smart riešenia, ktoré prepoja technológie s tvojím domovom. HoloHome zariadenia robia z každého bytu miesto, kde technológia pracuje pre teba.",
                 actions: [],

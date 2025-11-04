@@ -53,7 +53,7 @@ export default function Register() {
             slides={[
               {
                 id: "register-1",
-                image: 'https://picsum.photos/seed/register-hero/1600/900',
+                image: '../src/assets/images/sliderregister.webp',
                 title: "Vytvoriť účet",
                 subtitle: "Získaj prístup ku košíku a objednávkam.",
                 actions: [{ label: "Späť na domovskú stránku", href: "/", variant: "btn-dark" }],

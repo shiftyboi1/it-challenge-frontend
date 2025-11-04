@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import "./product_m.css";
-// reuse product button styles so the buy CTA matches the main Product component
 import "../product/product.css";
 import { useCart } from "../../context/CartContext";
 import { formatPrice } from "../../utils/format";
@@ -36,42 +35,34 @@ export default function ProductHero({
     const r = parseInt(h.slice(0,2), 16);
     const g = parseInt(h.slice(2,4), 16);
     const b = parseInt(h.slice(4,6), 16);
-    // Perceived luminance (ITU-R BT.601)
     const luminance = 0.299*r + 0.587*g + 0.114*b;
-    return luminance > 220; // consider very light colors (like #fff, #eee) as light
+    return luminance > 220; 
   };
 
   const handleColor = (c) => {
     setColor(c);
     onColorChange?.(c);
   };
-  // ensure a stable picsum background when image is not provided
-  // Use provided product id as seed when available so cart & orders reference the real product id
   const seed = id || idOr(name);
-  // use portrait 2:3 picsum placeholders (width x height)
   const selectedImage = (imageByColor && color && imageByColor[color]) || image;
   const bg = selectedImage || `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200?blur=1`;
   const cart = useCart();
 
   return (
-    <section className="ph">
-      {/* big hero image */}
+    <section className={`ph ${id ? `ph-${id}` : ''}`}>
       <div
         className="ph-hero"
         role="img"
         aria-label={name}
       >
-        {/* use an actual <img> like in the footer for clearer loading behavior */}
         <img src={bg} alt={name} loading="lazy" className="ph-hero-img" />
       </div>
 
-      {/* overlay: mimic product.css black translucent box with name, color select and price */}
       <div className="ph-card ph-overlay">
         <div className="ph-card-top">
           <h3 className="ph-title">{name}</h3>
         </div>
 
-        {/* color picker stays here */}
         {!!colors.length && (
           <div className="ph-picker">
             {isHex(colors[0]) ? (
@@ -115,9 +106,7 @@ export default function ProductHero({
               className="buy-btn more-btn"
               onClick={() => {
                     const payload = { id: seed, name, color, price: Number(price || 0), image: bg };
-                    // Always add to cart for consistent feedback (also opens the preview)
                     cart.addItem(payload);
-                    // If a parent provided an onAdd handler, call it too (non-blocking)
                     try { onAdd && onAdd(payload); } catch { /* swallow handler errors */ }
                   }}
             >

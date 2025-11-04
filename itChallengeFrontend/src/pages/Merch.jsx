@@ -61,7 +61,7 @@ export default function Merch() {
             slides={[
               {
                 id: "merch-1",
-                image: 'https://picsum.photos/seed/hero1/1600/900',
+                image: '../src/assets/images/slidermerch.jpeg',
                 title: "Náš dizajn, tvoj každodenný štýl.",
                 subtitle: "Oblečenie a doplnky s logom HoloHome pre tých, ktorí žijú technológiou.Minimalistické, moderné a vytvorené pre komfortný život – aj mimo domova.",
                 actions: [],

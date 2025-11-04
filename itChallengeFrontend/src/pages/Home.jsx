@@ -16,14 +16,14 @@ export default function Home() {
             slides={[
               {
                 id: 'naShopDomovByt',
-                image: 'https://picsum.photos/seed/hero1/1600/900',
+                image: '../src/assets/images/sliderhome1.webp',
                 title: 'Inovácia, ktorá mení spôsob, ako bývame.',
                 subtitle:
                   'Virtuálny domovník novej generácie, ktorý sa stará o vašu budovu, domácnosť aj o vaše pohodlie. HoloHome spája technológie, bezpečnosť a starostlivosť o domov do jedného inteligentného ekosystému.',
               },
               {
                 id: 'naShopBytovka',
-                image: 'https://picsum.photos/seed/hero2/1600/900',
+                image: '../src/assets/images/sliderhome2.png',
                 title: 'Váš domov, vaša inteligencia.',
                 subtitle:
                   'Objavte produkty HoloHome, ktoré premenia vaše bývanie na inteligentný priestor. Od smart senzorov až po virtuálneho domovníka – všetko pre pohodlie a bezpečnosť.',
@@ -31,7 +31,7 @@ export default function Home() {
               },
               {
                 id: 'naMerch',
-                image: 'https://picsum.photos/seed/hero3/1600/900',
+                image: '../src/assets/images/sliderhome3.webp',
                 title: 'Malé veci, veľká identita.',
                 subtitle: 'Ukáž, že bývaš inovatívne. Naše produkty spájajú moderný dizajn s myšlienkou inteligentného života – praktické, elegantné a inšpirované technológiou HoloHome.',
                 actions: [{ label: 'Zistiť viac', href: '/shop', variant: 'btn-dark' }],
@@ -40,7 +40,6 @@ export default function Home() {
           />
         </section>
 
-        {/* Section 2 — About (full-screen) with generated image */}
         <section className="home-about full-screen">
           <div className="about-inner">
             <div className="about-copy">
@@ -51,7 +50,7 @@ export default function Home() {
             </div>
             <div className="about-media">
               <div className="image-frame">
-                <img src={`https://picsum.photos/seed/about-${Date.now()%1000}/1400/900`} alt="About" />
+                <img src={'../src/assets/images/about_us.png'} alt="About" />
               </div>
             </div>
           </div>
@@ -61,7 +60,7 @@ export default function Home() {
         <section className="home-slideshow full-screen">
           <Slider
             slides={[
-              { id: 'brand-hero', image: '../src/assets/images/Snímka.PNG',},
+              { id: 'brand-hero', image: '../src/assets/images/homesection.jpg',},
             ]}
           />
         </section>

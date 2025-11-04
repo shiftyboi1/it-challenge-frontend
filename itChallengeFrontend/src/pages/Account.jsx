@@ -104,7 +104,7 @@ export default function Account() {
             slides={[
               {
                 id: "account-hero",
-                image: 'https://picsum.photos/seed/account1/1600/900',
+                image: '../src/assets/images/slideraccount.webp',
                 title: "Môj účet",
                 subtitle: "Spravuj svoje údaje a pozri si históriu objednávok.",
                 actions: [{ label: "Späť na domovskú stránku", href: "/", variant: "btn-dark" }],
