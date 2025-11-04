@@ -46,7 +46,7 @@ export default function Footer() {
             {/* Place content here (text, link, icon, etc.) */}
           </div>
           <img
-            src="../src/assets/images/LOGO_HOLOHOME_BIELE.png"
+            src="../src/assets/images/foot.png"
             alt="HoloHome ukážka"
             loading="lazy"
           />
