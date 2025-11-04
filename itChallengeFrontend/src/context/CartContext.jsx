@@ -34,12 +34,13 @@ export function CartProvider({ children }) {
         if (ignore) return;
         const mapped = Array.isArray(data)
           ? data.map((ci) => ({
-              id: ci.productId,
-              name: ci.product?.name ?? `#${ci.productId}`,
-              price: Number(ci.product?.cost ?? 0),
-              qty: ci.amount,
-              image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
-            }))
+            id: ci.productId,
+            name: ci.product?.name ?? `#${ci.productId}`,
+            description: ci.product?.description ?? '',
+            price: Number(ci.product?.cost ?? 0),
+            qty: ci.amount,
+            image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
+          }))
           : [];
         setItems(mapped);
       } catch {
@@ -73,17 +74,18 @@ export function CartProvider({ children }) {
     try {
       const times = Math.max(1, qty);
       for (let i = 0; i < times; i++) {
-        await api.post('/cart/add', { productId: Number(product.id) });
+        await api.post('/cart/add', { productId: product.id });
       }
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
         ? data.map((ci) => ({
-            id: ci.productId,
-            name: ci.product?.name ?? `#${ci.productId}`,
-            price: Number(ci.product?.cost ?? 0),
-            qty: ci.amount,
-            image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
-          }))
+          id: ci.productId,
+          name: ci.product?.name ?? `#${ci.productId}`,
+          description: ci.product?.description ?? '',
+          price: Number(ci.product?.cost ?? 0),
+          qty: ci.amount,
+          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
+        }))
         : [];
       setItems(mapped);
       setOpen(true);
@@ -115,10 +117,17 @@ export function CartProvider({ children }) {
       return;
     }
     try {
-      await api.post('/cart/remove-all', { productId: Number(id) });
+      await api.post('/cart/remove-all', { productId: id });
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
-        ? data.map((ci) => ({ id: ci.productId, name: ci.product?.name ?? `#${ci.productId}` , price: Number(ci.product?.cost ?? 0), qty: ci.amount, image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1` }))
+        ? data.map((ci) => ({
+          id: ci.productId,
+          name: ci.product?.name ?? `#${ci.productId}`,
+          description: ci.product?.description ?? '',
+          price: Number(ci.product?.cost ?? 0),
+          qty: ci.amount,
+          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`
+        }))
         : [];
       setItems(mapped);
     } catch {
@@ -139,13 +148,20 @@ export function CartProvider({ children }) {
     }
     try {
       if (delta > 0) {
-        await api.post('/cart/add', { productId: Number(id) });
+        await api.post('/cart/add', { productId: id });
       } else if (delta < 0) {
-        await api.post('/cart/remove', { productId: Number(id) });
+        await api.post('/cart/remove', { productId: id });
       }
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
-        ? data.map((ci) => ({ id: ci.productId, name: ci.product?.name ?? `#${ci.productId}` , price: Number(ci.product?.cost ?? 0), qty: ci.amount, image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1` }))
+        ? data.map((ci) => ({
+          id: ci.productId,
+          name: ci.product?.name ?? `#${ci.productId}`,
+          description: ci.product?.description ?? '',
+          price: Number(ci.product?.cost ?? 0),
+          qty: ci.amount,
+          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`
+        }))
         : [];
       setItems(mapped);
     } catch {
