@@ -27,12 +27,13 @@ export default function Merch() {
       <main className="merch">
         <section className="home-hero full-screen">
           <Slider
+            showControls={false}
             slides={[
               {
                 id: "merch-1",
                 image: 'https://picsum.photos/seed/hero1/1600/900',
-                title: "HoloHome Merch",
-                subtitle: "Minimal gear for maximal vibes.",
+                title: "Náš dizajn, tvoj každodenný štýl.",
+                subtitle: "Oblečenie a doplnky s logom HoloHome pre tých, ktorí žijú technológiou.Minimalistické, moderné a vytvorené pre komfortný život – aj mimo domova.",
                 actions: [],
               },
             ]}

@@ -68,12 +68,13 @@ export default function Shop() {
       <main className="shop">
         <section className="home-hero full-screen">
           <Slider
+            showControls={false}
             slides={[
               {
                 id: "shop-1",
                 image: 'https://picsum.photos/seed/hero1/1600/900',
-                title: "Shop",
-                subtitle: "Curated tech for smart living.",
+                title: "Všetko pre inteligentné a pohodlné bývanie.",
+                subtitle: "Objav smart riešenia, ktoré prepoja technológie s tvojím domovom. HoloHome zariadenia robia z každého bytu miesto, kde technológia pracuje pre teba.",
                 actions: [],
               },
             ]}
@@ -86,7 +87,7 @@ export default function Shop() {
           />
         </div>
 
-        <section className="shop-grid container">
+  <section className="shop-grid container">
           {loading && <div style={{padding:16}}>Načítavam produkty…</div>}
           {error && <div style={{padding:16, color:'var(--danger, #b91c1c)'}}>{error}</div>}
           {!loading && !error && items.map((p) => (
@@ -112,19 +113,17 @@ export default function Shop() {
             />
           </div>
           <div className="shop-help-copy">
-            <h2>We’re helping 300+ homes</h2>
+            <h2>„Spokojní zákazníci, inteligentné domovy.“</h2>
+            <p>Viac než 9 z 10 zákazníkov odporúča produkty HoloHome ďalej.</p>
             <p>
-              HoloHome sa stará o automatizáciu a šetrí energiu v reálnych
-              domácnostiach. Pridaj sa a získaj prehľad aj kontrolu bez
-              kompromisov.
+              Naše riešenia prinášajú istotu, komfort a moderný spôsob správy
+              bývania – od virtuálneho domovníka až po inteligentné senzory pre váš byt.
             </p>
-            <ul>
-              <li>⚡ Optimalizácia spotreby</li>
-              <li>🔒 Súčasťou je bezpečné cloud-prepojenie</li>
-              <li>🛠️ Komunita a 24/7 podpora</li>
-            </ul>
+            <p>Každá objednávka je krokom k efektívnejšiemu a bezpečnejšiemu domovu.</p>
           </div>
         </section>
+
+        <p className="shop-help-slogan container">„Technológia, ktorá sa prispôsobí vášmu životu.“</p>
       </main>
 
       <Footer />

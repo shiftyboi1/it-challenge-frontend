@@ -73,11 +73,11 @@
 .hf-hero{
   border: none;
   border-radius: 14px;
-  background: transparent;
+  background: #111111; /* match footer background */
   overflow: hidden; min-height: 320px; display: grid;
   box-shadow: none; 
 }
-.hf-hero img{ width:100%; height:100%; object-fit: cover; display:block; }
+.hf-hero img{ width:100%; height:100%; object-fit: cover; display:block; background-color:#111111; }
 
 .hf-socialrow{
   grid-column: 1 / -1;
@@ -93,6 +93,7 @@
   background: transparent; font-family: "Lexend", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   font-weight: 700; letter-spacing: .04em;
 }
+.hf-sbox svg{ width: 28px; height: 28px; display:block; }
 
 .hf-legalbar{
   border-top: none;
@@ -143,5 +144,6 @@ html.dark .hf-hero{ box-shadow: none; }
 }
 @media (max-width: 640px){
   .hf-sbox{ height: 64px; }
+  .hf-sbox svg{ width: 24px; height: 24px; }
   .hf-legalbar{ flex-direction: column; align-items: flex-start; gap: 6px; }
 }

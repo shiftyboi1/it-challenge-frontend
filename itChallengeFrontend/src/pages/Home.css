@@ -152,7 +152,10 @@ html.dark .stat { background: rgba(22,22,22,.7); }
 .stat-card .stat-ico { width: 64px; height: 64px; border-radius: 999px; display:grid; place-items:center; background: var(--brand-dark); color: white; margin-bottom: 12px; }
 .stat-card .stat-ico svg { width: 28px; height: 28px; display:block; }
 .stat-card .stat-name { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; }
-.stat-card .stat-desc { color: color-mix(in oklab, var(--fg) 60%, transparent); font-size: 0.95rem; }
+.stat-card .stat-desc { color: color-mix(in oklab, var(--fg) 60%, transparent); font-size: 0.95rem; line-height: 1.4; min-height: calc(1.4em * 3); display:flex; align-items:center; justify-content:center; }
+
+/* Slogan under stats */
+.stat-note { grid-column: 1 / -1; text-align: center; max-width: 900px; margin: 4px auto 0; color: color-mix(in oklab, var(--fg) 70%, transparent); font-size: 0.98rem; }
 
 /* Responsive adjustments */
 @media (max-width: 900px) {
