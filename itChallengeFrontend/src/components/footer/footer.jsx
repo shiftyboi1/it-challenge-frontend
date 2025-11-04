@@ -41,8 +41,12 @@ export default function Footer() {
         </div>
 
         <aside className="hf-hero" aria-label="Promo panel">
+          {/* Top-right slot: add your content inside this badge container */}
+          <div className="hf-hero-badge">
+            {/* Place content here (text, link, icon, etc.) */}
+          </div>
           <img
-            src="../src/assets/images/foot.png"
+            src="../src/assets/images/LOGO_HOLOHOME_BIELE.png"
             alt="HoloHome ukážka"
             loading="lazy"
           />

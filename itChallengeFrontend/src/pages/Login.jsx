@@ -39,7 +39,7 @@ export default function Login() {
               {
                 id: "login-1",
                 image: 'https://picsum.photos/seed/hero1/1600/900',
-                title: "Vitaj doma.",
+                title: "Vitaj späť.",
                 subtitle: "Prihlás sa a spravuj svoj inteligentný domov jednoducho, bezpečne a kdekoľvek si.",
                 actions: [{ label: "Späť na domovskú stránku", href: "/", variant: "btn-dark" }],
               },

@@ -215,9 +215,10 @@ export default function Navbar() {
             {auth?.isAuthenticated ? (
               <>
                 <MenuLink to="/account" label="ÚČET" onPick={closeMenu} />
-                <MenuLink to="/orders" label="OBJEDNÁVKY" onPick={closeMenu} />
+                {(auth?.isAdmin || auth?.isManager) && (
+                  <MenuLink to="/orders" label="OBJEDNÁVKY" onPick={closeMenu} />
+                )}
                 {auth?.isAdmin && <MenuLink to="/admin" label="ADMIN" onPick={closeMenu} />}
-                {auth?.isManager && <MenuLink to="/manager" label="SPRÁVCA" onPick={closeMenu} />}
               </>
             ) : (
               <MenuLink to="/login" label="PRIHLÁSIŤ" onPick={closeMenu} />

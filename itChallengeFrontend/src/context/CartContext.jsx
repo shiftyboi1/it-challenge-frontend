@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import api from "../utils/api";
 import { useAuth } from "./AuthContext";
+import { MERCH_META } from "../data/merchMeta";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
   const auth = useAuth?.() ?? { isAuthenticated: false };
+  const didResetRef = React.useRef(false);
   const [items, setItems] = useState(() => {
     try {
       const raw = localStorage.getItem("hh_cart_v1");
@@ -24,23 +26,50 @@ export function CartProvider({ children }) {
     }
   }, [items]);
 
+  // On first page load, force an empty cart (both local and server if logged in)
+  useEffect(() => {
+    let ignore = false;
+    async function resetCartOnLoad() {
+      didResetRef.current = true;
+      try { localStorage.removeItem("hh_cart_v1"); } catch {}
+      if (!ignore) setItems([]);
+      if (auth?.isAuthenticated) {
+        try { await api.del('/cart'); } catch {}
+        if (!ignore) setItems([]);
+      }
+    }
+    resetCartOnLoad();
+    return () => { ignore = true; };
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // When user logs in, sync with server cart
   useEffect(() => {
     if (!auth?.isAuthenticated) return; // stay local for guests
+    // Skip the first sync if we just force-reset the cart on load
+    if (didResetRef.current) { didResetRef.current = false; return; }
     let ignore = false;
     async function load() {
       try {
         const data = await api.get('/cart');
         if (ignore) return;
         const mapped = Array.isArray(data)
-          ? data.map((ci) => ({
-            id: ci.productId,
-            name: ci.product?.name ?? `#${ci.productId}`,
-            description: ci.product?.description ?? '',
-            price: Number(ci.product?.cost ?? 0),
-            qty: ci.amount,
-            image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
-          }))
+          ? data.map((ci) => {
+            const existing = items.find(i => i.id === ci.productId);
+            const color = existing?.color ?? null;
+            const meta = MERCH_META[ci.productId];
+            const image = existing?.image ?? (meta ? (color && meta.imageByColor ? meta.imageByColor[color] : meta.image) : `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`);
+            return {
+              id: ci.productId,
+              name: ci.product?.name ?? `#${ci.productId}`,
+              description: ci.product?.description ?? '',
+              price: Number(ci.product?.cost ?? 0),
+              qty: ci.amount,
+              image,
+              color,
+            };
+          })
           : [];
         setItems(mapped);
       } catch {
@@ -78,14 +107,21 @@ export function CartProvider({ children }) {
       }
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
-        ? data.map((ci) => ({
-          id: ci.productId,
-          name: ci.product?.name ?? `#${ci.productId}`,
-          description: ci.product?.description ?? '',
-          price: Number(ci.product?.cost ?? 0),
-          qty: ci.amount,
-          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`,
-        }))
+        ? data.map((ci) => {
+          const existing = items.find(i => i.id === ci.productId);
+          const color = existing?.color ?? null;
+          const meta = MERCH_META[ci.productId];
+          const image = existing?.image ?? (meta ? (color && meta.imageByColor ? meta.imageByColor[color] : meta.image) : `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`);
+          return {
+            id: ci.productId,
+            name: ci.product?.name ?? `#${ci.productId}`,
+            description: ci.product?.description ?? '',
+            price: Number(ci.product?.cost ?? 0),
+            qty: ci.amount,
+            image,
+            color,
+          };
+        })
         : [];
       setItems(mapped);
       setOpen(true);
@@ -116,18 +152,25 @@ export function CartProvider({ children }) {
       );
       return;
     }
-    try {
+      try {
       await api.post('/cart/remove-all', { productId: id });
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
-        ? data.map((ci) => ({
-          id: ci.productId,
-          name: ci.product?.name ?? `#${ci.productId}`,
-          description: ci.product?.description ?? '',
-          price: Number(ci.product?.cost ?? 0),
-          qty: ci.amount,
-          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`
-        }))
+        ? data.map((ci) => {
+          const existing = items.find(i => i.id === ci.productId);
+          const color = existing?.color ?? null;
+          const meta = MERCH_META[ci.productId];
+          const image = existing?.image ?? (meta ? (color && meta.imageByColor ? meta.imageByColor[color] : meta.image) : `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`);
+          return {
+            id: ci.productId,
+            name: ci.product?.name ?? `#${ci.productId}`,
+            description: ci.product?.description ?? '',
+            price: Number(ci.product?.cost ?? 0),
+            qty: ci.amount,
+            image,
+            color,
+          };
+        })
         : [];
       setItems(mapped);
     } catch {
@@ -154,14 +197,21 @@ export function CartProvider({ children }) {
       }
       const data = await api.get('/cart');
       const mapped = Array.isArray(data)
-        ? data.map((ci) => ({
-          id: ci.productId,
-          name: ci.product?.name ?? `#${ci.productId}`,
-          description: ci.product?.description ?? '',
-          price: Number(ci.product?.cost ?? 0),
-          qty: ci.amount,
-          image: `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`
-        }))
+        ? data.map((ci) => {
+          const existing = items.find(i => i.id === ci.productId);
+          const color = existing?.color ?? null;
+          const meta = MERCH_META[ci.productId];
+          const image = existing?.image ?? (meta ? (color && meta.imageByColor ? meta.imageByColor[color] : meta.image) : `https://picsum.photos/seed/${encodeURIComponent(ci.productId)}/200/300?blur=1`);
+          return {
+            id: ci.productId,
+            name: ci.product?.name ?? `#${ci.productId}`,
+            description: ci.product?.description ?? '',
+            price: Number(ci.product?.cost ?? 0),
+            qty: ci.amount,
+            image,
+            color,
+          };
+        })
         : [];
       setItems(mapped);
     } catch {

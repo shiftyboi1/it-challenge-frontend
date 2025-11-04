@@ -1,68 +1,55 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Merch.css";
 import Navbar from "../components/navbar/Navbar";         
 import Footer from "../components/footer/Footer";        
 import Slider from "../components/slider/Slider";
 import ProductM from "../components/product_merch/ProductM"; 
-
-// Merch images
-import TrikoB from "../assets/images/TrikoB.png";
-import TrikoC from "../assets/images/trikoC.png";
-import MikinaSM from "../assets/images/MikinaSM.png";
-import MikinaB from "../assets/images/MikinaB.png";
-import PoharB from "../assets/images/poharB.png";
-import PoharG from "../assets/images/poharG.png";
-import PoharW from "../assets/images/poharW (4).png";
-
-const MERCH = [
-  // One product – Tričko: B (biele) / C (čierne)
-  {
-    id: "tricko",
-    name: "Tričko HoloHome",
-    shortDesc: "Kvalitné tričko s minimalistickým logom.",
-    price: 24.9,
-    image: TrikoC,
-    imageByColor: {
-      "#ffffff": TrikoB, // biele
-      "#222222": TrikoC, // čierne
-    },
-    colors: ["#ffffff", "#222222"],
-  },
-  // Second product – Mikina SM (variant)
-  {
-    id: "mikina-sm",
-    name: "Mikina Smartie",
-    shortDesc: "Príjemná mikina s pohodlným strihom.",
-    price: 49.9,
-    image: MikinaSM,
-    colors: ["#2b2b2b",],
-  },
-  // Third product – Mikina B (black)
-  {
-    id: "mikina-b",
-    name: "Mikina HoloHome",
-    shortDesc: "Klasická biela mikina s logom.",
-    price: 49.9,
-    image: MikinaB,
-    colors: ["#eee",],
-  },
-  // Fourth product – Pohár B/G/W
-  {
-    id: "pohar",
-    name: "Pohár HoloHome",
-    shortDesc: "Sklenený pohár v troch farbách.",
-    price: 12.9,
-    image: PoharB,
-    imageByColor: {
-      "#222222": PoharB, // black
-      "#74bc74": PoharG, // green (brand)
-      "#ffffff": PoharW, // white
-    },
-    colors: ["#222222", "#74bc74", "#ffffff"],
-  },
-];
+import api from "../utils/api";
+import { MERCH_META, MERCH_IDS } from "../data/merchMeta";
 
 export default function Merch() {
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let ignore = false;
+    async function load() {
+      setLoading(true);
+      setError("");
+      try {
+        const data = await api.get('/products');
+        const products = Array.isArray(data?.products) ? data.products : [];
+        const merchFromApi = products.filter(p => MERCH_IDS.has(p.id));
+        if (!ignore) setAllProducts(merchFromApi);
+      } catch (e) {
+        if (!ignore) setError(e.message || 'Nepodarilo sa načítať produkty');
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    load();
+    return () => { ignore = true; };
+  }, []);
+
+  const merchIdsToShow = useMemo(() => ['mikina-b', 'mikina-sm', 'pohar', 'tricko'], []);
+  const items = useMemo(() => {
+    const list = merchIdsToShow.map((id) => {
+      const apiProd = allProducts.find((p) => p.id === id) || null;
+      const meta = MERCH_META[id] || {};
+      return {
+        id: id,
+        name: apiProd?.name || meta.fallback?.name || id,
+        shortDesc: (apiProd?.description || meta.fallback?.shortDesc || '').slice(0, 100),
+        price: Number((apiProd?.cost ?? meta.fallback?.price) || 0),
+        image: meta.image || apiProd?.image,
+        colors: [],
+        imageByColor: undefined,
+      };
+    });
+    return list;
+  }, [allProducts]);
+
   return (
     <>
       <Navbar />
@@ -83,8 +70,10 @@ export default function Merch() {
           />
         </section>
 
-  <section id="merch" className="merch-grid container">
-          {MERCH.map((m) => (
+        <section id="merch" className="merch-grid container">
+          {loading && <div style={{padding:16}}>Načítavam merch…</div>}
+          {error && <div style={{padding:16, color:'var(--danger, #b91c1c)'}}>{error}</div>}
+          {!loading && !error && items.map((m) => (
             <ProductM
               key={m.id}
               id={m.id}
@@ -92,8 +81,8 @@ export default function Merch() {
               shortDesc={m.shortDesc}
               price={m.price}
               image={m.image}
-              imageByColor={m.imageByColor}
-              colors={m.colors}
+              colors={[]}
+              imageByColor={undefined}
               onAdd={(payload) => console.log("BUY", payload)}
             />
           ))}

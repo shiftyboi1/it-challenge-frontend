@@ -3,6 +3,7 @@ import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/footer/Footer';
 import api from '../utils/api';
 import { formatPrice } from '../utils/format';
+import { MERCH_META } from '../data/merchMeta';
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -42,12 +43,22 @@ export default function Orders() {
               <span>Status: {o.status}</span>
             </div>
             <div>
-              {o.items?.map((it) => (
-                <div key={it.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
-                  <span>{it.product?.name} × {it.quantity}</span>
-                  <span>{formatPrice((it.price || 0) * (it.quantity || 0))}</span>
-                </div>
-              ))}
+              {o.items?.map((it) => {
+                const pid = it.product?.id || it.productId || null;
+                const meta = pid ? MERCH_META[pid] : null;
+                const image = it.image ?? (meta ? meta.image : `https://picsum.photos/seed/${encodeURIComponent(pid || it.id)}/80/120?blur=1`);
+                return (
+                  <div key={it.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                      <img src={image} alt={it.product?.name || ''} style={{ width: 64, height: 96, objectFit: 'cover', borderRadius: 8 }} />
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{it.product?.name} × {it.quantity}</div>
+                      </div>
+                    </div>
+                    <div>{formatPrice((it.price || 0) * (it.quantity || 0))}</div>
+                  </div>
+                );
+              })}
             </div>
             <div style={{ textAlign: 'right', marginTop: 8 }}>
               <strong>Spolu: {formatPrice(o.total)}</strong>

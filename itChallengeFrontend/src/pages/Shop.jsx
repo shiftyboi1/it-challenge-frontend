@@ -7,6 +7,7 @@ import Slider from "../components/slider/Slider";
 import SelectButton from "../components/selection/Selectbutton";
 import Product from "../components/product/Product";
 import api from "../utils/api";
+import { MERCH_IDS } from "../data/merchMeta";
 import { scrollWithSliderOffset } from "../utils/scrollWithSliderOffset";
 
 
@@ -38,16 +39,25 @@ export default function Shop() {
         const data = await api.get('/products');
         const products = Array.isArray(data?.products) ? data.products : [];
         // Adapt server shape -> frontend
-        const adapted = products.map((p) => ({
-          id: p.id,
-          name: p.name,
-          shortDesc: p.description?.slice(0, 80) || '',
-          longDesc: p.description || '',
-          price: Number(p.cost || 0),
-          image: `/assets/images/product-${p.id}.jpg`, // may not exist; cards use picsum fallback
-          segment: 'domov',
-        }));
-        if (!ignore) setAllProducts(adapted);
+        const adapted = products.map((p) => {
+          const isSmartieOrEnterprise = p.id === 'smartie' || p.id === 'enterprise';
+          return {
+            id: p.id,
+            name: p.name,
+            // Hide descriptions for Smartie & Enterprise as requested
+            shortDesc: isSmartieOrEnterprise ? '' : (p.description?.slice(0, 80) || ''),
+            longDesc: isSmartieOrEnterprise ? '' : (p.description || ''),
+            price: Number(p.cost || 0),
+            image: `/assets/images/product-${p.id}.jpg`, // may not exist; cards use picsum fallback
+            // Segment mapping:
+            //  - 'domov' => Smartie
+            //  - 'bytovka' => Enterprise
+            segment: p.id === 'smartie' ? 'domov' : p.id === 'enterprise' ? 'bytovka' : 'other',
+          };
+        });
+        // Keep only Smartie & Enterprise and exclude merch completely
+        const filtered = adapted.filter((p) => (p.id === 'smartie' || p.id === 'enterprise') && !MERCH_IDS.has(p.id));
+        if (!ignore) setAllProducts(filtered);
       } catch (e) {
         if (!ignore) setError(e.message || 'Nepodarilo sa načítať produkty');
       } finally {

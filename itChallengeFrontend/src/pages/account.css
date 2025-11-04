@@ -44,3 +44,212 @@
 
 html.dark .home-hero-glass { background: rgba(18,18,18,0.86); color: #eaeaea; }
 
+.account-wrap {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start; /* keep natural height for Môj účet; we'll size orders to match */
+  justify-content: center;
+  padding: 32px 16px;
+  background: linear-gradient(180deg, rgba(240,240,240,.6), rgba(240,240,240,.9));
+  min-height: calc(100vh - 88px - 56px); /* vh - nav - footer */
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 920px) {
+  .account-wrap {
+    grid-template-columns: 420px 1fr;
+  }
+}
+
+html.dark .account-wrap {
+  background: linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.9));
+}
+
+.account-card, .orders-card {
+  width: 100%;
+  padding: 32px 28px;
+  border-radius: 16px;
+  color: var(--text);
+}
+
+/* Make the orders card match the account card height and allow inner scroll */
+.orders-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* contain inner scroll */
+}
+.orders-scroll {
+  flex: 1;
+  overflow: auto;
+  padding-right: 6px; /* small space to avoid scrollbar overlap */
+}
+
+.account-title, .orders-title {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  letter-spacing: .04em;
+  text-align: center;
+}
+
+.account-sub {
+  margin: 0 0 24px;
+  opacity: .8;
+  text-align: center;
+}
+
+.account-details {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.account-details label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: .92rem;
+}
+
+.account-details input {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0,0,0,.05);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+  font-size: .95rem;
+  color: var(--text);
+  opacity: .8;
+  cursor: not-allowed;
+}
+
+html.dark .account-details input {
+  background: rgba(255,255,255,.05);
+}
+
+.password-input-wrap {
+    position: relative;
+}
+.password-input-wrap input {
+    width: 100%;
+    padding-right: 44px;
+}
+.password-input-wrap button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: var(--text);
+    opacity: .6;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.password-input-wrap button:hover {
+    opacity: 1;
+}
+
+/* Remove focus/active outlines and borders on the eye toggle button */
+.password-input-wrap button:focus,
+.password-input-wrap button:focus-visible,
+.password-input-wrap button:active {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+
+.logout-button, .login-button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: 8px;
+}
+
+.logout-button:hover, .login-button:hover {
+  background: var(--primary-hover);
+}
+
+/* Light theme: make the logout button text black */
+html:not(.dark) .logout-button { color: #111 !important; }
+html:not(.dark) .logout-button:hover { color: #111 !important; }
+
+/* Orders List */
+.orders-list {
+    display: grid;
+    gap: 16px;
+}
+.order-item {
+    background: rgba(0,0,0,0.03);
+    border-radius: 12px;
+    padding: 16px;
+}
+html.dark .order-item {
+    background: rgba(255,255,255,0.03);
+}
+.order-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+html.dark .order-item-header {
+    border-bottom-color: rgba(255,255,255,0.05);
+}
+.order-status {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: .8rem;
+}
+.status-processing { background-color: #f59e0b20; color: #f59e0b; }
+.status-fulfilled { background-color: #10b98120; color: #10b981; }
+.status-cancelled { background-color: #ef444420; color: #ef4444; }
+
+.order-item-body {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.order-product {
+    display: flex;
+    justify-content: space-between;
+    font-size: .9rem;
+    opacity: .9;
+}
+.order-item-footer {
+    text-align: right;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+html.dark .order-item-footer {
+    border-top-color: rgba(255,255,255,0.05);
+}
+
+.orders-error {
+    color: var(--danger, #b91c1c);
+    text-align: center;
+}
+.orders-empty {
+    text-align: center;
+    opacity: .7;
+    padding: 20px;
+}
+

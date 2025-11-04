@@ -10,7 +10,7 @@
 }
 
 .hf.fw{
-  background: #111111 !important;
+  background: #000000 !important;
   color: #fff !important;
   border-top: none;
   position: relative;
@@ -73,11 +73,45 @@
 .hf-hero{
   border: none;
   border-radius: 14px;
-  background: #111111; /* match footer background */
+  background: #000000; /* match footer background */
   overflow: hidden; min-height: 320px; display: grid;
+  position: relative; /* allow top-right badge overlay */
   box-shadow: none; 
 }
-.hf-hero img{ width:100%; height:100%; object-fit: cover; display:block; background-color:#111111; }
+.hf-hero img{
+  width:100%; height:100%; object-fit: cover; display:block; background-color:#000000;
+  /* scale to 70% and shift up/right for better composition */
+  transform: translate(10%, -6%) scale(0.7);
+  transform-origin: center;
+}
+
+/* Top-right badge/slot within the footer image section */
+.hf-hero-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  color: #111;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(17,17,17,0.08);
+  font-family: "Lexend", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: .02em;
+  font-size: 13px;
+}
+.hf-hero-badge:empty { display: none; }
+html.dark .hf-hero-badge {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.15);
+}
 
 .hf-socialrow{
   grid-column: 1 / -1;
@@ -119,20 +153,9 @@
 html.dark .hf-tile,
 html.dark .hf-hero{ box-shadow: none; }
 
-.hf.fw::before{
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 0; height: 2px;
-  background: #000;
-  z-index: 2;
-}
-.hf.fw::after{
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 4px; height: 2px;
-  background: #fff;
-  z-index: 2;
-}
+/* remove top border stripes for a fully black footer */
+.hf.fw::before,
+.hf.fw::after { display: none; content: none; }
 
 .hf-socialrow{ justify-content: center; }
 

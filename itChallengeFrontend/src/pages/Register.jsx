@@ -56,7 +56,7 @@ export default function Register() {
                 image: 'https://picsum.photos/seed/register-hero/1600/900',
                 title: "Vytvoriť účet",
                 subtitle: "Získaj prístup ku košíku a objednávkam.",
-                actions: [{ label: "Domov", href: "/", variant: "btn-dark" }],
+                actions: [{ label: "Späť na domovskú stránku", href: "/", variant: "btn-dark" }],
               },
             ]}
             showControls={false}
@@ -76,7 +76,7 @@ export default function Register() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required
-                    placeholder="Ján"
+                    placeholder="Vaše meno"
                   />
                 </label>
                 <label>
@@ -86,7 +86,7 @@ export default function Register() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required
-                    placeholder="Novák"
+                    placeholder="Vaše priezvisko"
                   />
                 </label>
               </div>

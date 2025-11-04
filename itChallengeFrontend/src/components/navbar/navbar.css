@@ -29,7 +29,7 @@ html.dark{
   border: 1px solid var(--stroke);
   border-radius:14px;
   display:inline-flex; align-items:center; justify-content:center;
-  box-shadow: var(--brand-glow);
+  box-shadow: none;
   cursor:pointer;
   transition: transform .14s ease, box-shadow .18s ease, background .12s ease;
   z-index: 1100;
@@ -42,7 +42,7 @@ html.dark{
 .nh-box:focus-visible{
   background:var(--panel);
   border:1px solid var(--stroke);
-  box-shadow: 0 6px 22px rgba(39,76,81,0.10), 0 8px 24px rgba(116,188,116,0.08);
+  box-shadow: none;
   outline:none;
   transform: translateY(-2px);
 }

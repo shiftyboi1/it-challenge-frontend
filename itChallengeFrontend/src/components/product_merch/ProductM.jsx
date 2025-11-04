@@ -12,6 +12,7 @@ function idOr(name) {
 }
 
 export default function ProductHero({
+  id,
   name = "Product name",
   price = 0,
   currency = "€",
@@ -45,7 +46,8 @@ export default function ProductHero({
     onColorChange?.(c);
   };
   // ensure a stable picsum background when image is not provided
-  const seed = idOr(name);
+  // Use provided product id as seed when available so cart & orders reference the real product id
+  const seed = id || idOr(name);
   // use portrait 2:3 picsum placeholders (width x height)
   const selectedImage = (imageByColor && color && imageByColor[color]) || image;
   const bg = selectedImage || `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200?blur=1`;
@@ -112,12 +114,12 @@ export default function ProductHero({
             <button
               className="buy-btn more-btn"
               onClick={() => {
-                  const payload = { id: seed, name, color, price, image: bg };
-                  // Always add to cart for consistent feedback (also opens the preview)
-                  cart.addItem(payload);
-                  // If a parent provided an onAdd handler, call it too (non-blocking)
-                  try { onAdd && onAdd(payload); } catch { /* swallow handler errors */ }
-                }}
+                    const payload = { id: seed, name, color, price: Number(price || 0), image: bg };
+                    // Always add to cart for consistent feedback (also opens the preview)
+                    cart.addItem(payload);
+                    // If a parent provided an onAdd handler, call it too (non-blocking)
+                    try { onAdd && onAdd(payload); } catch { /* swallow handler errors */ }
+                  }}
             >
               {`Kúpiť`}
             </button>

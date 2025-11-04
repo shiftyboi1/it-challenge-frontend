@@ -33,14 +33,9 @@
 }
 .ph-hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 
-/* MikinaSM: show left half by default, right half on hover */
-.ph .ph-hero-img[src*="MikinaSM"]{
-  object-fit: cover;
-  object-position: left center;
-  transition: object-position .24s ease;
-}
-.ph .ph-hero:hover .ph-hero-img[src*="MikinaSM"]{
-  object-position: right center;
+/* Fine-tune cup image framing: shift slightly to the left */
+.ph .ph-hero-img[src*="poharG"]{
+  object-position: 60% center; /* >50% moves the image a bit to the left */
 }
 
 .ph-card {

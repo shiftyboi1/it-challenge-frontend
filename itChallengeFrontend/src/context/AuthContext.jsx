@@ -4,15 +4,14 @@ import api from '../utils/api';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-	const [token, setToken] = useState(() => {
-		try { return localStorage.getItem('token') || null; } catch { return null; }
-	});
-	const [user, setUser] = useState(() => {
-		try { const raw = localStorage.getItem('user'); return raw ? JSON.parse(raw) : null; } catch { return null; }
-	});
+	// In-memory auth only; do not restore persisted auth across reloads
+	const [token, setToken] = useState(null);
+	const [user, setUser] = useState(null);
+	// Store the session's current password in-memory only (never persisted)
+	const [currentPassword, setCurrentPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	// Keep localStorage in sync
+	// Keep localStorage in sync for same-session API usage
 	useEffect(() => {
 		try {
 			if (token) localStorage.setItem('token', token); else localStorage.removeItem('token');
@@ -24,52 +23,55 @@ export function AuthProvider({ children }) {
 		} catch {}
 	}, [user]);
 
-	// Optionally validate token on load
+	// Ensure any previous persisted auth is cleared on fresh load (force logout on refresh)
 	useEffect(() => {
-		let ignore = false;
-		async function loadMe() {
-			if (!token) return;
-			setLoading(true);
-			try {
-				const data = await api.get('/me');
-				if (!ignore && data && data.user) setUser(data.user);
-			} catch {
-				// invalid token
-				if (!ignore) {
-					setToken(null);
-					setUser(null);
-				}
-			} finally {
-				if (!ignore) setLoading(false);
-			}
-		}
-		loadMe();
-		return () => { ignore = true; };
+		try {
+			localStorage.removeItem('token');
+			localStorage.removeItem('user');
+			// clear any in-memory password
+			setCurrentPassword("");
+		} catch {}
 	}, []);
+
+	// Optionally validate token on load
+    // No /me endpoint available; skip validation to avoid auto-logout
 
 	async function login(email, password) {
 		const data = await api.post('/auth/login', { email, password });
 		if (data && data.token) setToken(data.token);
 		if (data && data.user) setUser(data.user);
+		// Track the session's used password (in-memory only)
+		setCurrentPassword(password || "");
+		return data;
+	}
+
+	async function register(name, email, password) {
+		const data = await api.post('/auth/register', { name, email, password });
+		if (data && data.token) setToken(data.token);
+		if (data && data.user) setUser(data.user);
+		setCurrentPassword(password || "");
 		return data;
 	}
 
 	function logout() {
 		setToken(null);
 		setUser(null);
+		setCurrentPassword("");
 	}
 
 	const value = useMemo(() => ({
 		token,
 		user,
+		currentPassword,
 		loading,
 		isAuthenticated: !!token,
 		role: user?.role || null,
 		isAdmin: user?.role === 'ADMIN',
 		isManager: user?.role === 'SPRAVCA',
 		login,
+		register,
 		logout,
-	}), [token, user, loading]);
+	}), [token, user, currentPassword, loading]);
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
