@@ -149,7 +149,8 @@ html.dark .stat { background: rgba(22,22,22,.7); }
 .home-stats.full-screen { display: flex; align-items: center; }
 .stats-inner { width: 100%; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
 .stat-card { background: color-mix(in oklab, var(--panel) 92%, transparent); border-radius: 14px; padding: 22px; display:flex; flex-direction:column; align-items:center; text-align:center; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
-.stat-card .stat-ico { width: 64px; height: 64px; border-radius: 999px; display:grid; place-items:center; font-size:28px; background: var(--brand-dark); color: white; margin-bottom: 12px; }
+.stat-card .stat-ico { width: 64px; height: 64px; border-radius: 999px; display:grid; place-items:center; background: var(--brand-dark); color: white; margin-bottom: 12px; }
+.stat-card .stat-ico svg { width: 28px; height: 28px; display:block; }
 .stat-card .stat-name { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; }
 .stat-card .stat-desc { color: color-mix(in oklab, var(--fg) 60%, transparent); font-size: 0.95rem; }
 
@@ -162,7 +163,8 @@ html.dark .stat { background: rgba(22,22,22,.7); }
 @media (max-width: 420px) {
   .about-inner { padding: 12px; }
   .stat-card { padding: 16px; }
-  .stat-card .stat-ico { width: 56px; height: 56px; font-size: 22px; }
+  .stat-card .stat-ico { width: 56px; height: 56px; }
+  .stat-card .stat-ico svg { width: 24px; height: 24px; }
 }
 
 @media (max-width: 720px) {

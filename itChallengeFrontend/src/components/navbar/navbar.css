@@ -46,7 +46,8 @@ html.dark{
   outline:none;
   transform: translateY(-2px);
 }
-.nh-emoji{ display:inline-flex; align-items:center; justify-content:center; line-height:1; font-size:1.15rem; }
+.nh-emoji{ display:inline-flex; align-items:center; justify-content:center; line-height:1; }
+.nh-emoji svg{ width: 22px; height: 22px; display:block; }
 .nh-home{ font-size:1.3rem; }
 
 .nh-bar{
@@ -199,6 +200,7 @@ html.dark .nh .nh-bar-btn:hover{ color: var(--brand-green); }
   .nh-burger-2{ width:34px; height:22px; }
   .nh-title{ font-size:18px; letter-spacing:.1em; }
   .nh-submenu{ top:calc(14px + 56px); border-radius:0 0 20px 20px; clip-path: inset(0 round 0 0 20px 20px); }
+  .nh-emoji svg{ width: 20px; height: 20px; }
 }
 @media (max-width:400px){
   .nh-box{ width:48px; height:48px; }
@@ -206,6 +208,7 @@ html.dark .nh .nh-bar-btn:hover{ color: var(--brand-green); }
   .nh-burger-2{ width:28px; height:18px; }
   .nh-title{ font-size:16px; }
   .nh-submenu{ border-radius:0 0 18px 18px; clip-path: inset(0 round 0 0 18px 18px); }
+  .nh-emoji svg{ width: 18px; height: 18px; }
 }
 
 .cart-badge {
