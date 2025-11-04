@@ -14,7 +14,8 @@ export async function request(path, { method = 'GET', headers = {}, body } = {})
 	const reqHeaders = { 'Content-Type': 'application/json', ...headers };
 	if (token) reqHeaders.Authorization = `Bearer ${token}`;
 
-	const res = await fetch(`${BASE}${path.startsWith('/') ? '' : '/'}${path}`.replace(/\/+/g, '/'), {
+	const url = `${BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+	const res = await fetch(url, {
 		method,
 		headers: reqHeaders,
 		body: body != null ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined,
