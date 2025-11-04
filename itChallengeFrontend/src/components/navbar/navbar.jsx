@@ -255,22 +255,40 @@ export default function Navbar() {
             null
           ) : (
             cart.items.map((it) => (
-              <div key={it.id} className="cart-item">
-                <button aria-label={`Remove ${it.name}`} className="cart-remove" onClick={() => cart.removeItem(it.id)}>×</button>
+              <div key={`${it.id}::${it.color || 'default'}`} className="cart-item">
+                <button aria-label={`Remove ${it.name}`} className="cart-remove" onClick={() => cart.removeItem(it.id, it.color)}>×</button>
                 <div className="cart-item-left">
                   <div className="cart-thumb-wrap">
                     <img src={it.image || `https://picsum.photos/seed/${encodeURIComponent(it.id)}/200/300?blur=1`} alt={it.name} className="cart-thumb" loading="lazy" />
                   </div>
                   <div className="cart-meta">
                     <div className="cart-item-title">{it.name}</div>
+                    {it.color ? (
+                      <div className="cart-item-variant">
+                        <span
+                          className="variant-dot"
+                          style={{
+                            background: it.color,
+                            display: 'inline-block',
+                            width: 12,
+                            height: 12,
+                            borderRadius: '50%',
+                            border: '1px solid #ccc',
+                            verticalAlign: 'middle',
+                            marginRight: 6,
+                          }}
+                        />
+                        <span className="variant-label" style={{ fontSize: '12px', opacity: 0.8 }}>{it.color}</span>
+                      </div>
+                    ) : null}
                     <div className="cart-item-price">{formatPrice(it.price)}</div>
                   </div>
                 </div>
                 <div className="cart-item-right">
                   <div className="cart-item-controls">
-                      <button aria-label={`Increase quantity for ${it.name}`} className="qty-btn qty-plus" onClick={() => cart.addItem({ id: it.id, name: it.name, price: it.price, image: it.image }, 1)}>+</button>
+                      <button aria-label={`Increase quantity for ${it.name}`} className="qty-btn qty-plus" onClick={() => cart.addItem({ id: it.id, name: it.name, price: it.price, image: it.image, color: it.color }, 1)}>+</button>
                       <span className="qty-value">{it.qty}</span>
-                      <button aria-label={`Decrease quantity for ${it.name}`} className="qty-btn qty-minus" onClick={() => cart.changeQty(it.id, -1)}>-</button>
+                      <button aria-label={`Decrease quantity for ${it.name}`} className="qty-btn qty-minus" onClick={() => cart.changeQty(it.id, -1, it.color)}>-</button>
                   </div>
                 </div>
               </div>

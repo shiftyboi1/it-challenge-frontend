@@ -5,18 +5,61 @@ import Footer from "../components/footer/Footer";
 import Slider from "../components/slider/Slider";
 import ProductM from "../components/product_merch/ProductM"; 
 
+// Merch images
+import TrikoB from "../assets/images/TrikoB.png";
+import TrikoC from "../assets/images/trikoC.png";
+import MikinaSM from "../assets/images/MikinaSM.png";
+import MikinaB from "../assets/images/MikinaB.png";
+import PoharB from "../assets/images/poharB.png";
+import PoharG from "../assets/images/poharG.png";
+import PoharW from "../assets/images/poharW (4).png";
+
 const MERCH = [
+  // One product – Tričko: B (biele) / C (čierne)
   {
-    id: "tee-classic",
+    id: "tricko",
     name: "Tričko HoloHome",
-    shortDesc: "Soft cotton tee with minimal branding.",
+    shortDesc: "Kvalitné tričko s minimalistickým logom.",
     price: 24.9,
-    image: `https://picsum.photos/seed/tee-classic/800/1200?blur=1`,
-    colors: ["#ffffff", "#111111", "#a0c4ff"],
+    image: TrikoC,
+    imageByColor: {
+      "#ffffff": TrikoB, // biele
+      "#222222": TrikoC, // čierne
+    },
+    colors: ["#ffffff", "#222222"],
   },
-  { id: "hoodie", name: "Mikina HoloHome", shortDesc: "Cozy hoodie with a relaxed fit.", price: 49.9, image: `https://picsum.photos/seed/hoodie/800/1200?blur=1`, colors: ["#111111", "#2b2b2b", "#7c3aed"] },
-  { id: "mug", name: "Mikina Smartie", shortDesc: "Ceramic mug, dishwasher safe.", price: 12.9, image: `https://picsum.photos/seed/mug/800/1200?blur=1`, colors: ["#ffffff", "#eab308"] },
-  { id: "shop-bag", name: "Pohár HoloHome", shortDesc: "Reusable tote for everyday carry.", price: 14.9, image: `https://picsum.photos/seed/shop-bag/800/1200?blur=1`, colors: ["#ffffff", "#111111"] },
+  // Second product – Mikina SM (variant)
+  {
+    id: "mikina-sm",
+    name: "Mikina Smartie",
+    shortDesc: "Príjemná mikina s pohodlným strihom.",
+    price: 49.9,
+    image: MikinaSM,
+    colors: ["#2b2b2b",],
+  },
+  // Third product – Mikina B (black)
+  {
+    id: "mikina-b",
+    name: "Mikina HoloHome",
+    shortDesc: "Klasická biela mikina s logom.",
+    price: 49.9,
+    image: MikinaB,
+    colors: ["#eee",],
+  },
+  // Fourth product – Pohár B/G/W
+  {
+    id: "pohar",
+    name: "Pohár HoloHome",
+    shortDesc: "Sklenený pohár v troch farbách.",
+    price: 12.9,
+    image: PoharB,
+    imageByColor: {
+      "#222222": PoharB, // black
+      "#74bc74": PoharG, // green (brand)
+      "#ffffff": PoharW, // white
+    },
+    colors: ["#222222", "#74bc74", "#ffffff"],
+  },
 ];
 
 export default function Merch() {
@@ -49,6 +92,7 @@ export default function Merch() {
               shortDesc={m.shortDesc}
               price={m.price}
               image={m.image}
+              imageByColor={m.imageByColor}
               colors={m.colors}
               onAdd={(payload) => console.log("BUY", payload)}
             />

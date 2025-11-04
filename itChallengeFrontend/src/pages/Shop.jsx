@@ -72,7 +72,7 @@ export default function Shop() {
             slides={[
               {
                 id: "shop-1",
-                image: 'https://picsum.photos/seed/hero1/1600/900',
+                image: '../src/assets/images/slidershop.png',
                 title: "Všetko pre inteligentné a pohodlné bývanie.",
                 subtitle: "Objav smart riešenia, ktoré prepoja technológie s tvojím domovom. HoloHome zariadenia robia z každého bytu miesto, kde technológia pracuje pre teba.",
                 actions: [],

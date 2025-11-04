@@ -54,7 +54,10 @@ export function CartProvider({ children }) {
     // Local-only when guest
     if (!auth?.isAuthenticated) {
       setItems((prev) => {
-        const idx = prev.findIndex((p) => p.id === product.id);
+        // treat different colors as distinct variants
+        const idx = prev.findIndex(
+          (p) => p.id === product.id && (p.color ?? null) === (product.color ?? null)
+        );
         if (idx !== -1) {
           const next = [...prev];
           next[idx] = { ...next[idx], qty: (next[idx].qty || 0) + qty };
@@ -87,7 +90,9 @@ export function CartProvider({ children }) {
     } catch (e) {
       // fallback to local if server fails
       setItems((prev) => {
-        const idx = prev.findIndex((p) => p.id === product.id);
+        const idx = prev.findIndex(
+          (p) => p.id === product.id && (p.color ?? null) === (product.color ?? null)
+        );
         if (idx !== -1) {
           const next = [...prev];
           next[idx] = { ...next[idx], qty: (next[idx].qty || 0) + qty };
@@ -98,9 +103,15 @@ export function CartProvider({ children }) {
     }
   }
 
-  async function removeItem(id) {
+  async function removeItem(id, color) {
     if (!auth?.isAuthenticated) {
-      setItems((prev) => prev.filter((p) => p.id !== id));
+      setItems((prev) =>
+        prev.filter((p) =>
+          color === undefined
+            ? p.id !== id
+            : !(p.id === id && (p.color ?? null) === (color ?? null))
+        )
+      );
       return;
     }
     try {
@@ -115,10 +126,13 @@ export function CartProvider({ children }) {
     }
   }
 
-  async function changeQty(id, delta) {
+  async function changeQty(id, delta, color) {
     if (!auth?.isAuthenticated) {
       setItems((prev) => {
-        const next = prev.map((p) => (p.id === id ? { ...p, qty: Math.max(0, (p.qty || 0) + delta) } : p));
+        const next = prev.map((p) => {
+          const isMatch = p.id === id && (color === undefined || (p.color ?? null) === (color ?? null));
+          return isMatch ? { ...p, qty: Math.max(0, (p.qty || 0) + delta) } : p;
+        });
         return next.filter((p) => p.qty > 0);
       });
       return;

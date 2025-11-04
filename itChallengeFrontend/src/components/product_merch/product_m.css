@@ -150,13 +150,19 @@ html.dark .ph-price { color: #fff; }
 .ph-dots { display: flex; gap: 10px; }
 .ph-dot {
   width: 24px; height: 24px; border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.5);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+  /* unified, ultra-thin border for all colors */
+  border: 1px solid rgba(0,0,0,.6);
+  /* remove inner stroke to keep the thinnest look */
+  box-shadow: none;
   cursor: pointer;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 .ph-dot:hover { transform: translateY(-2px); }
-.ph-dot.active { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.18); }
+
+/* keep selection halo but don't change the border color */
+.ph-dot.active { box-shadow: 0 0 0 2px rgba(0,0,0,.18); }
+
+/* unified border style applies to all colors; no special case needed */
 
 .ph-cta {
   width: 100%;

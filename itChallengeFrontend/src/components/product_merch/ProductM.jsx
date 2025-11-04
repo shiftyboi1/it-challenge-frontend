@@ -16,6 +16,7 @@ export default function ProductHero({
   price = 0,
   currency = "€",
   image,
+  imageByColor,
   colors = [],
   defaultColor,
   onAdd,
@@ -27,6 +28,17 @@ export default function ProductHero({
   const priceText = useMemo(() => formatPrice(price), [price]);
 
   const isHex = (c) => /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(c);
+  const isLightHex = (hex) => {
+    if (!isHex(hex)) return false;
+    let h = hex.replace('#', '').toLowerCase();
+    if (h.length === 3) h = h.split('').map((ch) => ch + ch).join('');
+    const r = parseInt(h.slice(0,2), 16);
+    const g = parseInt(h.slice(2,4), 16);
+    const b = parseInt(h.slice(4,6), 16);
+    // Perceived luminance (ITU-R BT.601)
+    const luminance = 0.299*r + 0.587*g + 0.114*b;
+    return luminance > 220; // consider very light colors (like #fff, #eee) as light
+  };
 
   const handleColor = (c) => {
     setColor(c);
@@ -35,7 +47,8 @@ export default function ProductHero({
   // ensure a stable picsum background when image is not provided
   const seed = idOr(name);
   // use portrait 2:3 picsum placeholders (width x height)
-  const bg = image || `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200?blur=1`;
+  const selectedImage = (imageByColor && color && imageByColor[color]) || image;
+  const bg = selectedImage || `https://picsum.photos/seed/${encodeURIComponent(seed)}/800/1200?blur=1`;
   const cart = useCart();
 
   return (
@@ -61,16 +74,20 @@ export default function ProductHero({
           <div className="ph-picker">
             {isHex(colors[0]) ? (
               <div className="ph-dots">
-                {colors.map((c) => (
-                  <button
-                    key={c}
-                    className={`ph-dot ${color === c ? "active" : ""}`}
-                    style={{ background: c }}
-                    aria-label={`Color ${c}`}
-                    title={c}
-                    onClick={() => handleColor(c)}
-                  />
-                ))}
+                {colors.map((c) => {
+                  const light = isLightHex(c);
+                  return (
+                    <button
+                      key={c}
+                      data-color={c}
+                      className={`ph-dot ${light ? 'is-light' : ''} ${color === c ? "active" : ""}`}
+                      style={{ background: c }}
+                      aria-label={`Color ${c}`}
+                      title={c}
+                      onClick={() => handleColor(c)}
+                    />
+                  );
+                })}
               </div>
             ) : (
               <select
