@@ -33,6 +33,16 @@
 }
 .ph-hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 
+/* MikinaSM: show left half by default, right half on hover */
+.ph .ph-hero-img[src*="MikinaSM"]{
+  object-fit: cover;
+  object-position: left center;
+  transition: object-position .24s ease;
+}
+.ph .ph-hero:hover .ph-hero-img[src*="MikinaSM"]{
+  object-position: right center;
+}
+
 .ph-card {
   position: relative;
   z-index: 1;

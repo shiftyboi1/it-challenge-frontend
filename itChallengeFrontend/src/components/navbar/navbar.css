@@ -309,6 +309,14 @@ html.dark .cart-indicator-num{
   flex-shrink:0;
   background: linear-gradient(180deg, color-mix(in oklab, var(--panel) 6%, transparent), transparent);
 }
+.cart-thumb[src*="MikinaSM"]{
+  object-fit: cover;
+  object-position: left center;
+  transition: object-position .24s ease;
+}
+.cart-thumb-wrap:hover .cart-thumb[src*="MikinaSM"]{
+  object-position: right center;
+}
 .cart-thumb-wrap{ position: relative; display:inline-block; }
 .cart-item-left{ display:flex; align-items:center; gap:12px; min-width:0; }
 .cart-item-left > div{ display:flex; flex-direction:column; gap:6px; min-width:0; overflow:hidden; }
