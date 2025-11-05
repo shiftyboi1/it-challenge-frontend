@@ -166,7 +166,7 @@ export default function Shop() {
         <section className="shop-help container">
           <div className="shop-help-media">
             <img
-              src="/assets/images/helping.png"
+              src="../src/assets/images/likes.png"
               alt="Helping homes illustration"
               loading="lazy"
             />

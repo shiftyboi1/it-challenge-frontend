@@ -106,6 +106,11 @@ html.dark .home-hero-glass { background: rgba(18,18,18,0.86); color: #eaeaea; }
   box-shadow: 0 10px 26px rgba(0,0,0,.12);
   background: radial-gradient(120% 120% at 50% 50%, #f5f7f8 0%, #eef1f3 70%, #e8ecef 100%);
 }
+/* Remove border and shadow specifically for likes.png visuals */
+.shop-help-media img[src*="likes.png"]{
+  box-shadow: none;
+  border: none;
+}
 .shop-help-copy h2 {
   margin: 0 0 10px;
   font-size: clamp(20px, 3vw, 28px);
